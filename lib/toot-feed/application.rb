@@ -1,7 +1,4 @@
 require 'yaml'
-require 'rmagick'
-require 'sinatra/json'
-require 'digest/sha1'
 require 'syslog/logger'
 
 module TootFeed
@@ -26,34 +23,33 @@ module TootFeed
     before do
       @message = {request:{path: request.path}, response:{}}
       @status = 200
-      @type = :json
     end
 
     after do
-      @message[:request][:params] = params.to_h
       @message[:response][:status] = @status
-      @message[:response][:type] = @type
       if (@status < 300)
-        @logger.info(json(@message))
+        @logger.info(@message.to_json)
       else
-        @logger.error(json(@message))
+        @logger.error(@message.to_json)
       end
-      content_type @type
       status @status
     end
 
-    post '/feed' do
-
+    get '/feed/:account' do
+      content_type 'application/atom+xml'
+      return '<xml>' + params[:account] + '</xml>'
     end
 
     not_found do
       @status = 404
-      return json(@message)
+      content_type 'application/json'
+      return @message.to_json
     end
 
     error do
       @status = 500
-      return json(@message)
+      content_type 'application/json'
+      return @message.to_json
     end
   end
 end
