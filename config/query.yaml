@@ -9,9 +9,9 @@ registered: >-
   SELECT
   id
   FROM accounts
-  WHERE (accounts.domain IS NULL)
-  AND (accounts.locked='f')
-  AND (accounts.username=$1);
+  WHERE (domain IS NULL)
+  AND (locked='f')
+  AND (username=$1);
 toots: >-
   SELECT
   toots.uri,
