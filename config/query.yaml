@@ -11,7 +11,7 @@ registered: >-
   FROM accounts
   WHERE (accounts.domain IS NULL)
   AND (accounts.locked='f')
-  AND (accounts.username=?);
+  AND (accounts.username=$1);
 toots: >-
   SELECT
   toots.uri,
@@ -21,7 +21,7 @@ toots: >-
   INNER JOIN accounts ON toots.account_id=accounts.id
   WHERE (accounts.domain IS NULL)
   AND (accounts.locked='f')
-  AND (accounts.username=?)
+  AND (accounts.username=$1)
   AND (toots.text<>'')
   AND (toots.uri IS NOT NULL)
   AND (toots.text !~* '@[.a-z0-9]+')

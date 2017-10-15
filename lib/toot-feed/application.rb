@@ -7,7 +7,7 @@ module TootFeed
   class Application < Sinatra::Base
     def initialize
       super
-      @config = conigure
+      @config = configure
       @db = connect_db
       @logger = Syslog::Logger.new(@config['application']['name'])
       @logger.info({
@@ -38,10 +38,15 @@ module TootFeed
     end
 
     get '/feed/:account' do
-      not_found unless registered?(params[:account])
+      unless registered?(params[:account])
+        @status = 404
+        content_type 'application/json'
+        return @message.to_json
+      end
 
       content_type 'application/atom+xml'
       atom = RSS::Maker.make('atom') do |maker|
+        maker.channel.id = @config['local']['root_url']
         maker.channel.title = site['site_title']
         maker.channel.description = site['site_description']
         maker.channel.link = @config['local']['root_url']
@@ -94,11 +99,11 @@ module TootFeed
 
     def connect_db
       return PG::connect({
-        :host = @config['db']['host'],
-        :user = @config['db']['user'],
-        :password = @config['db']['password'],
-        :dbname = @config['db']['dbname'],
-        :port = @config['db']['port'],
+        host: @config['db']['host'],
+        user: @config['db']['user'],
+        password: @config['db']['password'],
+        dbname: @config['db']['dbname'],
+        port: @config['db']['port'],
       })
     rescue => e
       @message[:error] = e.message
@@ -106,7 +111,7 @@ module TootFeed
     end
 
     def registered? (name)
-      result !@db.exec(@config['query']['registererd'], [name]).empty?
+      return !@db.exec(@config['query']['registered'], [name]).to_a.empty?
     end
 
     def site
