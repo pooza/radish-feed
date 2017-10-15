@@ -1,12 +1,14 @@
 require 'yaml'
+require 'pg'
+require 'rss'
 require 'syslog/logger'
 
 module TootFeed
   class Application < Sinatra::Base
     def initialize
       super
-      @config = YAML.load_file(File.join(ROOT_DIR, 'config/toot-feed.yaml'))
-      @config['thin'] = YAML.load_file(File.join(ROOT_DIR, 'config/thin.yaml'))
+      @config = conigure
+      @db = connect_db
       @logger = Syslog::Logger.new(@config['application']['name'])
       @logger.info({
         message: 'starting...',
@@ -36,8 +38,26 @@ module TootFeed
     end
 
     get '/feed/:account' do
+      not_found unless registered?(params[:account])
+
       content_type 'application/atom+xml'
-      return '<xml>' + params[:account] + '</xml>'
+      atom = RSS::Maker.make('atom') do |maker|
+        maker.channel.title = site['site_title']
+        maker.channel.description = site['site_description']
+        maker.channel.link = @config['local']['root_url']
+        maker.channel.author = site['site_contact_username']
+        maker.channel.date = Time.now
+        maker.items.do_sort = true
+
+        @db.exec(@config['query']['toots'], [params[:account]]).each do |row|
+          maker.items.new_item do |item|
+            item.link = row['uri']
+            item.title = row['text']
+            item.date = Time.parse(row['created_at'])
+          end
+        end
+      end
+      return atom.to_s
     end
 
     not_found do
@@ -50,6 +70,53 @@ module TootFeed
       @status = 500
       content_type 'application/json'
       return @message.to_json
+    end
+
+    private
+    def configure
+      config = YAML.load_file(File.join(ROOT_DIR, 'config/toot-feed.yaml'))
+      config['thin'] = YAML.load_file(File.join(ROOT_DIR, 'config/thin.yaml'))
+      config['query'] = YAML.load_file(File.join(ROOT_DIR, 'config/query.yaml'))
+      config['local'] = YAML.load_file(File.join(ROOT_DIR, 'config/local.yaml'))
+      if File.exist?(File.join(ROOT_DIR, 'config/db.yaml'))
+        config['db'] = YAML.load_file(File.join(ROOT_DIR, 'config/db.yaml'))
+      else
+        config['db'] = {
+          'host' => 'localhost',
+          'user' => 'postgres',
+          'password' => '',
+          'dbname' =>'mastodon',
+          'port' => 5432,
+        }
+      end
+      return config
+    end
+
+    def connect_db
+      return PG::connect({
+        :host = @config['db']['host'],
+        :user = @config['db']['user'],
+        :password = @config['db']['password'],
+        :dbname = @config['db']['dbname'],
+        :port = @config['db']['port'],
+      })
+    rescue => e
+      @message[:error] = e.message
+      raise e.message
+    end
+
+    def registered? (name)
+      result !@db.exec(@config['query']['registererd'], [name]).empty?
+    end
+
+    def site
+      unless @site
+        @site = {}
+        @db.exec(@config['query']['site']).each do |row|
+          @site[row['var']] = YAML.load(row['value'])
+        end
+      end
+      return @site
     end
   end
 end

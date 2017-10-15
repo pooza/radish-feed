@@ -4,5 +4,6 @@ gem 'rake'
 gem 'rack'
 gem 'sinatra'
 gem 'thin'
+gem 'pg'
 gem 'syslog-logger'
 

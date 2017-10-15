@@ -1,0 +1,29 @@
+site: >-
+  SELECT
+  var,
+  value
+  FROM settings
+  WHERE (var IN ('site_title','site_description','site_contact_username'))
+  AND (thing_type IS NULL);
+registered: >-
+  SELECT
+  id
+  FROM accounts
+  WHERE (accounts.domain IS NULL)
+  AND (accounts.locked='f')
+  AND (accounts.username=?);
+toots: >-
+  SELECT
+  toots.uri,
+  toots.created_at,
+  toots.text
+  FROM statuses AS toots
+  INNER JOIN accounts ON toots.account_id=accounts.id
+  WHERE (accounts.domain IS NULL)
+  AND (accounts.locked='f')
+  AND (accounts.username=?)
+  AND (toots.text<>'')
+  AND (toots.uri IS NOT NULL)
+  AND (toots.text !~* '@[.a-z0-9]+')
+  ORDER BY toots.created_at DESC
+  LIMIT 100 OFFSET 0;
