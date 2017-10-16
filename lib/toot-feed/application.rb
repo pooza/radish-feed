@@ -1,6 +1,7 @@
 require 'yaml'
 require 'pg'
 require 'rss'
+require 'rexml/document'
 require 'syslog/logger'
 
 module TootFeed
@@ -22,38 +23,45 @@ module TootFeed
     before do
       @message = {request:{path: request.path}, response:{}}
       @status = 200
+      @type = 'application/atom+xml'
     end
 
     after do
-      @message[:response][:status] = @status
+      @message[:response][:status] ||= @status
       if (@status < 300)
         logger.info(@message.to_json)
       else
         logger.error(@message.to_json)
       end
       status @status
+      content_type @type
     end
 
     get '/feed/:account' do
       unless registered?(params[:account])
         @status = 404
-        content_type 'application/json'
-        return @message.to_json
+        @message[:response][:status] = @status
+        @message[:response][:message] = "Account #{params[:account]} not found."
+        @type = 'application/xml'
+        return result_xml(@message).to_s
       end
-      content_type 'application/atom+xml'
-      return atom(params[:account]).to_s
+      return atom_feed(params[:account]).to_s
     end
 
     not_found do
       @status = 404
-      content_type 'application/json'
-      return @message.to_json
+      @message[:response][:status] = @status
+      @message[:response][:message] = "Resource #{@message[:request][:path]} not found."
+      @type = 'application/xml'
+      return result_xml(@message).to_s
     end
 
     error do
       @status = 500
-      content_type 'application/json'
-      return @message.to_json
+      @message[:response][:status] = @status
+      @message[:response][:message] = env['sinatra.error'].message
+      @type = 'application/xml'
+      return result_xml(@message).to_s
     end
 
     private
@@ -98,7 +106,18 @@ module TootFeed
       return @logger
     end
 
-    def atom (account)
+    def result_xml (message)
+      xml = REXML::Document.new
+      xml.add(REXML::XMLDecl.new('1.0', 'UTF-8'))
+      xml.add_element(REXML::Element.new('result'))
+      status = xml.root.add_element('status')
+      status.add_text(message[:response][:status].to_s)
+      message = xml.root.add_element('message')
+      message.add_text(message[:response][:message] || 'error')
+      return xml
+    end
+
+    def atom_feed (account)
       return RSS::Maker.make('atom') do |maker|
         maker.channel.id = config['local']['root_url']
         maker.channel.title = site['site_title']
