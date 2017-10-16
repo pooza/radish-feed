@@ -3,5 +3,6 @@ $LOAD_PATH.push(File.join(ROOT_DIR, 'lib'))
 ENV['BUNDLE_GEMFILE'] ||= File.join(ROOT_DIR, 'Gemfile')
 
 require 'bundler/setup'
-require 'toot-feed'
+require 'sinatra'
+require 'toot-feed/application'
 run TootFeed::Application
