@@ -59,21 +59,18 @@ module TootFeed
     private
     def config
       unless @config
-        @config = YAML.load_file(File.join(ROOT_DIR, 'config/toot-feed.yaml'))
-        ['thin', 'query', 'local'].each do |key|
-          @config[key] = YAML.load_file(File.join(ROOT_DIR, 'config', "#{key}.yaml"))
+        @config = {}
+        ['application', 'thin', 'query', 'db', 'local'].each do |key|
+          path = File.join(ROOT_DIR, 'config', "#{key}.yaml")
+          @config[key] = YAML.load_file(path) if File.exist?(path)
         end
-        if File.exist?(File.join(ROOT_DIR, 'config/db.yaml'))
-          @config['db'] = YAML.load_file(File.join(ROOT_DIR, 'config/db.yaml'))
-        else
-          @config['db'] = {
-            'host' => 'localhost',
-            'user' => 'postgres',
-            'password' => '',
-            'dbname' =>'mastodon',
-            'port' => 5432,
-          }
-        end
+        @config['db'] ||= {
+          'host' => 'localhost',
+          'user' => 'postgres',
+          'password' => '',
+          'dbname' =>'mastodon',
+          'port' => 5432,
+        }
       end
       return @config
     end
