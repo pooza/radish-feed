@@ -37,6 +37,16 @@ module TootFeed
       content_type @type
     end
 
+    get '/about' do
+      @message[:response][:status] = @status
+      @message[:response][:message] = '%s %s'%([
+        config['application']['name'],
+        config['application']['version'],
+      ])
+      @type = 'application/xml'
+      return result_xml(@message).to_s
+    end
+
     get '/feed/:account' do
       unless registered?(params[:account])
         @status = 404
