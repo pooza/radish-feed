@@ -17,11 +17,11 @@ module TootFeed
         server: {
           port: config['thin']['port'],
         },
-      })
+      }.to_json)
     end
 
     before do
-      @message = {request:{path: request.path}, response:{}}
+      @message = {request:{path: request.path, params:params}, response:{}}
       @status = 200
       @type = 'application/atom+xml'
     end
@@ -55,7 +55,7 @@ module TootFeed
         @type = 'application/xml'
         return result_xml(@message).to_s
       end
-      return atom_feed(params[:account], config['local']['entries']['default']).to_s
+      return atom_feed(params[:account], params[:entries].to_i).to_s
     end
 
     not_found do
@@ -109,9 +109,6 @@ module TootFeed
         })
       end
       return @db
-    rescue => e
-      @message[:error] = e.message
-      raise e.message
     end
 
     def logger
@@ -132,7 +129,7 @@ module TootFeed
       return xml
     end
 
-    def atom_feed (account)
+    def atom_feed (account, entries)
       return RSS::Maker.make('atom') do |maker|
         maker.channel.id = config['local']['root_url']
         maker.channel.title = site['site_title']
@@ -142,7 +139,13 @@ module TootFeed
         maker.channel.date = Time.now
         maker.items.do_sort = true
 
-        db.exec(config['query']['toots'], [account]).each do |row|
+        entries = config['local']['entries']['default'] if entries.zero?
+        if config['local']['entries']['max'] < entries
+          entries = config['local']['entries']['max']
+        end
+        @message[:response][:entries] = entries
+
+        db.exec(config['query']['toots'], [account, entries]).each do |row|
           maker.items.new_item do |item|
             item.link = row['uri']
             item.title = row['text']
