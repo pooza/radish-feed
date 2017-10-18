@@ -26,4 +26,4 @@ toots: >-
   AND (toots.uri IS NOT NULL)
   AND (toots.text !~* '@[.a-z0-9]+')
   ORDER BY toots.created_at DESC
-  LIMIT 100 OFFSET 0;
+  LIMIT $2 OFFSET 0;

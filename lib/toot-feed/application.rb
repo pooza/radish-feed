@@ -55,7 +55,7 @@ module TootFeed
         @type = 'application/xml'
         return result_xml(@message).to_s
       end
-      return atom_feed(params[:account]).to_s
+      return atom_feed(params[:account], config['local']['entries']['default']).to_s
     end
 
     not_found do
@@ -88,6 +88,11 @@ module TootFeed
           'password' => '',
           'dbname' =>'mastodon',
           'port' => 5432,
+        }
+        @config['local'] ||= {}
+        @config['local']['entries'] ||= {
+          'default' => 50,
+          'max' => 200,
         }
       end
       return @config
