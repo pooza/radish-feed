@@ -13,7 +13,7 @@ git clone git@github.com:pooza/toot-feed.git
 
 ```
 cd toot-feed
-sudo bundle install
+bundle install
 ```
 
 Mastodonが既にインストールされているサーバで行えば、必要なライブラリはインストール済みのはず。  
@@ -106,7 +106,7 @@ bundle exec rake stop
 https://mstdn.example.com/feed/pooza
 ```
 
-この例では、local.yamlで設定したエントリー数（未指定字でフォルト）が使用される。  
+この例では、local.yamlで設定したエントリー数（未指定字デフォルト）が使用される。  
 もしpoozaが実在しないアカウント（又は鍵アカウント）である場合は、エラーのXML文書（ステータス404）が
 返却される。  
 また、出力されるフィードは、ブーストやメンション（@）のエントリーを含まない。
