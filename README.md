@@ -139,7 +139,7 @@ LIMIT $2 OFFSET 0;
 ```
 
 IFTTTではアプレットを15分おきに起動し、都度上記のクエリーが実行されるので、負荷見積もりの
-config/query.yamlでも確認できるので、参考にして頂ければ。
+参考にして頂ければ。（config/query.yamlでも確認可能）
 
 ### GET /about
 
