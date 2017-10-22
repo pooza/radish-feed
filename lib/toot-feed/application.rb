@@ -78,9 +78,8 @@ module TootFeed
     def config
       unless @config
         @config = {}
-        ['application', 'thin', 'query', 'db', 'local'].each do |key|
-          path = File.join(ROOT_DIR, 'config', "#{key}.yaml")
-          @config[key] = YAML.load_file(path) if File.exist?(path)
+        Dir.glob(File.join(ROOT_DIR, 'config', '*.yaml')).each do |f|
+          @config[File.basename(f, '.yaml')] = YAML.load_file(f)
         end
         @config['db'] ||= {
           'host' => 'localhost',
@@ -90,10 +89,7 @@ module TootFeed
           'port' => 5432,
         }
         @config['local'] ||= {}
-        @config['local']['entries'] ||= {
-          'default' => 50,
-          'max' => 200,
-        }
+        @config['local']['entries'] ||= {'default' => 50, 'max' => 200}
       end
       return @config
     end
