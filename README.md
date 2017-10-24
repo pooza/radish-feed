@@ -109,8 +109,11 @@ https://mstdn.example.com/feed/pooza
 この例では、local.yamlで設定したエントリー数（未指定時デフォルト）が使用される。  
 もしpoozaが実在しないアカウント（又は鍵アカウント）である場合は、エラーのXML文書（ステータス404）が
 返却される。  
-また、出力されるフィードは、ブーストやメンション（@）のエントリーを含まない。
-
+また、出力されるフィードは、
+- ブースト
+- メンション（@）
+- 投稿のプライバシーが「公開」以外
+であるトゥートを含まない。
 
 以下の方法で、URLからエントリー数の指定を行うことが可能。
 
@@ -131,6 +134,7 @@ FROM statuses AS toots
 WHERE (accounts.domain IS NULL)
   AND (accounts.locked='f')
   AND (accounts.username=$1)
+  AND (toots.visibility=0)
   AND (toots.text<>'')
   AND (toots.uri IS NOT NULL)
   AND (toots.text !~* '@[.a-z0-9]+')

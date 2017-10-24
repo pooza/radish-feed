@@ -22,6 +22,7 @@ toots: >-
   WHERE (accounts.domain IS NULL)
   AND (accounts.locked='f')
   AND (accounts.username=$1)
+  AND (toots.visibility=0)
   AND (toots.text<>'')
   AND (toots.uri IS NOT NULL)
   AND (toots.text !~* '@[.a-z0-9]+')
