@@ -1,18 +1,20 @@
-# toot-feed
-MastodonトゥートのAtomフィードを出力。
+# radish-feed
+
+MastodonトゥートのAtomフィードを出力。  
+以前はtoot-feedというぞんざいな名前でした。
 
 ## ■設置の手順
 
 ### リポジトリをクローン
 
 ```
-git clone git@github.com:pooza/toot-feed.git
+git clone git@github.com:pooza/radish-feed.git
 ```
 
 ### 依存するgemのインストール
 
 ```
-cd toot-feed
+cd radish-feed
 bundle install
 ```
 
@@ -58,11 +60,11 @@ port: 5432
 
 ### syslog設定
 
-toot-feedというプログラム名で、syslogに出力している。  
+radish-feedというプログラム名で、syslogに出力している。  
 必要に応じて、適宜設定。以下、rsyslogでの設定例。
 
 ```
-:programname, isequal, "toot-feed" -/var/log/toot-feed.log
+:programname, isequal, "radish-feed" -/var/log/radish-feed.log
 ```
 
 ### リバースプロキシ設定

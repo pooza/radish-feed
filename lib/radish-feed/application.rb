@@ -4,7 +4,7 @@ require 'rss'
 require 'rexml/document'
 require 'syslog/logger'
 
-module TootFeed
+module RadishFeed
   class Application < Sinatra::Base
     def initialize
       super

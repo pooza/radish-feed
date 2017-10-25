@@ -4,5 +4,5 @@ ENV['BUNDLE_GEMFILE'] ||= File.join(ROOT_DIR, 'Gemfile')
 
 require 'bundler/setup'
 require 'sinatra'
-require 'toot-feed/application'
-run TootFeed::Application
+require 'radish-feed/application'
+run RadishFeed::Application
