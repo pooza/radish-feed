@@ -31,6 +31,7 @@ vi config/local.yaml
 
 ```
 root_url: https://mstdn.example.com/ #インスタンスのルートURL
+tz_offset: 9                         #タイムゾーン
 entries:                             #フィードに出力するエントリー数
   max: 200                           #  上限
   default: 20                        #  未指定時デフォルト
