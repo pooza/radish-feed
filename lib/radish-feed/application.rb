@@ -147,7 +147,7 @@ module RadishFeed
           maker.items.new_item do |item|
             item.link = row['uri']
             item.title = row['text']
-            item.date = Time.parse(row['created_at']).getlocal
+            item.date = Time.parse(row['created_at']) + ((config['local']['tz_offset'] || 0) * 3600)
           end
         end
       end
