@@ -1,3 +1,5 @@
+require 'active_support'
+require 'active_support/core_ext'
 require 'yaml'
 require 'pg'
 require 'rss'
@@ -145,7 +147,7 @@ module RadishFeed
           maker.items.new_item do |item|
             item.link = row['uri']
             item.title = row['text']
-            item.date = Time.parse(row['created_at']) + ((config['local']['tz_offset'] || 0) * 3600)
+            item.date = Time.parse(row['created_at']).getlocal
           end
         end
       end

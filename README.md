@@ -31,13 +31,12 @@ vi config/local.yaml
 
 ```
 root_url: https://mstdn.example.com/ #インスタンスのルートURL
-tz_offset: 9                         #タイムゾーン
 entries:                             #フィードに出力するエントリー数
   max: 200                           #  上限
   default: 20                        #  未指定時デフォルト
 ```
 
-最大エントリー数は、用途やサーバのスペックに合わせて。
+上限エントリー数は、用途やサーバのスペックに合わせて。
 
 ### db.yamlを編集
 
@@ -48,7 +47,7 @@ vi config/db.yaml
 以下、設定例。
 
 ```
-hos: localhost
+host: localhost
 user: postgres
 password:
 dbname: mastodon
@@ -56,7 +55,7 @@ port: 5432
 ```
 
 パスワードは空欄（trust認証）とする。  
-この設定例はデフォルト値だが、__これらのパラメータが完全に一致する場合は、db.yamlの作成自体不要。__
+この設定例はデフォルト値だが、__完全に一致する場合は、db.yamlの作成自体不要。__
 
 ### syslog設定
 
