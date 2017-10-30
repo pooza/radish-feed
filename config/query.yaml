@@ -25,6 +25,6 @@ toots: >-
   AND (toots.visibility=0)
   AND (toots.text<>'')
   AND (toots.uri IS NOT NULL)
-  AND (toots.text !~* '@[.a-z0-9]+')
+  AND (toots.text !~ '@[_a-z0-9]+(@[-.a-z0-9]+)?[ \n]')
   ORDER BY toots.created_at DESC
   LIMIT $2 OFFSET 0;

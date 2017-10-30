@@ -80,6 +80,23 @@ nginxにリバースプロキシを設定。以下、nginx.confでの設定例�
 
 該当するserverブロックに上記追記し、nginxを再起動。
 
+## ■更新の手順
+
+インストール先ディレクトリにchdirして、
+
+```
+git fetch
+git checkout 対象バージョン名
+```
+
+又は（少々雑だが）
+
+```
+git pull
+```
+
+でも可。
+
 ## ■操作
 
 インストール先ディレクトリにchdirして、rakeタスクを実行する。  
@@ -141,7 +158,7 @@ WHERE (accounts.domain IS NULL)
   AND (toots.visibility=0)
   AND (toots.text<>'')
   AND (toots.uri IS NOT NULL)
-  AND (toots.text !~* '@[.a-z0-9]+')
+  AND (toots.text !~ '@[_a-z0-9]+(@[-.a-z0-9]+)?[ \n]')
 ORDER BY toots.created_at DESC
 LIMIT $2 OFFSET 0;
 ```
