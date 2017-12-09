@@ -14,10 +14,10 @@ module RadishFeed
     def generate (account, entries)
       return RSS::Maker.make('atom') do |maker|
         maker.channel.id = @config['local']['root_url']
-        maker.channel.title = instance['instance_title']
-        maker.channel.description = instance['instance_description']
+        maker.channel.title = site['site_title']
+        maker.channel.description = site['site_description']
         maker.channel.link = @config['local']['root_url']
-        maker.channel.author = instance['instance_contact_username']
+        maker.channel.author = site['site_contact_username']
         maker.channel.date = Time.now
         maker.items.do_sort = true
 
@@ -34,6 +34,17 @@ module RadishFeed
           end
         end
       end
+    end
+
+    private
+    def site
+      unless @site
+        @site = {}
+        @db.exec(@config['query']['site']).each do |row|
+          @site[row['var']] = YAML.load(row['value'])
+        end
+      end
+      return @site
     end
   end
 end

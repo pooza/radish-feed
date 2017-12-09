@@ -91,7 +91,7 @@ module RadishFeed
         host: @config['db']['host'],
         user: @config['db']['user'],
         password: @config['db']['password'],
-        @dbname: @config['db']['@dbname'],
+        dbname: @config['db']['dbname'],
         port: @config['db']['port'],
       })
     end
