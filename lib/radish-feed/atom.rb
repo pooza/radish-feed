@@ -1,10 +1,11 @@
 require 'rss'
+require 'radish-feed/config'
 
 module RadishFeed
   class Atom
-    def initialize (db, config)
+    def initialize (db)
       @db = db
-      @config = config
+      @config = Config.new
     end
 
     def type
@@ -26,7 +27,7 @@ module RadishFeed
           entries = @config['local']['entries']['max']
         end
 
-        @db.exec(@config['query']['toots'], [account, entries]).each do |row|
+        @db.exec('toots', [account, entries]).each do |row|
           maker.items.new_item do |item|
             item.link = row['uri']
             item.title = row['text']
@@ -40,7 +41,7 @@ module RadishFeed
     def site
       unless @site
         @site = {}
-        @db.exec(@config['query']['site']).each do |row|
+        @db.exec('site').each do |row|
           @site[row['var']] = YAML.load(row['value'])
         end
       end

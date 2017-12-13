@@ -1,8 +1,8 @@
 require 'active_support'
 require 'active_support/core_ext'
-require 'pg'
 require 'syslog/logger'
 require 'radish-feed/config'
+require 'radish-feed/postgres'
 require 'radish-feed/atom'
 require 'radish-feed/xml'
 
@@ -22,7 +22,7 @@ module RadishFeed
           port: @config['thin']['port'],
         },
       }.to_json)
-      @db = pgconnect
+      @db = Postgres.new
     end
 
     before do
@@ -62,7 +62,7 @@ module RadishFeed
         @type = xml.type
         return xml.generate(@message).to_s
       end
-      atom = Atom.new(@db, @config)
+      atom = Atom.new(@db)
       @type = atom.type
       return atom.generate(params[:account], params[:entries].to_i).to_s
     end
@@ -86,18 +86,8 @@ module RadishFeed
     end
 
     private
-    def pgconnect
-      return PG::connect({
-        host: @config['db']['host'],
-        user: @config['db']['user'],
-        password: @config['db']['password'],
-        dbname: @config['db']['dbname'],
-        port: @config['db']['port'],
-      })
-    end
-
     def registered? (account)
-      return !@db.exec(@config['query']['registered'], [account]).to_a.empty?
+      return !@db.execute('registered', [account]).empty?
     end
   end
 end
