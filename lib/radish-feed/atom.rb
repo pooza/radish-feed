@@ -27,7 +27,7 @@ module RadishFeed
           entries = @config['local']['entries']['max']
         end
 
-        @db.exec('toots', [account, entries]).each do |row|
+        @db.execute('toots', [account, entries]).each do |row|
           maker.items.new_item do |item|
             item.link = row['uri']
             item.title = row['text']
@@ -41,7 +41,7 @@ module RadishFeed
     def site
       unless @site
         @site = {}
-        @db.exec('site').each do |row|
+        @db.execute('site').each do |row|
           @site[row['var']] = YAML.load(row['value'])
         end
       end
