@@ -1,7 +1,6 @@
 # radish-feed
 
-MastodonトゥートのAtomフィードを出力。  
-以前はtoot-feedというぞんざいな名前でした。
+MastodonトゥートのAtomフィードを出力。
 
 ## ■設置の手順
 
@@ -116,13 +115,13 @@ bundle exec rake stop
 
 ## ■API
 
-### GET /feed/アカウント名
+### GET /feed/v1.1/account/アカウント名
 
 起動後に、設置先サーバに対して以下のGETを行うことで、Atom 1.0フィードを取得できる。  
 設置先サーバを mstdn.example.com 、対象ユーザーをpoozaとして。
 
 ```
-https://mstdn.example.com/feed/pooza
+https://mstdn.example.com/feed/v1.1/account/pooza
 ```
 
 この例では、local.yamlで設定したエントリー数（未指定時デフォルト）が使用される。  
@@ -139,7 +138,7 @@ https://mstdn.example.com/feed/pooza
 以下の方法で、URLからエントリー数の指定を行うことが可能。
 
 ```
-https://mstdn.example.com/feed/pooza?entries=200
+https://mstdn.example.com/feed/v1.1/account/pooza?entries=200
 ```
 
 但し、local.yamlで設定した上限値を越える値を指定しても無視される。  
@@ -165,6 +164,27 @@ LIMIT $2 OFFSET 0;
 
 IFTTTではアプレットを15分おきに起動し、都度上記のクエリーが実行されるので、負荷見積もりの
 参考にして頂ければ。（config/query.yamlでも確認可能）
+
+なお、このAPIはかつて、 /feed/アカウント名 というエンドポイントだった。  
+互換性の為に残しているが、近日廃止の予定。
+
+### GET /feed/v1.1/local
+
+0.5.0にて追加。  
+ローカルタイムラインのAtom 1.0フィードを返す。
+
+出力されるフィードは、
+
+- ブースト
+- 投稿のプライバシーが「公開」以外
+- 鍵アカウントからのもの
+
+であるトゥートを含まない。  
+個人のタイムラインと異なり、メンションも含むことに注意。
+
+この抽出条件は、本来のローカルタイムラインと異なるかもしれない。  
+ローカルタイムラインと同じものを出力することを優先したいので、予告なく仕様変更する
+可能性がある。あしからず。
 
 ### GET /about
 
