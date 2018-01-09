@@ -53,25 +53,23 @@ module RadishFeed
       return xml.generate(@message).to_s
     end
 
-    get '/feed/:account' do
-      redirect '/feed/v1.1/acccount/' + params[:account], 301
-    end
-
-    get '/feed/v1.1/acccount/:account' do
-      unless registered?(params[:account])
-        @status = 404
-        @message[:response][:status] = @status
-        @message[:response][:message] = "Account #{params[:account]} not found."
-        xml = XML.new
-        @type = xml.type
-        return xml.generate(@message).to_s
+    ['/feed/:account', '/feed/v1.1/account/:account'].each do |route|
+      get route do
+        unless registered?(params[:account])
+          @status = 404
+          @message[:response][:status] = @status
+          @message[:response][:message] = "Account #{params[:account]} not found."
+          xml = XML.new
+          @type = xml.type
+          return xml.generate(@message).to_s
+        end
+        atom = Atom.new(@db)
+        @type = atom.type
+        return atom.generate(
+          'account_timeline',
+          [params[:account], params[:entries].to_i]
+        ).to_s
       end
-      atom = Atom.new(@db)
-      @type = atom.type
-      return atom.generate(
-        'account_timeline',
-        [params[:account], params[:entries].to_i]
-      ).to_s
     end
 
     get '/feed/v1.1/local' do

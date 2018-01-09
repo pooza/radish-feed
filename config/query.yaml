@@ -32,7 +32,7 @@ local_timeline: >-
   SELECT
   toots.uri,
   toots.created_at,
-  toots.text
+  '[@' || accounts.username || '] ' || toots.text AS text
   FROM statuses AS toots
   INNER JOIN accounts ON toots.account_id=accounts.id
   WHERE (accounts.domain IS NULL)

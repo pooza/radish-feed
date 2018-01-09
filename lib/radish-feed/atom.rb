@@ -22,10 +22,12 @@ module RadishFeed
         maker.channel.date = Time.now
         maker.items.do_sort = true
 
+        entries = params.pop
         entries = @config['local']['entries']['default'] if entries.zero?
         if @config['local']['entries']['max'] < entries
           entries = @config['local']['entries']['max']
         end
+        params.push(entries)
 
         @db.execute(type, params).each do |row|
           maker.items.new_item do |item|
