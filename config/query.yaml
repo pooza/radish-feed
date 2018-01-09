@@ -12,7 +12,7 @@ registered: >-
   WHERE (domain IS NULL)
   AND (locked='f')
   AND (username=$1);
-toots: >-
+account_timeline: >-
   SELECT
   toots.uri,
   toots.created_at,
@@ -28,3 +28,17 @@ toots: >-
   AND (toots.text !~ '@[_a-z0-9]+(@[-.a-z0-9]+)?[ \n]')
   ORDER BY toots.created_at DESC
   LIMIT $2 OFFSET 0;
+local_timeline: >-
+  SELECT
+  toots.uri,
+  toots.created_at,
+  toots.text
+  FROM statuses AS toots
+  INNER JOIN accounts ON toots.account_id=accounts.id
+  WHERE (accounts.domain IS NULL)
+  AND (accounts.locked='f')
+  AND (toots.visibility=0)
+  AND (toots.text<>'')
+  AND (toots.uri IS NOT NULL)
+  ORDER BY toots.created_at DESC
+  LIMIT $1 OFFSET 0;

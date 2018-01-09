@@ -54,6 +54,10 @@ module RadishFeed
     end
 
     get '/feed/:account' do
+      redirect '/feed/v1.1/acccount/' + params[:account], 301
+    end
+
+    get '/feed/v1.1/acccount/:account' do
       unless registered?(params[:account])
         @status = 404
         @message[:response][:status] = @status
@@ -64,7 +68,19 @@ module RadishFeed
       end
       atom = Atom.new(@db)
       @type = atom.type
-      return atom.generate(params[:account], params[:entries].to_i).to_s
+      return atom.generate(
+        'account_timeline',
+        [params[:account], params[:entries].to_i]
+      ).to_s
+    end
+
+    get '/feed/v1.1/local' do
+      atom = Atom.new(@db)
+      @type = atom.type
+      return atom.generate(
+        'local_timeline',
+        [params[:entries].to_i]
+      ).to_s
     end
 
     not_found do

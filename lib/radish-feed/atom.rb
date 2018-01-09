@@ -12,7 +12,7 @@ module RadishFeed
       return 'application/atom+xml'
     end
 
-    def generate (account, entries)
+    def generate (type, params)
       return RSS::Maker.make('atom') do |maker|
         maker.channel.id = @config['local']['root_url']
         maker.channel.title = site['site_title']
@@ -27,7 +27,7 @@ module RadishFeed
           entries = @config['local']['entries']['max']
         end
 
-        @db.execute('toots', [account, entries]).each do |row|
+        @db.execute(type, params).each do |row|
           maker.items.new_item do |item|
             item.link = row['uri']
             item.title = row['text']
