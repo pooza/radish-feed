@@ -1,11 +1,15 @@
 require 'rss'
 require 'radish-feed/config'
+require 'radish-feed/tweet'
 
 module RadishFeed
   class Atom
+    attr :tweetable, true
+
     def initialize (db)
       @db = db
       @config = Config.new
+      @tweetable = false;
     end
 
     def type
@@ -33,6 +37,7 @@ module RadishFeed
           maker.items.new_item do |item|
             item.link = row['uri']
             item.title = row['text']
+            item.title = Tweet.new(row['text']).tweetable_text if @tweetable
             item.date = Time.parse(row['created_at']) + ((@config['local']['tz_offset'] || 0) * 3600)
           end
         end

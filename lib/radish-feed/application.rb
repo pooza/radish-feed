@@ -64,6 +64,7 @@ module RadishFeed
           return xml.generate(@message).to_s
         end
         atom = Atom.new(@db)
+        atom.tweetable = true
         @type = atom.type
         return atom.generate(
           'account_timeline',
