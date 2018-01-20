@@ -10,15 +10,17 @@ module RadishFeed
       links = {}
       text = String.new(self)
       URI.extract(text, ['http', 'https']).each do |link|
-        if (max_length - URI_LENGTH) < (text.index(link) + 1)
-          text.sub!(link, '')
+        pos = text.index(link)
+        if (max_length - URI_LENGTH) < (pos + 1)
+          text = text[0..(pos - 1)].rstrip + '…'
+          break
         else
-          key = Zlib.crc32(text)
+          key = Zlib.adler32(text)
           links[key] = link
           text.sub!(link, create_tag(key))
         end
       end
-      if max_length < self.length
+      if max_length < text.length
         text = text[0..max_length].rstrip + '…'
       end
       links.each do |key, link|
