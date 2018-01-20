@@ -3,7 +3,6 @@ require 'zlib'
 
 module RadishFeed
   class Tweet < String
-    TOOT_LENGTH = 500
     FULL_LENGTH = 140
     URI_LENGTH = 24
 
@@ -11,7 +10,7 @@ module RadishFeed
       links = {}
       text = String.new(self)
       URI.extract(text, ['http', 'https']).each do |link|
-        if max_length < text.index(link)
+        if (max_length - URI_LENGTH) < (text.index(link) + 1)
           text.sub!(link, '')
         else
           key = Zlib.crc32(text)
@@ -20,7 +19,7 @@ module RadishFeed
         end
       end
       if max_length < text.length
-        text = text.slice(max_length..TOOT_LENGTH) + '…'
+        text = text[0..max_length].rstrip + '…'
       end
       links.each do |key, link|
         text.sub!(create_tag(key), link)
