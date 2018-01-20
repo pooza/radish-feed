@@ -18,7 +18,7 @@ module RadishFeed
           text.sub!(link, create_tag(key))
         end
       end
-      if max_length < text.length
+      if max_length < self.length
         text = text[0..max_length].rstrip + '…'
       end
       links.each do |key, link|
