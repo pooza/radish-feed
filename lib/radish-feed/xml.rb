@@ -3,7 +3,7 @@ require 'rexml/document'
 module RadishFeed
   class XML
     def type
-      return 'application/xml'
+      return 'application/xml; charset=UTF-8'
     end
 
     def generate (result)

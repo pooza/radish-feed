@@ -9,7 +9,7 @@ module RadishFeed
     end
 
     def type
-      return 'application/atom+xml'
+      return 'application/atom+xml; charset=UTF-8'
     end
 
     def generate (type, params)

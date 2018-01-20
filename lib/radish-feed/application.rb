@@ -28,7 +28,7 @@ module RadishFeed
     before do
       @message = {request:{path: request.path, params:params}, response:{}}
       @status = 200
-      @type = 'application/atom+xml'
+      @type = 'application/atom+xml; charset=UTF-8'
     end
 
     after do
