@@ -29,7 +29,7 @@ module RadishFeed
 
     def ellipsize! (length)
       if length < self.length
-        self.replace(self.new(self[0..length] + '…'))
+        self.replace(TweetString.new(self[0..length] + '…'))
       end
       return self
     end
