@@ -1,6 +1,6 @@
 require 'rss'
 require 'radish-feed/config'
-require 'radish-feed/tweet'
+require 'radish-feed/tweet_string'
 
 module RadishFeed
   class Atom
@@ -36,15 +36,22 @@ module RadishFeed
         @db.execute(type, params).each do |row|
           maker.items.new_item do |item|
             item.link = row['uri']
-            item.title = row['text']
-            item.title = Tweet.new(row['text']).tweetable_text if @tweetable
-            item.date = Time.parse(row['created_at']) + ((@config['local']['tz_offset'] || 0) * 3600)
+            if @tweetable
+              item.title = TweetString.new(row['text']).tweetable_text
+            else
+              item.title = row['text']
+            end
+            item.date = Time.parse(row['created_at']) + (tz_offset * 3600)
           end
         end
       end
     end
 
     private
+    def tz_offset
+      return (@config['local']['tz_offset'] || 0)
+    end
+
     def site
       unless @site
         @site = {}

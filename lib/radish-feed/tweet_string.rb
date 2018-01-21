@@ -2,17 +2,17 @@ require 'uri'
 require 'zlib'
 
 module RadishFeed
-  class Tweet < String
+  class TweetString < String
     FULL_LENGTH = 140
     URI_LENGTH = 24
 
     def tweetable_text
       links = {}
-      text = String.new(self)
+      text = self.clone
       URI.extract(text, ['http', 'https']).each do |link|
         pos = text.index(link)
-        if (max_length - URI_LENGTH) < (pos + 1)
-          text = text[0..(pos - 1)].rstrip + '…'
+        if (max_length - URI_LENGTH - 1) < pos
+          text.ellipsize!(pos - 1)
           break
         else
           key = Zlib.adler32(text)
@@ -20,13 +20,18 @@ module RadishFeed
           text.sub!(link, create_tag(key))
         end
       end
-      if max_length < text.length
-        text = text[0..max_length].rstrip + '…'
-      end
+      text.ellipsize!(max_length)
       links.each do |key, link|
         text.sub!(create_tag(key), link)
       end
       return text
+    end
+
+    def ellipsize! (length)
+      if length < self.length
+        self.replace(self.new(self[0..length] + '…'))
+      end
+      return self
     end
 
     private
