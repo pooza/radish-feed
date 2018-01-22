@@ -210,3 +210,14 @@ https://mstdn.example.com/feed/v1.1/account/pooza?tweetable=0
 
 上記のtweetableが有効である場合に、本文の長さを指定。  
 デフォルトは114、ツイート本文の末尾に短縮URLがひとつ入る想定の長さ。
+
+以下の様に指定すれば、本文の長さが100文字に。
+
+```
+https://mstdn.example.com/feed/v1.1/account/pooza?length=100
+```
+
+## 未実装機能
+
+- 現状、ツイートの長さは140文字とされるが、半角英数字は0.5文字扱いとなる。  
+  このTwitterの新仕様に未対応な為、ツイートの最大長は旧仕様と同じ140文字となっている。
