@@ -42,7 +42,7 @@ module RadishFeed
             else
               item.title = row['text']
             end
-            item.date = Time.parse(row['created_at']) + (tz_offset * 3600)
+            item.date = Time.parse(row['created_at']) + tz_offset
           end
         end
       end
@@ -50,7 +50,7 @@ module RadishFeed
 
     private
     def tz_offset
-      return (@config['local']['tz_offset'] || 0)
+      return (@config['local']['tz_offset'] || 0) * 3600
     end
 
     def site
