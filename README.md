@@ -86,12 +86,14 @@ nginxにリバースプロキシを設定。以下、nginx.confでの設定例�
 ```
 git fetch
 git checkout 対象バージョン名
+bundle install
 ```
 
 又は（少々雑だが）
 
 ```
 git pull
+bundle install
 ```
 
 でも可。
@@ -142,37 +144,10 @@ https://mstdn.example.com/feed/v1.1/account/pooza?entries=200
 ```
 
 但し、local.yamlで設定した上限値を越える値を指定しても無視される。  
-なお、実行しているクエリーは以下のもの。
-
-```
-SELECT
-  toots.uri,
-  toots.created_at,
-  toots.text
-FROM statuses AS toots
-  INNER JOIN accounts ON toots.account_id=accounts.id
-WHERE (accounts.domain IS NULL)
-  AND (accounts.locked='f')
-  AND (accounts.username=$1)
-  AND (toots.visibility=0)
-  AND (toots.text<>'')
-  AND (toots.uri IS NOT NULL)
-  AND (toots.text !~ '@[_a-z0-9]+(@[-.a-z0-9]+)?[ \n]')
-ORDER BY toots.created_at DESC
-LIMIT $2 OFFSET 0;
-```
-
-IFTTTではアプレットを15分おきに起動し、都度上記のクエリーが実行されるので、負荷見積もりの
-参考にして頂ければ。（config/query.yamlでも確認可能）
-
-なお、このAPIはかつて、 /feed/アカウント名 というエンドポイントだった。  
-互換性の為に残しているが、近日廃止の予定。
 
 ### GET /feed/v1.1/local
 
-0.5.0にて追加。  
-ローカルタイムラインのAtom 1.0フィードを返す。
-
+ローカルタイムラインのAtom 1.0フィードを返す。  
 出力されるフィードは、
 
 - ブースト
