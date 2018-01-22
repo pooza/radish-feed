@@ -4,9 +4,9 @@ require 'radish-feed/config'
 
 module RadishFeed
   class TweetString < String
-    def initialize
+    def initialize (value)
       @config = Config.new['twitter']
-      super
+      super(value)
     end
 
     def tweetable_text
@@ -43,7 +43,7 @@ module RadishFeed
     end
 
     def create_tag (key)
-      return sprintf('{crc:%0' + (URI_LENGTH - 9).to_s + 'd}', key)
+      return sprintf('{crc:%0' + (@config['length']['uri'] - 9).to_s + 'd}', key)
     end
   end
 end
