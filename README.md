@@ -135,15 +135,8 @@ https://mstdn.example.com/feed/v1.1/account/pooza
 - メンション（@）
 - 投稿のプライバシーが「公開」以外
 
-であるトゥートを含まない。
-
-以下の方法で、URLからエントリー数の指定を行うことが可能。
-
-```
-https://mstdn.example.com/feed/v1.1/account/pooza?entries=200
-```
-
-但し、local.yamlで設定した上限値を越える値を指定しても無視される。  
+であるトゥートを含まない。  
+tweetable=1&length=114がデフォルト。（後述）
 
 ### GET /feed/v1.1/local
 
@@ -160,6 +153,8 @@ https://mstdn.example.com/feed/v1.1/account/pooza?entries=200
 この抽出条件は、本来のローカルタイムラインと異なるかもしれない。  
 ローカルタイムラインと同じものを出力することを優先したいので、予告なく仕様変更する
 可能性がある。あしからず。
+
+tweetable=0がデフォルト。（後述）
 
 ### GET /about
 
@@ -187,6 +182,31 @@ Server: thin
 
 必要に応じて、監視などに使って頂くとよいと思う。
 
+## オプション
 
+/feed/v1.1/ から始まるAPIは、以下のオプションを指定可能。
 
+### entries
 
+以下のように、URLからエントリー数の指定を行うことが可能。  
+但し、local.yamlで設定した上限値を越える値を指定しても無視される。
+
+```
+https://mstdn.example.com/feed/v1.1/account/pooza?entries=200
+```
+
+### tweetable
+
+トゥート本文に手を加えない場合は、0又は空白。  
+ツイート用の短い本文を出力する場合は、それ以外を指定。
+
+通常、個人フィードはツイート用に短縮されるが、以下の様に指定を行えば全文が出力される。
+
+```
+https://mstdn.example.com/feed/v1.1/account/pooza?tweetable=0
+```
+
+### length
+
+上記のtweetableが有効である場合に、本文の長さを指定。  
+デフォルトは114、ツイート本文の末尾に短縮URLがひとつ入る想定の長さ。
