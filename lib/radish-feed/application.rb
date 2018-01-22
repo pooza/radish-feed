@@ -63,7 +63,8 @@ module RadishFeed
         return xml.generate(@message).to_s
       end
       atom = Atom.new(@db)
-      atom.tweetable = true
+      atom.tweetable = (params[:tweetable] || true)
+      atom.title_length = params[:length]
       @type = atom.type
       return atom.generate(
         'account_timeline',
@@ -73,6 +74,8 @@ module RadishFeed
 
     get '/feed/v1.1/local' do
       atom = Atom.new(@db)
+      atom.tweetable = (params[:tweetable] || false)
+      atom.title_length = params[:length]
       @type = atom.type
       return atom.generate(
         'local_timeline',

@@ -5,11 +5,12 @@ require 'radish-feed/tweet_string'
 module RadishFeed
   class Atom
     attr :tweetable, true
+    attr :title_length, true
 
     def initialize (db)
       @db = db
       @config = Config.new
-      @tweetable = false;
+      @tweetable = false
     end
 
     def type
@@ -37,7 +38,7 @@ module RadishFeed
           maker.items.new_item do |item|
             item.link = row['uri']
             if @tweetable
-              item.title = TweetString.new(row['text']).tweetable_text
+              item.title = TweetString.new(row['text']).tweetable_text(@title_length)
             else
               item.title = row['text']
             end
