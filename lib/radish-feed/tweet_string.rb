@@ -1,17 +1,20 @@
 require 'uri'
 require 'zlib'
+require 'radish-feed/config'
 
 module RadishFeed
   class TweetString < String
-    FULL_LENGTH = 140
-    URI_LENGTH = 24
+    def initialize
+      @config = Config.new['twitter']
+      super
+    end
 
     def tweetable_text
       links = {}
       text = self.clone
       URI.extract(text, ['http', 'https']).each do |link|
         pos = text.index(link)
-        if (max_length - URI_LENGTH - 1) < pos
+        if (max_length - @config['length']['uri'] - 1) < pos
           text.ellipsize!(pos - 1)
           break
         else
@@ -36,7 +39,7 @@ module RadishFeed
 
     private
     def max_length
-      return FULL_LENGTH - URI_LENGTH - 2
+      return @config['length']['tweet'] - @config['length']['uri'] - 2
     end
 
     def create_tag (key)
