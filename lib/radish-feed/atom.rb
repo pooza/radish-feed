@@ -1,13 +1,14 @@
 require 'rss'
 require 'radish-feed/renderer'
 require 'radish-feed/config'
+require 'radish-feed/postgres'
 require 'radish-feed/tweet_string'
 
 module RadishFeed
   class Atom < Renderer
-    def initialize (db)
+    def initialize
       super
-      @db = db
+      @db = Postgres.new
       @config = Config.new
       @tweetable = false
     end

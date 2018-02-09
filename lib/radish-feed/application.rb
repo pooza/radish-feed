@@ -22,7 +22,6 @@ module RadishFeed
           port: @config['thin']['port'],
         },
       }.to_json)
-      @db = Postgres.new
     end
 
     before do
@@ -57,7 +56,7 @@ module RadishFeed
         @message[:response][:message] = "Account #{params[:account]} not found."
         return @renderer.generate(@message).to_s
       end
-      @renderer = Atom.new(@db)
+      @renderer = Atom.new
       @renderer.tweetable = true
       @renderer.tweetable = params[:tweetable]
       @renderer.title_length = params[:length]
@@ -68,7 +67,7 @@ module RadishFeed
     end
 
     get '/feed/v1.1/local' do
-      @renderer = Atom.new(@db)
+      @renderer = Atom.new
       @renderer.tweetable = params[:tweetable]
       @renderer.title_length = params[:length]
       return @renderer.generate(
@@ -93,7 +92,7 @@ module RadishFeed
 
     private
     def registered? (account)
-      return !@db.execute('registered', [account]).empty?
+      return !Postgres.new.execute('registered', [account]).empty?
     end
   end
 end
