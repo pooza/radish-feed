@@ -5,9 +5,6 @@ require 'radish-feed/tweet_string'
 
 module RadishFeed
   class Atom < Renderer
-    attr :tweetable, true
-    attr :title_length, true
-
     def initialize (db)
       super
       @db = db
@@ -17,6 +14,14 @@ module RadishFeed
 
     def type
       return 'application/atom+xml; charset=UTF-8'
+    end
+
+    def tweetable= (flag)
+      @tweetable = (flag.to_i != 0) unless flag.nil?
+    end
+
+    def title_length= (length)
+      @title_length = length.to_i unless length.nil?
     end
 
     def generate (type, params)

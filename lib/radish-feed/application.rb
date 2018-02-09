@@ -59,8 +59,8 @@ module RadishFeed
       end
       @renderer = Atom.new(@db)
       @renderer.tweetable = true
-      @renderer.tweetable = (params[:tweetable].to_i != 0) unless params[:tweetable].nil?
-      @renderer.title_length = params[:length].to_i unless params[:length].nil?
+      @renderer.tweetable = params[:tweetable]
+      @renderer.title_length = params[:length]
       return @renderer.generate(
         'account_timeline',
         [params[:account], params[:entries].to_i]
@@ -69,8 +69,8 @@ module RadishFeed
 
     get '/feed/v1.1/local' do
       @renderer = Atom.new(@db)
-      @renderer.tweetable = (params[:tweetable].to_i != 0) unless params[:tweetable].nil?
-      @renderer.title_length = params[:length].to_i unless params[:length].nil?
+      @renderer.tweetable = params[:tweetable]
+      @renderer.title_length = params[:length]
       return @renderer.generate(
         'local_timeline',
         [params[:entries].to_i]
