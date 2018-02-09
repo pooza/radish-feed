@@ -31,7 +31,7 @@ module RadishFeed
 
     after do
       @message[:response][:status] ||= @status
-      if (@status < 300)
+      if (@renderer.status < 300)
         @logger.info(@message.to_json)
       else
         @logger.error(@message.to_json)
