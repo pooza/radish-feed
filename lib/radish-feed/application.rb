@@ -28,7 +28,7 @@ module RadishFeed
 
     before do
       @message = {request:{path: request.path, params:params}, response:{}}
-      renderer = XML.new
+      @renderer = XML.new
     end
 
     after do
@@ -93,6 +93,14 @@ module RadishFeed
     end
 
     private
+    def renderer
+      return @renderer
+    end
+
+    def renderer= (obj)
+      @renderer = obj
+    end
+
     def registered? (account)
       return !Postgres.new.execute('registered', [account]).empty?
     end
