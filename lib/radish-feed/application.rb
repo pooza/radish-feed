@@ -8,8 +8,6 @@ require 'radish-feed/xml'
 
 module RadishFeed
   class Application < Sinatra::Base
-    attr :renderer, true
-
     def initialize
       super
       @config = Config.new
