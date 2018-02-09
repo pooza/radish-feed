@@ -219,5 +219,5 @@ https://mstdn.example.com/feed/v1.1/account/pooza?length=100
 
 ## 未実装機能
 
-- ツイートの長さは140文字とされるが、半角英数字は0.5文字扱いとなる。  
+- Twitterではツイート長の上限は140文字とされるが、半角英数字は0.5文字扱いとなる。  
   tweetableオプションは、この新仕様に未対応。
