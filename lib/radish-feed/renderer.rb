@@ -2,7 +2,7 @@ module RadishFeed
   class Renderer
     attr :status, true
 
-    def initialize (db)
+    def initialize
       @status = 200
     end
 
