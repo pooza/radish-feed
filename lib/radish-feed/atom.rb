@@ -1,13 +1,15 @@
 require 'rss'
+require 'radish-feed/renderer'
 require 'radish-feed/config'
 require 'radish-feed/tweet_string'
 
 module RadishFeed
-  class Atom
+  class Atom < Renderer
     attr :tweetable, true
     attr :title_length, true
 
     def initialize (db)
+      super
       @db = db
       @config = Config.new
       @tweetable = false

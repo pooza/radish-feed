@@ -27,8 +27,7 @@ module RadishFeed
 
     before do
       @message = {request:{path: request.path, params:params}, response:{}}
-      @status = 200
-      @type = 'application/atom+xml; charset=UTF-8'
+      @renderer = XML.new
     end
 
     after do
@@ -38,8 +37,8 @@ module RadishFeed
       else
         @logger.error(@message.to_json)
       end
-      status @status
-      content_type @type
+      status @renderer.status
+      content_type @renderer.type
     end
 
     get '/about' do
@@ -48,58 +47,48 @@ module RadishFeed
         @config['application']['name'],
         @config['application']['version'],
       ])
-      xml = XML.new
-      @type = xml.type
-      return xml.generate(@message).to_s
+      return @renderer.generate(@message).to_s
     end
 
     get '/feed/v1.1/account/:account' do
       unless registered?(params[:account])
-        @status = 404
+        @renderer.status = 404
         @message[:response][:status] = @status
         @message[:response][:message] = "Account #{params[:account]} not found."
-        xml = XML.new
-        @type = xml.type
-        return xml.generate(@message).to_s
+        return @renderer.generate(@message).to_s
       end
-      atom = Atom.new(@db)
-      atom.tweetable = true
-      atom.tweetable = (params[:tweetable].to_i != 0) unless params[:tweetable].nil?
-      atom.title_length = params[:length].to_i unless params[:length].nil?
-      @type = atom.type
-      return atom.generate(
+      @renderer = Atom.new(@db)
+      @renderer.tweetable = true
+      @renderer.tweetable = (params[:tweetable].to_i != 0) unless params[:tweetable].nil?
+      @renderer.title_length = params[:length].to_i unless params[:length].nil?
+      return @renderer.generate(
         'account_timeline',
         [params[:account], params[:entries].to_i]
       ).to_s
     end
 
     get '/feed/v1.1/local' do
-      atom = Atom.new(@db)
-      atom.tweetable = (params[:tweetable].to_i != 0) unless params[:tweetable].nil?
-      atom.title_length = params[:length].to_i unless params[:length].nil?
-      @type = atom.type
-      return atom.generate(
+      @renderer = Atom.new(@db)
+      @renderer.tweetable = (params[:tweetable].to_i != 0) unless params[:tweetable].nil?
+      @renderer.title_length = params[:length].to_i unless params[:length].nil?
+      return @renderer.generate(
         'local_timeline',
         [params[:entries].to_i]
       ).to_s
     end
 
     not_found do
-      @status = 404
+      @renderer.status = 404
       @message[:response][:status] = @status
       @message[:response][:message] = "Resource #{@message[:request][:path]} not found."
-      xml = XML.new
-      @type = xml.type
-      return xml.generate(@message).to_s
+      return @renderer.generate(@message).to_s
     end
 
     error do
-      @status = 500
+      @renderer.status = 500
       @message[:response][:status] = @status
       @message[:response][:message] = env['sinatra.error'].message
-      xml = XML.new
-      @type = xml.type
-      return xml.generate(@message).to_s
+      return @renderer.generate(@message).to_s
     end
 
     private

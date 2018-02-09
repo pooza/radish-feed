@@ -1,11 +1,8 @@
 require 'rexml/document'
+require 'radish-feed/renderer'
 
 module RadishFeed
-  class XML
-    def type
-      return 'application/xml; charset=UTF-8'
-    end
-
+  class XML < Renderer
     def generate (result)
       xml = REXML::Document.new
       xml.add(REXML::XMLDecl.new('1.0', 'UTF-8'))
