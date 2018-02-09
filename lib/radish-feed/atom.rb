@@ -18,7 +18,13 @@ module RadishFeed
     end
 
     def tweetable= (flag)
-      @tweetable = (flag.to_i != 0) unless flag.nil?
+      unless flag.nil?
+        begin
+          @tweetable = (flag.to_i != 0)
+        rescue
+          @tweetable = !!flag
+        end
+      end
     end
 
     def title_length= (length)
