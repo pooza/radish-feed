@@ -6,10 +6,13 @@ require 'radish-feed/tweet_string'
 
 module RadishFeed
   class Atom < Renderer
+    attr :params, true
+    attr :query, true
+
     def initialize
       super
+      @params = []
       @db = Postgres.new
-      @config = Config.new
       @tweetable = false
     end
 
@@ -31,7 +34,13 @@ module RadishFeed
       @title_length = length.to_i unless length.nil?
     end
 
-    def generate (type, params)
+    def to_s
+      return feed.to_s
+    end
+
+    private
+    def feed
+      raise 'クエリー名が未定義です。' unless @query
       return RSS::Maker.make('atom') do |maker|
         maker.channel.id = @config['local']['root_url']
         maker.channel.title = site['site_title']
@@ -41,14 +50,14 @@ module RadishFeed
         maker.channel.date = Time.now
         maker.items.do_sort = true
 
-        entries = params.pop
+        entries = @params.pop
         entries = @config['local']['entries']['default'] if entries.zero?
         if @config['local']['entries']['max'] < entries
           entries = @config['local']['entries']['max']
         end
-        params.push(entries)
+        @params.push(entries)
 
-        @db.execute(type, params).each do |row|
+        @db.execute(@query, @params).each do |row|
           maker.items.new_item do |item|
             item.link = row['uri']
             if @tweetable
@@ -62,7 +71,6 @@ module RadishFeed
       end
     end
 
-    private
     def tz_offset
       return (@config['local']['tz_offset'] || 0) * 3600
     end

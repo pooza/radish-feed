@@ -46,7 +46,8 @@ module RadishFeed
         @config['application']['name'],
         @config['application']['version'],
       ])
-      return @renderer.generate(@message).to_s
+      @renderer.message = @message
+      return @renderer.to_s
     end
 
     get '/feed/v1.1/account/:account' do
@@ -54,26 +55,25 @@ module RadishFeed
         @renderer.status = 404
         @message[:response][:status] = @renderer.status
         @message[:response][:message] = "Account #{params[:account]} not found."
-        return @renderer.generate(@message).to_s
+        @renderer.message = @message
+        return @renderer.to_s
       end
       @renderer = Atom.new
       @renderer.tweetable = true
       @renderer.tweetable = params[:tweetable]
       @renderer.title_length = params[:length]
-      return @renderer.generate(
-        'account_timeline',
-        [params[:account], params[:entries].to_i]
-      ).to_s
+      @renderer.query = 'account_timeline'
+      @renderer.params = [params[:account], params[:entries].to_i]
+      return @renderer.to_s
     end
 
     get '/feed/v1.1/local' do
       @renderer = Atom.new
       @renderer.tweetable = params[:tweetable]
       @renderer.title_length = params[:length]
-      return @renderer.generate(
-        'local_timeline',
-        [params[:entries].to_i]
-      ).to_s
+      @renderer.query = 'local_timeline'
+      @renderer.params = [params[:entries].to_i]
+      return @renderer.to_s
     end
 
     not_found do
@@ -81,7 +81,8 @@ module RadishFeed
       @renderer.status = 404
       @message[:response][:status] = @renderer.status
       @message[:response][:message] = "Resource #{@message[:request][:path]} not found."
-      return @renderer.generate(@message).to_s
+      @renderer.message = @message
+      return @renderer.to_s
     end
 
     error do
@@ -89,7 +90,8 @@ module RadishFeed
       @renderer.status = 500
       @message[:response][:status] = @renderer.status
       @message[:response][:message] = env['sinatra.error'].message
-      return @renderer.generate(@message).to_s
+      @renderer.message = @message
+      return @renderer.to_s
     end
 
     private
