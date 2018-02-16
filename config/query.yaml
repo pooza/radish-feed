@@ -25,7 +25,7 @@ account_timeline: >-
   AND (toots.visibility=0)
   AND (toots.text<>'')
   AND (toots.uri IS NOT NULL)
-  AND (toots.text !~ '@[_a-z0-9]+(@[-.a-z0-9]+)?[ \n]')
+  AND (toots.text !~ '@[_a-zA-Z0-9]+(@[-.a-z0-9]+)?[ \n]')
   ORDER BY toots.created_at DESC
   LIMIT $2 OFFSET 0;
 local_timeline: >-
