@@ -2,6 +2,7 @@ require 'active_support'
 require 'active_support/core_ext'
 require 'syslog/logger'
 require 'radish-feed/config'
+require 'radish-feed/slack'
 require 'radish-feed/postgres'
 require 'radish-feed/atom'
 require 'radish-feed/xml'
@@ -11,6 +12,7 @@ module RadishFeed
     def initialize
       super
       @config = Config.instance
+      @slack = Slack.new if @config['local']['slack']
       Application.logger.info({
         message: 'starting...',
         package: {
@@ -84,6 +86,7 @@ module RadishFeed
       @renderer.status = 500
       @message[:response][:message] = env['sinatra.error'].message
       @renderer.message = @message
+      @slack.say(@message) if @slack
       return @renderer.to_s
     end
 

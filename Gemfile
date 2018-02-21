@@ -6,4 +6,5 @@ gem 'sinatra'
 gem 'thin'
 gem 'pg'
 gem 'syslog-logger'
-
+gem 'httparty'
+gem 'addressable'
