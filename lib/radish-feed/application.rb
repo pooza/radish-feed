@@ -11,12 +11,11 @@ module RadishFeed
     def initialize
       super
       @config = Config.instance
-      @logger = Syslog::Logger.new(@config['application']['name'])
-      @logger.info({
+      Application.logger.info({
         message: 'starting...',
         package: {
-          name: @config['application']['name'],
-          version: @config['application']['version'],
+          name: Application.name,
+          version: Application.version,
         },
         server: {
           port: @config['thin']['port'],
@@ -32,9 +31,9 @@ module RadishFeed
     after do
       @message[:response][:status] ||= @renderer.status
       if (@renderer.status < 300)
-        @logger.info(@message.to_json)
+        Application.logger.info(@message.to_json)
       else
-        @logger.error(@message.to_json)
+        Application.logger.error(@message.to_json)
       end
       status @renderer.status
       content_type @renderer.type
@@ -42,10 +41,7 @@ module RadishFeed
 
     get '/about' do
       @message[:response][:status] = @renderer.status
-      @message[:response][:message] = '%s %s'%([
-        @config['application']['name'],
-        @config['application']['version'],
-      ])
+      @message[:response][:message] = Application.full_name
       @renderer.message = @message
       return @renderer.to_s
     end
@@ -94,9 +90,29 @@ module RadishFeed
       return @renderer.to_s
     end
 
+    def self.name
+      return Config.instance['application']['name']
+    end
+
+    def self.version
+      return Config.instance['application']['version']
+    end
+
+    def self.url
+      return Config.instance['application']['url']
+    end
+
+    def self.full_name
+      return "#{Application.name} #{Application.version}"
+    end
+
+    def self.logger
+      return Syslog::Logger.new(Application.name)
+    end
+
     private
     def registered? (account)
-      return !Postgres.new.execute('registered', [account]).empty?
+      return !Postgres.instance.execute('registered', [account]).empty?
     end
   end
 end

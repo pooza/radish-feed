@@ -12,7 +12,7 @@ module RadishFeed
     def initialize
       super
       @params = []
-      @db = Postgres.new
+      @db = Postgres.instance
       @tweetable = false
     end
 

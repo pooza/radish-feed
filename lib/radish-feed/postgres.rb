@@ -1,8 +1,11 @@
 require 'pg'
+require 'singleton'
 require 'radish-feed/config'
 
 module RadishFeed
   class Postgres
+    include Singleton
+
     def initialize
       @config = Config.instance
       @db = PG::connect({
