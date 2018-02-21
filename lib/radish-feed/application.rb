@@ -16,6 +16,7 @@ module RadishFeed
         package: {
           name: Application.name,
           version: Application.version,
+          url: Application.url,
         },
         server: {
           port: @config['thin']['port'],
