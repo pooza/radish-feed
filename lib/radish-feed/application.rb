@@ -30,7 +30,7 @@ module RadishFeed
 
     after do
       @message[:response][:status] ||= @renderer.status
-      if (@renderer.status < 300)
+      if (@renderer.status < 400)
         Application.logger.info(@message.to_json)
       else
         Application.logger.error(@message.to_json)
@@ -40,7 +40,6 @@ module RadishFeed
     end
 
     get '/about' do
-      @message[:response][:status] = @renderer.status
       @message[:response][:message] = Application.full_name
       @renderer.message = @message
       return @renderer.to_s
@@ -49,7 +48,6 @@ module RadishFeed
     get '/feed/v1.1/account/:account' do
       unless registered?(params[:account])
         @renderer.status = 404
-        @message[:response][:status] = @renderer.status
         @message[:response][:message] = "Account #{params[:account]} not found."
         @renderer.message = @message
         return @renderer.to_s
@@ -75,7 +73,6 @@ module RadishFeed
     not_found do
       @renderer = XML.new
       @renderer.status = 404
-      @message[:response][:status] = @renderer.status
       @message[:response][:message] = "Resource #{@message[:request][:path]} not found."
       @renderer.message = @message
       return @renderer.to_s
@@ -84,7 +81,6 @@ module RadishFeed
     error do
       @renderer = XML.new
       @renderer.status = 500
-      @message[:response][:status] = @renderer.status
       @message[:response][:message] = env['sinatra.error'].message
       @renderer.message = @message
       return @renderer.to_s
