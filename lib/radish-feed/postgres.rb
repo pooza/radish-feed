@@ -4,7 +4,7 @@ require 'radish-feed/config'
 module RadishFeed
   class Postgres
     def initialize
-      @config = Config.new
+      @config = Config.instance
       @db = PG::connect({
         host: @config['db']['host'],
         user: @config['db']['user'],

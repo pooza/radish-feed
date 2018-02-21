@@ -5,7 +5,7 @@ require 'radish-feed/config'
 module RadishFeed
   class TweetString < String
     def initialize (value)
-      @config = Config.new['twitter']
+      @config = Config.instance['twitter']
       super(value)
     end
 

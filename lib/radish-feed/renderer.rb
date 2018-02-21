@@ -6,7 +6,7 @@ module RadishFeed
 
     def initialize
       @status = 200
-      @config = Config.new
+      @config = Config.instance
     end
 
     def type

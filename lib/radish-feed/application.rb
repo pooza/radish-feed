@@ -10,7 +10,7 @@ module RadishFeed
   class Application < Sinatra::Base
     def initialize
       super
-      @config = Config.new
+      @config = Config.instance
       @logger = Syslog::Logger.new(@config['application']['name'])
       @logger.info({
         message: 'starting...',
