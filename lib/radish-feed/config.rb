@@ -1,6 +1,6 @@
 require 'yaml'
 require 'singleton'
-require 'tomato-toot/package'
+require 'radish-feed/package'
 
 module RadishFeed
   class Config < Hash
