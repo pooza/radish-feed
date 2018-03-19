@@ -9,6 +9,8 @@ MastodonトゥートのAtomフィードを出力。
 ```
 git clone git@github.com:pooza/radish-feed.git
 ```
+クローンを行うとローカルにリポジトリが作成されるが、このディレクトリの名前は
+変更しないことを推奨。（syslogのプログラム名や、設定ファイルのパス等に影響）
 
 ### 依存するgemのインストール
 
