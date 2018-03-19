@@ -224,18 +224,18 @@ https://mstdn.example.com/feed/v1.1/account/pooza?length=100
 
 ## ■設定ファイルの検索順
 
-local.yamlやdb.yamlは、上記設置例ではconfigディレクトリ内に置いているが、実際には以下の順に検索している。
+local.yamlやdb.yamlは、上記設置例ではconfigディレクトリ内に置いているが、
+例えばlocal.yamlは実際には以下の順に検索している。
+（ROOT_DIRは設置先）
 
 - /usr/local/etc/radish-feed/local.yaml
+- /usr/local/etc/radish-feed/local.yml
 - /etc/radish-feed/local.yaml
-- 設置先/config/local.yaml
+- /etc/radish-feed/local.yml
+- __ROOT_DIR__/config/local.yaml
+- __ROOT_DIR__/config/local.yml
 
-同様に、local.yamlというファイルは、実際には以下の順に検索している。
-
-- local.yaml
-- local.yml
-
-設置先ディレクトリもファイル名も、そのファイルが発見できた時点で、以降の検索をやめる。
+ファイルが発見できた時点で、以降の検索をやめる。
 
 ## ■未実装機能
 
