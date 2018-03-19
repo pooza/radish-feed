@@ -187,7 +187,7 @@ Server: thin
 
 必要に応じて、監視などに使って頂くとよいと思う。
 
-## オプション
+## ■オプション
 
 /feed/v1.1/ から始まるAPIは、以下のオプションを指定可能。
 
@@ -222,7 +222,22 @@ https://mstdn.example.com/feed/v1.1/account/pooza?tweetable=0
 https://mstdn.example.com/feed/v1.1/account/pooza?length=100
 ```
 
-## 未実装機能
+## ■設定ファイルの検索順
+
+local.yamlやdb.yamlは、上記設置例ではconfigファイル内に置いているが、実際には以下の順に検索している。
+
+- /usr/local/etc/radish-feed/local.yaml
+- /etc/radish-feed/local.yaml
+- 設置先/config/radish-feed/local.yaml
+
+同様に、local.yamlというファイルは、実際には以下の順に検索している。
+
+- local.yaml
+- local.yml
+
+設置先ディレクトリもファイル名も、そのファイルが発見できた時点で、以降の検索をやめる。
+
+## ■未実装機能
 
 - Twitterではツイート長の上限は140文字とされるが、半角英数字は0.5文字扱いとなる。  
   tweetableオプションは、この新仕様に未対応。
