@@ -228,7 +228,7 @@ local.yamlやdb.yamlは、上記設置例ではconfigディレクトリ内に置
 
 - /usr/local/etc/radish-feed/local.yaml
 - /etc/radish-feed/local.yaml
-- 設置先/config/radish-feed/local.yaml
+- 設置先/config/local.yaml
 
 同様に、local.yamlというファイルは、実際には以下の順に検索している。
 
