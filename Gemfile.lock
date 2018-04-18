@@ -1,0 +1,57 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    activesupport (5.2.0)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      i18n (>= 0.7, < 2)
+      minitest (~> 5.1)
+      tzinfo (~> 1.1)
+    addressable (2.5.2)
+      public_suffix (>= 2.0.2, < 4.0)
+    concurrent-ruby (1.0.5)
+    daemons (1.2.6)
+    eventmachine (1.2.5)
+    httparty (0.16.2)
+      multi_xml (>= 0.5.2)
+    i18n (1.0.0)
+      concurrent-ruby (~> 1.0)
+    minitest (5.11.3)
+    multi_xml (0.6.0)
+    mustermann (1.0.2)
+    pg (1.0.0)
+    public_suffix (3.0.2)
+    rack (2.0.4)
+    rack-protection (2.0.1)
+      rack
+    rake (12.3.1)
+    sinatra (2.0.1)
+      mustermann (~> 1.0)
+      rack (~> 2.0)
+      rack-protection (= 2.0.1)
+      tilt (~> 2.0)
+    syslog-logger (1.6.8)
+    thin (1.7.2)
+      daemons (~> 1.0, >= 1.0.9)
+      eventmachine (~> 1.0, >= 1.0.4)
+      rack (>= 1, < 3)
+    thread_safe (0.3.6)
+    tilt (2.0.8)
+    tzinfo (1.2.5)
+      thread_safe (~> 0.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  activesupport
+  addressable
+  httparty
+  pg
+  rack
+  rake
+  sinatra
+  syslog-logger
+  thin
+
+BUNDLED WITH
+   1.16.1
