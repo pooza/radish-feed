@@ -43,7 +43,7 @@ slack:
 
 - 上限エントリー数は、用途やサーバのスペックに合わせて。
 - SlackのWebフックを指定すれば、実行中の例外がSlackに通知されるようになる。（省略可）  
-  また、DiscordのSlack互換Webフックでの動作も確認済み。
+  DiscordのSlack互換Webフックでの動作も確認済み。
 
 ### db.yamlを編集
 
@@ -67,7 +67,7 @@ port: 5432
 ### syslog設定
 
 radish-feedというプログラム名で、syslogに出力している。  
-必要に応じて、適宜設定。以下、rsyslogでの設定例。
+以下、rsyslogでの設定例。
 
 ```
 :programname, isequal, "radish-feed" -/var/log/radish-feed.log
@@ -86,25 +86,6 @@ nginxにリバースプロキシを設定。以下、nginx.confでの設定例�
 
 該当するserverブロックに上記追記し、nginxを再起動。
 
-## ■更新の手順
-
-インストール先ディレクトリにchdirして、
-
-```
-git fetch
-git checkout 対象バージョン名
-bundle install
-```
-
-又は（少々雑だが）
-
-```
-git pull
-bundle install
-```
-
-でも可。
-
 ## ■操作
 
 インストール先ディレクトリにchdirして、rakeタスクを実行する。  
@@ -120,6 +101,12 @@ bundle exec rake start
 
 ```
 bundle exec rake stop
+```
+
+### 再起動
+
+```
+bundle exec rake restart
 ```
 
 ## ■API
@@ -227,8 +214,7 @@ https://mstdn.example.com/feed/v1.1/account/pooza?length=100
 ## ■設定ファイルの検索順
 
 local.yamlやdb.yamlは、上記設置例ではconfigディレクトリ内に置いているが、
-例えばlocal.yamlは実際には以下の順に検索している。
-（ROOT_DIRは設置先）
+実際には以下の順に検索している。（ROOT_DIRは設置先）
 
 - /usr/local/etc/radish-feed/local.yaml
 - /usr/local/etc/radish-feed/local.yml
@@ -236,8 +222,6 @@ local.yamlやdb.yamlは、上記設置例ではconfigディレクトリ内に置
 - /etc/radish-feed/local.yml
 - __ROOT_DIR__/config/local.yaml
 - __ROOT_DIR__/config/local.yml
-
-ファイルが発見できた時点で、以降の検索をやめる。
 
 ## ■未実装機能
 
