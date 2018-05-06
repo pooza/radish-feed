@@ -14,18 +14,11 @@ module RadishFeed
     def initialize
       super
       @config = Config.instance
-      @logger = Logger.new(Package.name)
+      @logger = Logger.new
       @slack = Slack.new if @config['local']['slack']
       @logger.info({
         message: 'starting...',
-        package: {
-          name: Package.name,
-          version: Package.version,
-          url: Package.url,
-        },
-        server: {
-          port: @config['thin']['port'],
-        },
+        server: {port: @config['thin']['port']},
       })
     end
 
