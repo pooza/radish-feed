@@ -204,6 +204,7 @@ https://mstdn.example.com/feed/v1.1/account/pooza?tweetable=0
 
 上記のtweetableが有効である場合に、本文の長さを指定。  
 デフォルトは114、ツイート本文の末尾に短縮URLがひとつ入る想定の長さ。
+また、半角文字はTwitterの仕様に従って0.5文字扱い計算となる。  
 
 以下の様に指定すれば、本文の長さが100文字に。
 
@@ -222,8 +223,3 @@ local.yamlやdb.yamlは、上記設置例ではconfigディレクトリ内に置
 - /etc/radish-feed/local.yml
 - __ROOT_DIR__/config/local.yaml
 - __ROOT_DIR__/config/local.yml
-
-## ■未実装機能
-
-- Twitterではツイート長の上限は140文字とされるが、半角英数字は0.5文字扱いとなる。  
-  tweetableオプションは、この新仕様に未対応。
