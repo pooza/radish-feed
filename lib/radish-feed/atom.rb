@@ -62,7 +62,7 @@ module RadishFeed
           maker.items.new_item do |item|
             item.link = row['uri']
             if @tweetable
-              item.title = TweetString.new(row['text']).tweetable_text(@title_length)
+              item.title = TweetString.new(row['text']).tweetablize!(@title_length)
             else
               item.title = row['text']
             end

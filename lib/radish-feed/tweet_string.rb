@@ -9,7 +9,7 @@ module RadishFeed
       super(value)
     end
 
-    def tweetable_text (length = nil)
+    def tweetablize! (length = nil)
       length ||= (@config['length']['tweet'] - @config['length']['uri'] - 2)
       links = {}
       text = self.clone
@@ -28,7 +28,8 @@ module RadishFeed
       links.each do |key, link|
         text.sub!(create_tag(key), link)
       end
-      return text
+      self.replace(text)
+      return self
     end
 
     def ellipsize! (length)
