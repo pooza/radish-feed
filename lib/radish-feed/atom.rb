@@ -1,4 +1,5 @@
 require 'rss'
+require 'sanitize'
 require 'radish-feed/renderer'
 require 'radish-feed/config'
 require 'radish-feed/postgres'
@@ -44,7 +45,7 @@ module RadishFeed
       return RSS::Maker.make('atom') do |maker|
         maker.channel.id = @config['local']['root_url']
         maker.channel.title = site['site_title']
-        maker.channel.description = site['site_description']
+        maker.channel.description = Sanitize.clean(site['site_description'])
         maker.channel.link = @config['local']['root_url']
         maker.channel.author = site['site_contact_username']
         maker.channel.date = Time.now
@@ -61,7 +62,7 @@ module RadishFeed
           maker.items.new_item do |item|
             item.link = row['uri']
             if @tweetable
-              item.title = TweetString.new(row['text']).tweetable_text(@title_length)
+              item.title = TweetString.new(row['text']).tweetablize!(@title_length)
             else
               item.title = row['text']
             end

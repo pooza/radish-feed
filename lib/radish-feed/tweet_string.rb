@@ -9,14 +9,22 @@ module RadishFeed
       super(value)
     end
 
-    def tweetable_text (length = nil)
-      length ||= (@config['length']['tweet'] - @config['length']['uri'] - 2)
+    def length
+      return self.each_char.map{|c| c.bytesize == 1 ? 0.5 : 1}.reduce(:+)
+    end
+
+    def index (search)
+      return self[0..(super(search) - 1)].length
+    end
+
+    def tweetablize! (length = nil)
+      length ||= (@config['length']['tweet'] - @config['length']['uri'] - 1.0)
       links = {}
       text = self.clone
       URI.extract(text, ['http', 'https']).each do |link|
         pos = text.index(link)
-        if (length - @config['length']['uri'] - 1) < pos
-          text.ellipsize!(pos - 1)
+        if (length - @config['length']['uri'] - 0.5) < pos
+          text.ellipsize!(pos - 0.5)
           break
         else
           key = Zlib.adler32(text)
@@ -28,12 +36,24 @@ module RadishFeed
       links.each do |key, link|
         text.sub!(create_tag(key), link)
       end
-      return text
+      self.replace(text)
+      return self
     end
 
     def ellipsize! (length)
-      if length < self.length
-        self.replace(TweetString.new(self[0..(length - 1)] + '…'))
+      i = 0
+      ellipsized = ''
+      self.each_char.map do |c|
+        if c.bytesize == 1
+          i += 0.5
+        else
+          i += 1
+        end
+        if length < i
+          self.replace(ellipsized + '…')
+          break
+        end
+        ellipsized += c
       end
       return self
     end
