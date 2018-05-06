@@ -4,6 +4,14 @@ ENV['BUNDLE_GEMFILE'] ||= File.join(ROOT_DIR, 'Gemfile')
 
 require 'bundler/setup'
 
+desc 'test'
+task 'test' do
+  require 'test/unit'
+  Dir.glob(File.join(ROOT_DIR, 'test/*')).each do |t|
+    require t
+  end
+end
+
 [:start, :stop, :restart].each do |action|
   desc "#{action} thin"
   task action => ["server:#{action}"]

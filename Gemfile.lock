@@ -25,6 +25,7 @@ GEM
     nokogumbo (1.5.0)
       nokogiri
     pg (1.0.0)
+    power_assert (1.1.1)
     public_suffix (3.0.2)
     rack (2.0.5)
     rack-protection (2.0.1)
@@ -40,6 +41,8 @@ GEM
       rack-protection (= 2.0.1)
       tilt (~> 2.0)
     syslog-logger (1.6.8)
+    test-unit (3.2.7)
+      power_assert
     thin (1.7.2)
       daemons (~> 1.0, >= 1.0.9)
       eventmachine (~> 1.0, >= 1.0.4)
@@ -62,6 +65,7 @@ DEPENDENCIES
   sanitize
   sinatra
   syslog-logger
+  test-unit
   thin
 
 BUNDLED WITH
