@@ -8,7 +8,7 @@ module RadishFeed
 
     def initialize
       @config = Config.instance
-      @db = PG::connect({
+      @db = PG.connect({
         host: @config['db']['host'],
         user: @config['db']['user'],
         password: @config['db']['password'],
@@ -17,7 +17,7 @@ module RadishFeed
       })
     end
 
-    def execute (name, values = [])
+    def execute(name, values = [])
       return @db.exec(@config['query'][name], values).to_a
     end
   end

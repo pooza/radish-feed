@@ -2,7 +2,7 @@ require 'radish-feed/config'
 
 module RadishFeed
   class Renderer
-    attr :status, true
+    attr_accessor :status, true
 
     def initialize
       @status = 200

@@ -3,13 +3,14 @@ require 'radish-feed/renderer'
 
 module RadishFeed
   class XML < Renderer
-    attr :message, true
+    attr_accessor :message, true
 
     def to_s
       return xml.to_s
     end
 
     private
+
     def xml
       raise 'messageが未定義です。' unless @message
       xml = REXML::Document.new

@@ -20,7 +20,7 @@ module RadishFeed
         'host' => 'localhost',
         'user' => 'postgres',
         'password' => '',
-        'dbname' =>'mastodon',
+        'dbname' => 'mastodon',
         'port' => 5432,
       }
       self['local'] ||= {}
