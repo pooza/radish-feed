@@ -7,7 +7,7 @@ require 'radish-feed/tweet_string'
 
 module RadishFeed
   class Atom < Renderer
-    attr_accessor :query, true
+    attr_accessor :query
 
     def initialize
       super

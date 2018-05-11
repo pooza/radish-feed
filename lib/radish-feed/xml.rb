@@ -3,7 +3,7 @@ require 'radish-feed/renderer'
 
 module RadishFeed
   class XML < Renderer
-    attr_accessor :message, true
+    attr_accessor :message
 
     def to_s
       return xml.to_s
