@@ -10,7 +10,7 @@ module RadishFeed
     end
 
     def length
-      return each_char.map{ |c| c.bytesize == 1 ? 0.5 : 1}.reduce(:+)
+      return each_char.map{ |c| c.bytesize == 1 ? 0.5 : 1.0}.reduce(:+)
     end
 
     def index(search)
@@ -42,14 +42,14 @@ module RadishFeed
 
     def ellipsize!(length)
       i = 0
-      ellipsized = ''
-      each_char.map do |c|
-        i += c.bytesize ? 0.5 : 1
+      str = ''
+      each_char do |c|
+        i += (c.bytesize == 1 ? 0.5 : 1.0)
         if length < i
-          replace(ellipsized + '…')
+          replace(str + '…')
           break
         end
-        ellipsized += c
+        str += c
       end
       return self
     end
