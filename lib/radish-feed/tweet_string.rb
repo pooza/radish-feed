@@ -1,5 +1,4 @@
 require 'uri'
-require 'zlib'
 require 'radish-feed/config'
 
 module RadishFeed
@@ -15,26 +14,21 @@ module RadishFeed
 
     def index(search)
       return self[0..(super(search) - 1)].length
+    rescue
+      return nil
     end
 
     def tweetablize!(length = nil)
-      length ||= (@config['length']['tweet'] - @config['length']['uri'] - 1.0)
-      links = {}
+      links = []
       text = clone
       URI.extract(text, ['http', 'https']).each do |link|
-        pos = text.index(link)
-        if (length - @config['length']['uri'] - 0.5) < pos
-          text.ellipsize!(pos - 0.5)
-          break
-        else
-          key = Zlib.adler32(text)
-          links[key] = link
-          text.sub!(link, create_tag(key))
-        end
+        text.sub!(link, "\0")
+        links.push(link)
       end
-      text.ellipsize!(length)
-      links.each do |key, link|
-        text.sub!(create_tag(key), link)
+      text.ellipsize!(length || @config['length']['tweet'])
+      links.each do |link|
+        break unless text.index("\0")
+        text.sub!("\0", link)
       end
       replace(text)
       return self
@@ -52,12 +46,6 @@ module RadishFeed
         str += c
       end
       return self
-    end
-
-    private
-
-    def create_tag(key)
-      return format('{crc:%0' + (@config['length']['uri'] - 9).to_s + 'd}', key)
     end
   end
 end
