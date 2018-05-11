@@ -7,8 +7,7 @@ require 'radish-feed/tweet_string'
 
 module RadishFeed
   class Atom < Renderer
-    attr :params, true
-    attr :query, true
+    attr_accessor :query
 
     def initialize
       super
@@ -21,17 +20,22 @@ module RadishFeed
       return 'application/atom+xml; charset=UTF-8'
     end
 
-    def tweetable= (flag)
-      unless flag.nil?
-        begin
-          @tweetable = (flag.to_i != 0)
-        rescue
-          @tweetable = !!flag
-        end
-      end
+    def params=(values)
+      @params = values
+      entries = @params.pop
+      entries = @config['local']['entries']['default'] if entries.zero?
+      entries = @config['local']['entries']['max'] if @config['local']['entries']['max'] < entries
+      @params.push(entries)
     end
 
-    def title_length= (length)
+    def tweetable=(flag)
+      return if flag.nil?
+      @tweetable = (flag.to_i != 0)
+    rescue
+      @tweetable = !!flag
+    end
+
+    def title_length=(length)
       @title_length = length.to_i unless length.nil?
     end
 
@@ -40,36 +44,34 @@ module RadishFeed
     end
 
     private
+
     def feed
       raise 'クエリー名が未定義です。' unless @query
       return RSS::Maker.make('atom') do |maker|
-        maker.channel.id = @config['local']['root_url']
-        maker.channel.title = site['site_title']
-        maker.channel.description = Sanitize.clean(site['site_description'])
-        maker.channel.link = @config['local']['root_url']
-        maker.channel.author = site['site_contact_username']
-        maker.channel.date = Time.now
+        update_channel(maker.channel)
         maker.items.do_sort = true
-
-        entries = @params.pop
-        entries = @config['local']['entries']['default'] if entries.zero?
-        if @config['local']['entries']['max'] < entries
-          entries = @config['local']['entries']['max']
-        end
-        @params.push(entries)
-
         @db.execute(@query, @params).each do |row|
           maker.items.new_item do |item|
             item.link = row['uri']
-            if @tweetable
-              item.title = TweetString.new(row['text']).tweetablize!(@title_length)
-            else
-              item.title = row['text']
-            end
+            item.title = TweetString.new(row['text'])
+            item.title.tweetablize!(@title_length) if @tweetable
             item.date = Time.parse(row['created_at']) + tz_offset
           end
         end
       end
+    end
+
+    def update_channel(channel)
+      channel.id = @config['local']['root_url']
+      channel.title = site['site_title']
+      if (@query == 'account_timeline') && @params.present?
+        channel.id += "@#{@params.first}"
+        channel.title += "@#{@params.first}"
+      end
+      channel.link = channel.id
+      channel.description = Sanitize.clean(site['site_description'])
+      channel.author = site['site_contact_username']
+      channel.date = Time.now
     end
 
     def tz_offset
@@ -80,7 +82,7 @@ module RadishFeed
       unless @site
         @site = {}
         @db.execute('site').each do |row|
-          @site[row['var']] = YAML.load(row['value'])
+          @site[row['var']] = YAML.safe_load(row['value'])
         end
       end
       return @site

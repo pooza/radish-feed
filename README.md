@@ -113,7 +113,8 @@ bundle exec rake restart
 
 ### GET /feed/v1.1/account/アカウント名
 
-起動後に、設置先サーバに対して以下のGETを行うことで、Atom 1.0フィードを取得できる。  
+起動後に、設置先サーバに対して以下のGETを行うことで、Atom 1.0フィード
+（IFTTT等からツイートを行うソースとしの用途を想定されたもの）を取得できる。  
 設置先サーバを mstdn.example.com 、対象ユーザーをpoozaとして。
 
 ```
@@ -204,7 +205,7 @@ https://mstdn.example.com/feed/v1.1/account/pooza?tweetable=0
 
 上記のtweetableが有効である場合に、本文の長さを指定。  
 デフォルトは114、ツイート本文の末尾に短縮URLがひとつ入る想定の長さ。
-また、半角文字はTwitterの仕様に従って0.5文字扱い計算となる。  
+また、半角文字はTwitterの仕様に従って0.5文字扱いとなる。
 
 以下の様に指定すれば、本文の長さが100文字に。
 

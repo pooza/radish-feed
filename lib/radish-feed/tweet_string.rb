@@ -4,23 +4,25 @@ require 'radish-feed/config'
 
 module RadishFeed
   class TweetString < String
-    def initialize (value)
+    def initialize(value)
       @config = Config.instance['twitter']
       super(value)
     end
 
     def length
-      return self.each_char.map{|c| c.bytesize == 1 ? 0.5 : 1}.reduce(:+)
+      return each_char.map do |c|
+        c.bytesize == 1 ? 0.5 : 1.0
+      end.reduce(:+)
     end
 
-    def index (search)
+    def index(search)
       return self[0..(super(search) - 1)].length
     end
 
-    def tweetablize! (length = nil)
+    def tweetablize!(length = nil)
       length ||= (@config['length']['tweet'] - @config['length']['uri'] - 1.0)
       links = {}
-      text = self.clone
+      text = clone
       URI.extract(text, ['http', 'https']).each do |link|
         pos = text.index(link)
         if (length - @config['length']['uri'] - 0.5) < pos
@@ -36,31 +38,28 @@ module RadishFeed
       links.each do |key, link|
         text.sub!(create_tag(key), link)
       end
-      self.replace(text)
+      replace(text)
       return self
     end
 
-    def ellipsize! (length)
+    def ellipsize!(length)
       i = 0
-      ellipsized = ''
-      self.each_char.map do |c|
-        if c.bytesize == 1
-          i += 0.5
-        else
-          i += 1
-        end
+      str = ''
+      each_char do |c|
+        i += (c.bytesize == 1 ? 0.5 : 1.0)
         if length < i
-          self.replace(ellipsized + '…')
+          replace(str + '…')
           break
         end
-        ellipsized += c
+        str += c
       end
       return self
     end
 
     private
-    def create_tag (key)
-      return sprintf('{crc:%0' + (@config['length']['uri'] - 9).to_s + 'd}', key)
+
+    def create_tag(key)
+      return format('{crc:%0' + (@config['length']['uri'] - 9).to_s + 'd}', key)
     end
   end
 end

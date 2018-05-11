@@ -23,13 +23,13 @@ module RadishFeed
     end
 
     before do
-      @message = {request:{path: request.path, params:params}, response:{}}
+      @message = {request: {path: request.path, params: params}, response: {}}
       @renderer = XML.new
     end
 
     after do
       @message[:response][:status] ||= @renderer.status
-      if (@renderer.status < 400)
+      if @renderer.status < 400
         @logger.info(@message)
       else
         @logger.error(@message)
@@ -87,7 +87,8 @@ module RadishFeed
     end
 
     private
-    def registered? (account)
+
+    def registered?(account)
       return !Postgres.instance.execute('registered', [account]).empty?
     end
   end
