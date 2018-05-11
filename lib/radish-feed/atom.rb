@@ -8,11 +8,13 @@ require 'radish-feed/tweet_string'
 module RadishFeed
   class Atom < Renderer
     attr_accessor :query
+    attr_reader :params
+    attr_reader :tweetable
+    attr_reader :title_length
 
     def initialize
       super
       @params = []
-      @db = Postgres.instance
       @tweetable = false
     end
 
@@ -21,16 +23,18 @@ module RadishFeed
     end
 
     def params=(values)
+      default = @config['local']['entries']['default'].to_i
+      max = @config['local']['entries']['max'].to_i
       @params = values
-      entries = @params.pop
-      entries = @config['local']['entries']['default'] if entries.zero?
-      entries = @config['local']['entries']['max'] if @config['local']['entries']['max'] < entries
+      entries = @params.pop.to_i
+      entries = default if entries.zero?
+      entries = max if max < entries
       @params.push(entries)
     end
 
     def tweetable=(flag)
       return if flag.nil?
-      @tweetable = (flag.to_i != 0)
+      @tweetable = !flag.to_i.zero?
     rescue
       @tweetable = !!flag
     end
@@ -45,12 +49,16 @@ module RadishFeed
 
     private
 
+    def db
+      return Postgres.instance
+    end
+
     def feed
       raise 'クエリー名が未定義です。' unless @query
       return RSS::Maker.make('atom') do |maker|
         update_channel(maker.channel)
         maker.items.do_sort = true
-        @db.execute(@query, @params).each do |row|
+        db.execute(@query, @params).each do |row|
           maker.items.new_item do |item|
             item.link = row['uri']
             item.title = TweetString.new(row['text'])
@@ -66,7 +74,7 @@ module RadishFeed
       channel.title = site['site_title']
       if (@query == 'account_timeline') && @params.present?
         channel.id += "@#{@params.first}"
-        channel.title += "@#{@params.first}"
+        channel.title = "@#{@params.first} #{channel.title}"
       end
       channel.link = channel.id
       channel.description = Sanitize.clean(site['site_description'])
@@ -81,7 +89,7 @@ module RadishFeed
     def site
       unless @site
         @site = {}
-        @db.execute('site').each do |row|
+        db.execute('site').each do |row|
           @site[row['var']] = YAML.safe_load(row['value'])
         end
       end
