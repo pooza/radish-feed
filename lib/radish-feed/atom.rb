@@ -23,12 +23,10 @@ module RadishFeed
     end
 
     def params=(values)
-      default = @config['local']['entries']['default'].to_i
-      max = @config['local']['entries']['max'].to_i
       @params = values
       entries = @params.pop.to_i
-      entries = default if entries.zero?
-      entries = max if max < entries
+      entries = @config['local']['entries']['default'].to_i if entries.zero?
+      entries = [entries, @config['local']['entries']['max'].to_i].min
       @params.push(entries)
     end
 
