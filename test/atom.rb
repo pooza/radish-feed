@@ -1,4 +1,5 @@
 require 'radish-feed/atom'
+require 'radish-feed/config'
 
 module RadishFeed
   class AtomTest < Test::Unit::TestCase
