@@ -114,7 +114,7 @@ bundle exec rake restart
 ### GET /feed/v1.1/account/アカウント名
 
 起動後に、設置先サーバに対して以下のGETを行うことで、Atom 1.0フィード
-（IFTTT等からツイートを行うソースとしの用途を想定されたもの）を取得できる。  
+（IFTTT等からツイートを行うソースとしての用途を想定したもの）を取得できる。  
 設置先サーバを mstdn.example.com 、対象ユーザーをpoozaとして。
 
 ```
