@@ -48,7 +48,7 @@ module RadishFeed
     def feed
       raise 'クエリー名が未定義です。' unless @query
       return RSS::Maker.make('atom') do |maker|
-        maker.channel = channel
+        update_channel(maker.channel)
         maker.items.do_sort = true
         @db.execute(@query, @params).each do |row|
           maker.items.new_item do |item|
@@ -61,15 +61,13 @@ module RadishFeed
       end
     end
 
-    def channel
-      element = RSS::RDF::Channel.new
-      element.id = @config['local']['root_url']
-      element.title = site['site_title']
-      element.description = Sanitize.clean(site['site_description'])
-      element.link = @config['local']['root_url']
-      element.author = site['site_contact_username']
-      element.date = Time.now
-      return element
+    def update_channel(channel)
+      channel.id = @config['local']['root_url']
+      channel.title = site['site_title']
+      channel.description = Sanitize.clean(site['site_description'])
+      channel.link = @config['local']['root_url']
+      channel.author = site['site_contact_username']
+      channel.date = Time.now
     end
 
     def tz_offset
