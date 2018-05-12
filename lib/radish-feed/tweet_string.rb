@@ -28,11 +28,10 @@ module RadishFeed
         if (length - @config['length']['uri'] - 0.5) < pos
           text.ellipsize!(pos - 0.5)
           break
-        else
-          key = Zlib.adler32(text)
-          links[key] = link
-          text.sub!(link, create_tag(key))
         end
+        key = Zlib.adler32(link)
+        links[key] = link
+        text.sub!(link, create_tag(key))
       end
       text.ellipsize!(length)
       links.each do |key, link|
@@ -59,7 +58,7 @@ module RadishFeed
     private
 
     def create_tag(key)
-      return format('{crc:%0' + (@config['length']['uri'] - 9).to_s + 'd}', key)
+      return '{crc:%0' + (@config['length']['uri'] - 9).to_s + 'd}' % key
     end
   end
 end
