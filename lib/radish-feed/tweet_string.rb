@@ -58,7 +58,7 @@ module RadishFeed
     private
 
     def create_tag(key)
-      return format('{crc:%0' + (@config['length']['uri'] - 9).to_s + 'd}', key)
+      return '{crc:%0' + (@config['length']['uri'] - 9).to_s + 'd}' % key
     end
   end
 end
