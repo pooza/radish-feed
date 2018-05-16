@@ -22,6 +22,8 @@ Mastodonが既にインストールされているサーバで行えば、必要
 
 ### local.yamlを編集
 
+local.yamlは、640か600のパーミッションを推奨。
+
 ```
 vi config/local.yaml
 ```
@@ -216,9 +218,9 @@ https://mstdn.example.com/feed/v1.1/account/pooza?length=100
 local.yamlやdb.yamlは、上記設置例ではconfigディレクトリ内に置いているが、
 実際には以下の順に検索している。（ROOT_DIRは設置先）
 
-- /usr/local/etc/radish-feed/local.yaml
-- /usr/local/etc/radish-feed/local.yml
-- /etc/radish-feed/local.yaml
-- /etc/radish-feed/local.yml
-- __ROOT_DIR__/config/local.yaml
-- __ROOT_DIR__/config/local.yml
+- /usr/local/etc/radish-feed/*.yaml
+- /usr/local/etc/radish-feed/*.yml
+- /etc/radish-feed/*.yaml
+- /etc/radish-feed/*.yml
+- __ROOT_DIR__/config/*.yaml
+- __ROOT_DIR__/config/*.yml
