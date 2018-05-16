@@ -3,7 +3,7 @@ require 'radish-feed/config'
 module RadishFeed
   module Package
     def self.name
-      return File.basename(ROOT_DIR)
+      return self.to_s.underscore.split('/').first
     end
 
     def self.version
