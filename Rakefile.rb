@@ -3,9 +3,11 @@ $LOAD_PATH.push(File.join(ROOT_DIR, 'lib'))
 ENV['BUNDLE_GEMFILE'] ||= File.join(ROOT_DIR, 'Gemfile')
 
 require 'bundler/setup'
+require 'active_support'
+require 'active_support/core_ext'
 
 desc 'test'
-task 'test' do
+task :test do
   require 'test/unit'
   Dir.glob(File.join(ROOT_DIR, 'test/*')).each do |t|
     require t
