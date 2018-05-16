@@ -3,7 +3,7 @@ require 'radish-feed/config'
 module RadishFeed
   module Package
     def self.name
-      return self.to_s.underscore.split('/').first
+      return 'radish-feed'
     end
 
     def self.version
