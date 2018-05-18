@@ -37,8 +37,10 @@ entries:                             #フィードに出力するエントリー
   max: 200                           #  上限
   default: 20                        #  未指定時デフォルト
 slack:
-  hook:
-    url: https://hooks.slack.com/services/*********/*********/************************
+  hooks:
+    - https://hooks.slack.com/services/xxxxx
+    - https://discordapp.com/api/webhooks/xxxxx
+    - https://mstdn.b-shock.org/webhook/v1.0/toot/xxxxx
 ```
 
 - 上限エントリー数は、用途やサーバのスペックに合わせて。
@@ -156,10 +158,10 @@ tweetable=0がデフォルト。（後述）
 上記設定例ではリバースプロキシを設定していない為、一般ユーザーには公開されないが、
 現状はプログラム名とバージョン情報だけを含んだ、簡単なXML文書を出力する。
 
-curlがインストールされているなら、設置先サーバ上で以下実行。
+設置先サーバにcurlがインストールされているなら、以下実行。
 
 ```
-curl http://localhost:3001/about
+curl -i http://localhost:3001/about
 ```
 
 以下、レスポンス例。
