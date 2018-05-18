@@ -15,7 +15,6 @@ module RadishFeed
       super
       @config = Config.instance
       @logger = Logger.new
-      @slack = Slack.new if @config['local']['slack']
       @logger.info({
         message: 'starting...',
         server: {port: @config['thin']['port']},
@@ -82,7 +81,7 @@ module RadishFeed
       @renderer.status = 500
       @message[:response][:message] = env['sinatra.error'].message
       @renderer.message = @message
-      @slack.say(@message) if @slack
+      Slack.all.map{ |h| h.say(@message)}
       return @renderer.to_s
     end
 
