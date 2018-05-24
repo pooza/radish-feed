@@ -11,7 +11,7 @@ registered: >-
   FROM accounts
   WHERE (domain IS NULL)
   AND (locked='f')
-  AND (username=$1);
+  AND (username='<%= params[:account] %>');
 account_timeline: >-
   SELECT
   toots.uri,
@@ -21,13 +21,21 @@ account_timeline: >-
   INNER JOIN accounts ON toots.account_id=accounts.id
   WHERE (accounts.domain IS NULL)
   AND (accounts.locked='f')
-  AND (accounts.username=$1)
+  AND (accounts.username='<%= params[:account] %>')
   AND (toots.visibility=0)
   AND (toots.text<>'')
   AND (toots.uri IS NOT NULL)
   AND (toots.text !~ '@[_a-zA-Z0-9]+(@[-.a-z0-9]+)?[ \n]')
+  <% if params[:actor_type] == 'Service' %>
+  AND (accounts.actor_type='Service')
+  <% elsif params[:actor_type] == 'Person' %>
+  AND ((accounts.actor_type='Person') OR (accounts.actor_type IS NULL))
+  <% end %>
+  <% if params[:hashtag] %>
+  AND (toots.text ~ '#<%= params[:hashtag] %>')
+  <% end %>
   ORDER BY toots.created_at DESC
-  LIMIT $2 OFFSET 0;
+  LIMIT <%= params[:entries] %> OFFSET 0;
 local_timeline: >-
   SELECT
   toots.uri,
@@ -40,5 +48,13 @@ local_timeline: >-
   AND (toots.visibility=0)
   AND (toots.text<>'')
   AND (toots.uri IS NOT NULL)
+  <% if params[:actor_type] == 'Service' %>
+  AND (accounts.actor_type='Service')
+  <% elsif params[:actor_type] == 'Person' %>
+  AND ((accounts.actor_type='Person') OR (accounts.actor_type IS NULL))
+  <% end %>
+  <% if params[:hashtag] %>
+  AND (toots.text ~ '#<%= params[:hashtag] %>')
+  <% end %>
   ORDER BY toots.created_at DESC
-  LIMIT $1 OFFSET 0;
+  LIMIT <%= params[:entries] %> OFFSET 0;
