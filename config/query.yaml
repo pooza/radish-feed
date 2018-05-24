@@ -31,8 +31,8 @@ account_timeline: >-
   <% elsif params[:actor_type] == 'Person' %>
   AND ((accounts.actor_type='Person') OR (accounts.actor_type IS NULL))
   <% end %>
-  <% if params[:tag] %>
-  AND (toots.text ~ '#<%= params[:tag] %>')
+  <% if params[:hashtag] %>
+  AND (toots.text ~ '#<%= params[:hashtag] %>')
   <% end %>
   ORDER BY toots.created_at DESC
   LIMIT <%= params[:entries] %> OFFSET 0;
@@ -53,8 +53,8 @@ local_timeline: >-
   <% elsif params[:actor_type] == 'Person' %>
   AND ((accounts.actor_type='Person') OR (accounts.actor_type IS NULL))
   <% end %>
-  <% if params[:tag] %>
-  AND (toots.text ~ '#<%= params[:tag] %>')
+  <% if params[:hashtag] %>
+  AND (toots.text ~ '#<%= params[:hashtag] %>')
   <% end %>
   ORDER BY toots.created_at DESC
   LIMIT <%= params[:entries] %> OFFSET 0;

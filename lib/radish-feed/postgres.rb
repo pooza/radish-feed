@@ -23,12 +23,14 @@ module RadishFeed
     end
 
     def create_sql(name, params = {})
-      params.map{ |k, v| params[k] = @db.escape_string(v)}
-      return ERB.new(@config['query'][name]).result
+      params.each do |k, v|
+        params[k] = @db.escape_string(v) if v.is_a?(String)
+      end
+      return ERB.new(@config['query'][name]).result(binding)
     end
 
     def execute(name, params = {})
-      return @db.exec(creeate_sql(name, params)).to_a
+      return @db.exec(create_sql(name, params)).to_a
     end
   end
 end

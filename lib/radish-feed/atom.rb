@@ -64,7 +64,7 @@ module RadishFeed
         maker.items.do_sort = true
         values = @params.clone
         values[:actor_type] = @actor_type
-        values[:tag] = @tag
+        values[:hashtag] = @hashtag
         db.execute(@query, values).each do |row|
           maker.items.new_item do |item|
             item.link = row['uri']
