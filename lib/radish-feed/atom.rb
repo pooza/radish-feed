@@ -11,6 +11,8 @@ module RadishFeed
     attr_reader :params
     attr_reader :tweetable
     attr_reader :title_length
+    attr_reader :actor_type
+    attr_accessor :hashtag
 
     def initialize
       super
@@ -24,10 +26,10 @@ module RadishFeed
 
     def params=(values)
       @params = values
-      entries = @params.pop.to_i
+      entries = @params[:entries].to_i
       entries = @config['local']['entries']['default'].to_i if entries.zero?
       entries = [entries, @config['local']['entries']['max'].to_i].min
-      @params.push(entries)
+      @params[:entries] = entries
     end
 
     def tweetable=(flag)
@@ -39,6 +41,10 @@ module RadishFeed
 
     def title_length=(length)
       @title_length = length.to_i unless length.nil?
+    end
+
+    def actor_type=(type)
+      @actor_type = (type || 'Person')
     end
 
     def to_s
@@ -56,7 +62,10 @@ module RadishFeed
       return RSS::Maker.make('atom') do |maker|
         update_channel(maker.channel)
         maker.items.do_sort = true
-        db.execute(@query, @params).each do |row|
+        values = @params.clone
+        values[:actor_type] = @actor_type
+        values[:tag] = @tag
+        db.execute(@query, values).each do |row|
           maker.items.new_item do |item|
             item.link = row['uri']
             item.title = TweetString.new(row['text'])

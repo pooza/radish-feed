@@ -27,16 +27,16 @@ module RadishFeed
       atom = Atom.new
       assert_equal(atom.params, [])
 
-      atom.params = [20]
-      assert_equal(atom.params[0], 20)
+      atom.params = {entries: 20}
+      assert_equal(atom.params[:entries], 20)
 
-      atom.params = ['pooza', '30']
-      assert_equal(atom.params[0], 'pooza')
-      assert_equal(atom.params[1], 30)
+      atom.params = {account: 'pooza', entries: 30}
+      assert_equal(atom.params[:account], 'pooza')
+      assert_equal(atom.params[:entries], 30)
 
-      atom.params = ['admin', '10000']
-      assert_equal(atom.params[0], 'admin')
-      assert_equal(atom.params[1], Config.instance['local']['entries']['max'])
+      atom.params = {account: 'admin', entries: 1000}
+      assert_equal(atom.params[:account], 'admin')
+      assert_equal(atom.params[:entries], Config.instance['local']['entries']['max'])
     end
 
     def test_title_length=
@@ -51,6 +51,17 @@ module RadishFeed
 
       atom.title_length = nil
       assert_equal(atom.title_length, 200)
+    end
+
+    def test_actor_type=
+      atom = Atom.new
+      assert_nil(atom.actor_type)
+
+      atom.actor_type = 'Service'
+      assert_equal(atom.actor_type, 'Service')
+
+      atom.actor_type = nil
+      assert_equal(atom.actor_type, 'Person')
     end
   end
 end

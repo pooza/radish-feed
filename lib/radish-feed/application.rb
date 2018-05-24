@@ -54,8 +54,10 @@ module RadishFeed
       @renderer.tweetable = true
       @renderer.tweetable = params[:tweetable]
       @renderer.title_length = params[:length]
+      @renderer.actor_type = params[:actor_type]
+      @renderer.hashtag = params[:hashtag]
       @renderer.query = 'account_timeline'
-      @renderer.params = [params[:account], params[:entries].to_i]
+      @renderer.params = {account: params[:account], entries: params[:entries]}
       return @renderer.to_s
     end
 
@@ -63,8 +65,10 @@ module RadishFeed
       @renderer = Atom.new
       @renderer.tweetable = params[:tweetable]
       @renderer.title_length = params[:length]
+      @renderer.actor_type = params[:actor_type]
+      @renderer.hashtag = params[:hashtag]
       @renderer.query = 'local_timeline'
-      @renderer.params = [params[:entries].to_i]
+      @renderer.params = {entries: params[:entries]}
       return @renderer.to_s
     end
 
@@ -88,7 +92,7 @@ module RadishFeed
     private
 
     def registered?(account)
-      return !Postgres.instance.execute('registered', [account]).empty?
+      return !Postgres.instance.execute('registered', {account: account}).empty?
     end
   end
 end

@@ -15,4 +15,3 @@ module RadishFeed
     end
   end
 end
-
