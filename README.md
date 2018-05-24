@@ -31,11 +31,11 @@ vi config/local.yaml
 以下、設定例。
 
 ```
-root_url: https://mstdn.example.com/ #インスタンスのルートURL
-tz_offset: 9                         #タイムゾーン
-entries:                             #フィードに出力するエントリー数
-  max: 200                           #  上限
-  default: 20                        #  未指定時デフォルト
+root_url: https://mstdn.example.com/
+tz_offset: 9
+entries:
+  max: 200
+  default: 20
 slack:
   hooks:
     - https://hooks.slack.com/services/xxxxx
@@ -43,9 +43,28 @@ slack:
     - https://mstdn.b-shock.org/webhook/v1.0/toot/xxxxx
 ```
 
-- 上限エントリー数は、用途やサーバのスペックに合わせて。
-- SlackのWebフックを指定すれば、実行中の例外がSlackに通知されるようになる。（省略可）  
-  DiscordのSlack互換Webフックでの動作も確認済み。
+以下、YPath表記。
+
+#### /root_url
+
+インスタンスのルートURL
+
+#### /tz_offset
+
+タイムゾーン。 `JST-9` なら9を指定。
+
+#### /entries/max
+
+上限エントリー数。用途やサーバのスペックに合わせて。
+
+#### /entries/default
+
+デフォルトエントリー数。
+
+#### /slack/hooks/*
+
+例外発生時の通知先。  
+Slackのwebhookと互換性のあるURLを列挙。（省略可）
 
 ### db.yamlを編集
 
@@ -213,6 +232,25 @@ https://mstdn.example.com/feed/v1.1/account/pooza?tweetable=0
 
 ```
 https://mstdn.example.com/feed/v1.1/account/pooza?length=100
+```
+
+### actor_type
+
+`Person` なら通常アカウント、 `Service` なら「これは BOT アカウントです」がチェックされた
+アカウントのみを対象とする。  
+インスタンスのMastodonのバージョンが2.4.0未満の場合は500エラーを返す。
+
+```
+https://mstdn.example.com/feed/v1.1/local?actor_type=Service
+```
+
+### hashtag
+
+抽出に使用するハッシュタグ。  
+以下の様に指定した場合は、 `#precure` タグが含まれるトゥートのみを抽出。
+
+```
+https://mstdn.example.com/feed/v1.1/local?hashtag=precure
 ```
 
 ## ■設定ファイルの検索順
