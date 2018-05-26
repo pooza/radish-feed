@@ -24,7 +24,7 @@ module RadishFeed
 
     def create_sql(name, params = {})
       params.each do |k, v|
-        params[k] = @db.escape_string(v) if v.is_a?(String)
+        params[k] = escape_string(v) if v.is_a?(String)
       end
       return ERB.new(@config['query'][name]).result(binding)
     end
