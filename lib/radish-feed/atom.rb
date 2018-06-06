@@ -16,8 +16,9 @@ module RadishFeed
 
     def initialize
       super
-      @params = []
+      @params = {}
       @tweetable = false
+      @actor_type = 'Person'
     end
 
     def type

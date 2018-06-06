@@ -17,7 +17,7 @@ module RadishFeed
         headers: {'Content-Type' => 'application/json'},
         ssl_ca_file: File.join(ROOT_DIR, 'cert/cacert.pem'),
       })
-      if message.class.is_a?(Exception)
+      if message.is_a?(Exception)
         @logger.error(message)
       else
         @logger.info(message)
