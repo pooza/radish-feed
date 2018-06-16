@@ -65,6 +65,7 @@ slack:
 
 例外発生時の通知先。  
 Slackのwebhookと互換性のあるURLを列挙。（省略可）
+拙作[tomato-toot](https://github.com/pooza/tomato-toot)のwebhookも利用可。
 
 ### db.yamlを編集
 
