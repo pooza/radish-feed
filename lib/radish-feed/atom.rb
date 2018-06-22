@@ -18,7 +18,6 @@ module RadishFeed
       super
       @params = {}
       @tweetable = false
-      @actor_type = 'Person'
     end
 
     def type
