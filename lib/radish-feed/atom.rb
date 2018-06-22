@@ -1,5 +1,6 @@
 require 'rss'
 require 'sanitize'
+require 'addressable/uri'
 require 'radish-feed/renderer'
 require 'radish-feed/config'
 require 'radish-feed/postgres'
@@ -77,16 +78,21 @@ module RadishFeed
     end
 
     def update_channel(channel)
-      channel.id = @config['local']['root_url']
+      uri = Addressable::URI.parse(root_url)
       channel.title = site['site_title']
       if (@query == 'account_timeline') && @params[:account]
-        channel.id = "#{channel.id}@#{@params[:account]}"
+        uri.path = "/@#{@params[:account]}"
         channel.title = "@#{@params[:account]} #{channel.title}"
       end
-      channel.link = channel.id
+      channel.id = uri.to_s
+      channel.link = uri.to_s
       channel.description = Sanitize.clean(site['site_description'])
       channel.author = site['site_contact_username']
       channel.date = Time.now
+    end
+
+    def root_url
+      return @config['local']['root_url'] || "https://#{Socket.gethostname}"
     end
 
     def tz_offset
