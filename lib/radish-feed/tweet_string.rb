@@ -22,7 +22,7 @@ module RadishFeed
       length ||= (@config['length']['tweet'] - @config['length']['uri'] - 1.0)
       links = {}
       text = clone
-      text.scan(%r{https?://[^\s]+}).each do |link|
+      text.scan(%r{https?://[^\s[:cntrl:]]+}).each do |link|
         pos = text.index(link)
         if (length - @config['length']['uri'] - 0.5) < pos
           text.ellipsize!(pos - 0.5)
