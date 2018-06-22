@@ -92,11 +92,13 @@ module RadishFeed
     end
 
     def root_url
-      return @config['local']['root_url'] || "https://#{Socket.gethostname}"
+      @config['local']['root_url'] ||= "https://#{Socket.gethostname}"
+      return @config['local']['root_url']
     end
 
     def tz_offset
-      return (@config['local']['tz_offset'] || 0) * 3600
+      @config['local']['tz_offset'] ||= Time.now.strftime('%z').to_i / 100
+      return @config['local']['tz_offset'] * 3600
     end
 
     def site
