@@ -1,4 +1,3 @@
-require 'uri'
 require 'zlib'
 require 'radish-feed/config'
 
@@ -23,7 +22,7 @@ module RadishFeed
       length ||= (@config['length']['tweet'] - @config['length']['uri'] - 1.0)
       links = {}
       text = clone
-      URI.extract(text, ['http', 'https']).each do |link|
+      source.scan(%r{https?://[^\s]+}).each do |link|
         pos = text.index(link)
         if (length - @config['length']['uri'] - 0.5) < pos
           text.ellipsize!(pos - 0.5)

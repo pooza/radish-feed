@@ -80,9 +80,9 @@ module RadishFeed
     def update_channel(channel)
       channel.id = @config['local']['root_url']
       channel.title = site['site_title']
-      if (@query == 'account_timeline') && @params.present?
-        channel.id += "@#{@params.first}"
-        channel.title = "@#{@params.first} #{channel.title}"
+      if (@query == 'account_timeline') && @params[:account]
+        channel.id = "#{channel.id}@#{@params[:account]}"
+        channel.title = "@#{@params[:account]} #{channel.title}"
       end
       channel.link = channel.id
       channel.description = Sanitize.clean(site['site_description'])
