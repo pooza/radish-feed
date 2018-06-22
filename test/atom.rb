@@ -25,7 +25,7 @@ module RadishFeed
 
     def test_params=
       atom = Atom.new
-      assert_equal(atom.params, [])
+      assert_equal(atom.params, {})
 
       atom.params = {entries: 20}
       assert_equal(atom.params[:entries], 20)
