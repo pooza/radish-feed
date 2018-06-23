@@ -1,4 +1,5 @@
 require 'rss'
+require 'socket'
 require 'sanitize'
 require 'addressable/uri'
 require 'radish-feed/renderer'
@@ -71,7 +72,7 @@ module RadishFeed
             item.link = row['uri']
             item.title = TweetString.new(row['text'])
             item.title.tweetablize!(@title_length) if @tweetable
-            item.date = Time.parse(row['created_at']) + tz_offset
+            item.date = Time.parse("#{row['created_at']} UTC").getlocal(tz)
           end
         end
       end
@@ -92,13 +93,12 @@ module RadishFeed
     end
 
     def root_url
-      @config['local']['root_url'] ||= "https://#{Socket.gethostname}"
-      return @config['local']['root_url']
+      return (@config['local']['root_url'] || "https://#{Socket.gethostname}")
     end
 
-    def tz_offset
-      @config['local']['tz_offset'] ||= Time.now.strftime('%z').to_i / 100
-      return @config['local']['tz_offset'] * 3600
+    def tz
+      return Time.now.strftime('%:z') unless @config['local']['tz_offset']
+      return '%+02d:00' % @config['local']['tz_offset'].to_i
     end
 
     def site
