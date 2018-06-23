@@ -93,8 +93,7 @@ module RadishFeed
     end
 
     def root_url
-      @config['local']['root_url'] ||= "https://#{Socket.gethostname}"
-      return @config['local']['root_url']
+      return (@config['local']['root_url'] || "https://#{Socket.gethostname}")
     end
 
     def tz
