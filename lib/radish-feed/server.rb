@@ -10,7 +10,7 @@ require 'radish-feed/package'
 require 'radish-feed/logger'
 
 module RadishFeed
-  class Application < Sinatra::Base
+  class Server < Sinatra::Base
     def initialize
       super
       @config = Config.instance
