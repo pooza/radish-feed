@@ -80,10 +80,11 @@ module RadishFeed
       return @renderer.to_s
     end
 
-    error do
+    error do |e|
       @renderer = XML.new
       @renderer.status = 500
-      @message[:response][:message] = env['sinatra.error'].message
+      @message[:response][:message] = "#{e.class.to_s}: #{e.message}"
+      @message[:backtrace] = e.backtrace[0..5]
       @renderer.message = @message
       Slack.all.map{ |h| h.say(@message)}
       return @renderer.to_s
