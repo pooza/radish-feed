@@ -10,7 +10,7 @@ require 'radish-feed/package'
 require 'radish-feed/logger'
 
 module RadishFeed
-  class Application < Sinatra::Base
+  class Server < Sinatra::Base
     def initialize
       super
       @config = Config.instance
@@ -29,7 +29,7 @@ module RadishFeed
     after do
       @message[:response][:status] ||= @renderer.status
       if @renderer.status < 400
-        @logger.info(@message)
+        @logger.info(@message.select{ |k, v| [:request, :response, :package].member?(k)})
       else
         @logger.error(@message)
       end
@@ -80,10 +80,11 @@ module RadishFeed
       return @renderer.to_s
     end
 
-    error do
+    error do |e|
       @renderer = XML.new
       @renderer.status = 500
-      @message[:response][:message] = env['sinatra.error'].message
+      @message[:response][:message] = "#{e.class.to_s}: #{e.message}"
+      @message[:backtrace] = e.backtrace[0..5]
       @renderer.message = @message
       Slack.all.map{ |h| h.say(@message)}
       return @renderer.to_s
