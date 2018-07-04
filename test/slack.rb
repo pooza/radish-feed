@@ -1,4 +1,5 @@
 require 'radish-feed/slack'
+require 'radish-feed/package'
 
 module RadishFeed
   class SlackTest < Test::Unit::TestCase
@@ -10,7 +11,7 @@ module RadishFeed
 
     def test_say
       Slack.all do |slack|
-        assert_true(slack.say({text: 'hoge'}).response.is_a?(Net::HTTPOK))
+        assert_true(slack.say({text: Package.full_name}).response.is_a?(Net::HTTPOK))
       end
     end
   end
