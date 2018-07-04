@@ -39,7 +39,7 @@ entries:
 slack:
   hooks:
     - https://hooks.slack.com/services/xxxxx
-    - https://discordapp.com/api/webhooks/xxxxx
+    - https://discordapp.com/api/webhooks/xxxxx/slack
     - https://mstdn.b-shock.org/webhook/v1.0/toot/xxxxx
 ```
 
@@ -48,7 +48,8 @@ slack:
 #### /root_url
 
 チャンネル情報に使用される、インスタンスのルートURL。  
-省略した場合は設置環境から自動生成するが、正確でない場合が多いので、本番環境では非推奨。
+省略した場合は設置環境から自動生成するが、正確でない場合が多いので、  
+本番環境では明示的な指定を推奨。
 
 #### /tz_offset
 
