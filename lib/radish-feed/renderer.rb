@@ -1,4 +1,5 @@
 require 'radish-feed/config'
+require 'radish-feed/logger'
 
 module RadishFeed
   class Renderer
@@ -7,6 +8,7 @@ module RadishFeed
     def initialize
       @status = 200
       @config = Config.instance
+      @logger = Logger.new
     end
 
     def type
