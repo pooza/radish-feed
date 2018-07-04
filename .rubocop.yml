@@ -53,6 +53,10 @@ Style/TrailingCommaInHashLiteral:
 Style/WordArray:
   EnforcedStyle: brackets
 
+Style/IdenticalConditionalBranches:
+  Exclude:
+    - test/*
+
 Metrics/LineLength:
   Max: 100
   Exclude:
@@ -71,6 +75,9 @@ Lint/AssignmentInCondition:
   Enabled: false
 
 Lint/UnusedBlockArgument:
+  Enabled: false
+
+Lint/UnusedMethodArgument:
   Enabled: false
 
 Style/YodaCondition:
