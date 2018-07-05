@@ -39,7 +39,7 @@ entries:
 slack:
   hooks:
     - https://hooks.slack.com/services/xxxxx
-    - https://discordapp.com/api/webhooks/xxxxx
+    - https://discordapp.com/api/webhooks/xxxxx/slack
     - https://mstdn.b-shock.org/webhook/v1.0/toot/xxxxx
 ```
 
@@ -48,7 +48,8 @@ slack:
 #### /root_url
 
 チャンネル情報に使用される、インスタンスのルートURL。  
-省略した場合は設置環境から自動生成するが、正確でない場合が多いので、本番環境では非推奨。
+省略した場合は設置環境から自動生成するが、正確でない場合が多いので、  
+本番環境では明示的な指定を推奨。
 
 #### /tz_offset
 
@@ -267,3 +268,12 @@ local.yamlやdb.yamlは、上記設置例ではconfigディレクトリ内に置
 - /etc/radish-feed/*.yml
 - __ROOT_DIR__/config/*.yaml
 - __ROOT_DIR__/config/*.yml
+
+## ■宣伝
+
+- 中の人は普段、個人インスタンス「[美食丼](https://mstdn.b-shock.org/)」か、
+プリキュア専用インスタンス「[キュアスタ！](https://precure.ml/)」に居ます。
+プリキュアに興味ある人は、是非キュアスタ！を覗いてね！
+
+- このradish-feed、以下の拙作Twitter BOTのパーツとしても使われています。
+  - [ぷーざの佳那子さんネタボット](https://twitter.com/pooza_kanakobot)
