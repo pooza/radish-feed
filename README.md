@@ -268,3 +268,12 @@ local.yamlやdb.yamlは、上記設置例ではconfigディレクトリ内に置
 - /etc/radish-feed/*.yml
 - __ROOT_DIR__/config/*.yaml
 - __ROOT_DIR__/config/*.yml
+
+## ■宣伝
+
+- 中の人は普段、個人インスタンス「[美食丼](https://mstdn.b-shock.org/)」か、
+プリキュア専用インスタンス「[キュアスタ！](https://precure.ml/)」に居ます。
+プリキュアに興味ある人は、是非キュアスタ！を覗いてね！
+
+- このradish-feed、以下の拙作Twitter BOTのパーツとしても使われています。
+  - [ぷーざの佳那子さんネタボット](https://twitter.com/pooza_kanakobot)
