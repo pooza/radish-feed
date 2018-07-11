@@ -70,7 +70,11 @@ module RadishFeed
         db.execute(@query, values).each do |row|
           maker.items.new_item do |item|
             item.link = row['uri']
-            item.title = TweetString.new(row['text'])
+            if row['spoiler_text'].present?
+              item.title = TweetString.new('[閲覧注意]' + row['spoiler_text'])
+            else
+              item.title = TweetString.new(row['text'])
+            end
             item.title.tweetablize!(@title_length) if @tweetable
             item.date = Time.parse("#{row['created_at']} UTC").getlocal(tz)
           end

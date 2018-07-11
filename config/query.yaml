@@ -16,7 +16,8 @@ account_timeline: >-
   SELECT
   toots.uri,
   toots.created_at,
-  toots.text
+  toots.text,
+  toots.spoiler_text
   FROM statuses AS toots
   INNER JOIN accounts ON toots.account_id=accounts.id
   WHERE (accounts.domain IS NULL)
@@ -40,7 +41,8 @@ local_timeline: >-
   SELECT
   toots.uri,
   toots.created_at,
-  '[@' || accounts.username || '] ' || toots.text AS text
+  '[@' || accounts.username || '] ' || toots.text AS text,
+  toots.spoiler_text
   FROM statuses AS toots
   INNER JOIN accounts ON toots.account_id=accounts.id
   WHERE (accounts.domain IS NULL)
