@@ -70,7 +70,7 @@ module RadishFeed
         db.execute(@query, values).each do |row|
           maker.items.new_item do |item|
             item.link = row['uri']
-            if row['spoiler_text'].present?
+            if row['spoiler_text'].present? && !@config['local']['ignore_cw']
               item.title = TweetString.new('[閲覧注意]' + row['spoiler_text'])
             else
               item.title = TweetString.new(row['text'])
