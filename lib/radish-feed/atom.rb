@@ -20,6 +20,7 @@ module RadishFeed
       super
       @params = {}
       @tweetable = false
+      @ignore_cw = false
     end
 
     def type
@@ -41,12 +42,23 @@ module RadishFeed
       @tweetable = !!flag
     end
 
+    def ignore_cw=(flag)
+      return if flag.nil?
+      @ignore_cw = !flag.to_i.zero?
+    rescue
+      @ignore_cw = !!flag
+    end
+
     def title_length=(length)
       @title_length = length.to_i unless length.nil?
     end
 
     def actor_type=(type)
       @actor_type = (type || 'Person')
+    end
+
+    def ignore_cw
+      return @config['local']['ignore_cw'] || @ignore_cw
     end
 
     def to_s
@@ -70,7 +82,7 @@ module RadishFeed
         db.execute(@query, values).each do |row|
           maker.items.new_item do |item|
             item.link = row['uri']
-            if row['spoiler_text'].present? && !@config['local']['ignore_cw']
+            if row['spoiler_text'].present? && !ignore_cw
               item.title = TweetString.new('[閲覧注意]' + row['spoiler_text'])
             else
               item.title = TweetString.new(row['text'])
