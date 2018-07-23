@@ -72,8 +72,8 @@ Slackのwebhookと互換性のあるURLを列挙。（省略可）
 
 #### /ignore_cw
 
-`true` を指定すると、あえてCWを隠さない動作に。  
-`false` の場合は指定不要。
+`true` を指定すると、あえてCWを隠さない動作に。 `false` の場合は指定不要。  
+URLからの指定が可能となったので（`?ignore_cw=1` 等）、この設定項目は非推奨。（廃止予定）
 
 ### db.yamlを編集
 
@@ -260,6 +260,17 @@ https://mstdn.example.com/feed/v1.1/local?actor_type=Service
 
 ```
 https://mstdn.example.com/feed/v1.1/local?hashtag=precure
+```
+
+### ignore_cw
+
+トゥートがCWである場合に警告文を出力する場合は0。（デフォルト）
+CW指定を無視する場合はそれ以外を指定。
+
+以下のように指定すれば、トゥートがCWであるかに関わらず常に本文を出力する。
+
+```
+https://mstdn.example.com/feed/v1.1/local?ignore_cw=1
 ```
 
 ## ■設定ファイルの検索順
