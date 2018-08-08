@@ -110,7 +110,7 @@ module RadishFeed
         title = TweetString.new(row['text'])
         title = TweetString.new('(空欄)') unless title.present?
       end
-      title = "[#{row['username']}] #{title}" if row['username']
+      title = "[@#{row['username']}] #{title}" if row['username']
       title.tweetablize!(@title_length) if @tweetable
       return title
     end
