@@ -15,6 +15,7 @@ module RadishFeed
     attr_reader :title_length
     attr_reader :actor_type
     attr_reader :attachments
+    attr_reader :visibility
     attr_accessor :hashtag
 
     def initialize
@@ -23,6 +24,7 @@ module RadishFeed
       @tweetable = false
       @ignore_cw = false
       @attachments = false
+      @visibility = 'public'
     end
 
     def type
@@ -66,6 +68,10 @@ module RadishFeed
       @actor_type = (type || 'Person')
     end
 
+    def visibility=(type)
+      @visibility = (type || 'public')
+    end
+
     def ignore_cw
       return @config['local']['ignore_cw'] || @ignore_cw
     end
@@ -89,6 +95,7 @@ module RadishFeed
         values[:actor_type] = @actor_type
         values[:hashtag] = @hashtag
         values[:attachments] = @attachments
+        values[:visibility] = @visibility
         db.execute(@query, values).each do |row|
           maker.items.new_item do |item|
             item.link = row['uri']
