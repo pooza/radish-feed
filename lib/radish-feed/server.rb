@@ -57,6 +57,7 @@ module RadishFeed
       @renderer.actor_type = params[:actor_type]
       @renderer.hashtag = params[:hashtag]
       @renderer.ignore_cw = params[:ignore_cw]
+      @renderer.attachments = params[:attachments]
       @renderer.query = 'account_timeline'
       @renderer.params = {account: params[:account], entries: params[:entries]}
       return @renderer.to_s
@@ -69,6 +70,7 @@ module RadishFeed
       @renderer.actor_type = params[:actor_type]
       @renderer.hashtag = params[:hashtag]
       @renderer.ignore_cw = params[:ignore_cw]
+      @renderer.attachments = params[:attachments]
       @renderer.query = 'local_timeline'
       @renderer.params = {entries: params[:entries]}
       return @renderer.to_s

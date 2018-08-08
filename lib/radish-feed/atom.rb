@@ -49,6 +49,13 @@ module RadishFeed
       @ignore_cw = !!flag
     end
 
+    def attachments=(flag)
+      return if flag.nil?
+      @attachments = !flag.to_i.zero?
+    rescue
+      @attachments = !!flag
+    end
+
     def title_length=(length)
       @title_length = length.to_i unless length.nil?
     end
@@ -79,6 +86,7 @@ module RadishFeed
         values = @params.clone
         values[:actor_type] = @actor_type
         values[:hashtag] = @hashtag
+        values[:attachments] = @attachments
         db.execute(@query, values).each do |row|
           maker.items.new_item do |item|
             item.link = row['uri']

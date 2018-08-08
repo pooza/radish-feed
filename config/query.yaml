@@ -35,6 +35,9 @@ account_timeline: >-
   <% if params[:hashtag] %>
   AND (toots.text ~ '#<%= params[:hashtag] %>')
   <% end %>
+  <% if params[:attachments] %>
+  AND (attachments.id IS NOT NULL)
+  <% end %>
   GROUP BY
   toots.uri,
   toots.created_at,
@@ -62,6 +65,9 @@ local_timeline: >-
   <% end %>
   <% if params[:hashtag] %>
   AND (toots.text ~ '#<%= params[:hashtag] %>')
+  <% end %>
+  <% if params[:attachments] %>
+  AND (attachments.id IS NOT NULL)
   <% end %>
   GROUP BY
   toots.uri,
