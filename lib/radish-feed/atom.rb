@@ -14,6 +14,7 @@ module RadishFeed
     attr_reader :tweetable
     attr_reader :title_length
     attr_reader :actor_type
+    attr_reader :attachments
     attr_accessor :hashtag
 
     def initialize
@@ -21,6 +22,7 @@ module RadishFeed
       @params = {}
       @tweetable = false
       @ignore_cw = false
+      @attachments = false
     end
 
     def type

@@ -273,6 +273,15 @@ CW指定を無視する場合はそれ以外を指定。
 https://mstdn.example.com/feed/v1.1/local?ignore_cw=1
 ```
 
+### attachments
+
+添付メディア（画像/動画）の有無に関わらず対象にする場合は0。（デフォルト）
+添付メディアのあるものだけを対象にする場合は、以下の例のように1を指定。
+
+```
+https://mstdn.example.com/feed/v1.1/local?attachments=1
+```
+
 ## ■設定ファイルの検索順
 
 local.yamlやdb.yamlは、上記設置例ではconfigディレクトリ内に置いているが、
