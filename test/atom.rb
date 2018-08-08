@@ -61,7 +61,7 @@ module RadishFeed
       assert_equal(atom.actor_type, 'Service')
 
       atom.actor_type = nil
-      assert_equal(atom.actor_type, 'Person')
+      assert_equal(atom.actor_type, 'Service')
     end
 
     def test_ignore_cw=

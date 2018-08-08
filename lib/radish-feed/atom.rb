@@ -66,7 +66,7 @@ module RadishFeed
     end
 
     def actor_type=(type)
-      @actor_type = (type || 'Person')
+      @actor_type = type if type.present?
     end
 
     def visibility=(type)
