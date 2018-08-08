@@ -25,7 +25,6 @@ account_timeline: >-
   AND (accounts.locked='f')
   AND (accounts.username='<%= params[:account] %>')
   AND (toots.visibility=0)
-  AND (toots.text<>'')
   AND (toots.uri IS NOT NULL)
   AND (toots.text !~ '@[_a-zA-Z0-9]+(@[-.a-z0-9]+)?[ \n]')
   <% if params[:actor_type] == 'Service' %>
@@ -55,7 +54,6 @@ local_timeline: >-
   WHERE (accounts.domain IS NULL)
   AND (accounts.locked='f')
   AND (toots.visibility=0)
-  AND (toots.text<>'')
   AND (toots.uri IS NOT NULL)
   <% if params[:actor_type] == 'Service' %>
   AND (accounts.actor_type='Service')
