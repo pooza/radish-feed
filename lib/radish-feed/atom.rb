@@ -14,6 +14,9 @@ module RadishFeed
     attr_reader :tweetable
     attr_reader :title_length
     attr_reader :actor_type
+    attr_reader :attachments
+    attr_reader :visibility
+    attr_reader :ignore_cw
     attr_accessor :hashtag
 
     def initialize
@@ -21,6 +24,8 @@ module RadishFeed
       @params = {}
       @tweetable = false
       @ignore_cw = false
+      @attachments = false
+      @visibility = 'public'
     end
 
     def type
@@ -49,16 +54,23 @@ module RadishFeed
       @ignore_cw = !!flag
     end
 
+    def attachments=(flag)
+      return if flag.nil?
+      @attachments = !flag.to_i.zero?
+    rescue
+      @attachments = !!flag
+    end
+
     def title_length=(length)
       @title_length = length.to_i unless length.nil?
     end
 
     def actor_type=(type)
-      @actor_type = (type || 'Person')
+      @actor_type = type if type.present?
     end
 
-    def ignore_cw
-      return @config['local']['ignore_cw'] || @ignore_cw
+    def visibility=(type)
+      @visibility = (type || 'public')
     end
 
     def to_s
@@ -79,19 +91,28 @@ module RadishFeed
         values = @params.clone
         values[:actor_type] = @actor_type
         values[:hashtag] = @hashtag
+        values[:attachments] = @attachments
+        values[:visibility] = @visibility
         db.execute(@query, values).each do |row|
           maker.items.new_item do |item|
             item.link = row['uri']
-            if row['spoiler_text'].present? && !ignore_cw
-              item.title = TweetString.new('[閲覧注意]' + row['spoiler_text'])
-            else
-              item.title = TweetString.new(row['text'])
-            end
-            item.title.tweetablize!(@title_length) if @tweetable
+            item.title = create_title(row)
             item.date = Time.parse("#{row['created_at']} UTC").getlocal(tz)
           end
         end
       end
+    end
+
+    def create_title(row)
+      if row['spoiler_text'].present? && !ignore_cw
+        title = TweetString.new('[閲覧注意]' + row['spoiler_text'])
+      else
+        title = TweetString.new(row['text'])
+        title = TweetString.new('(空欄)') unless title.present?
+      end
+      title = "[#{row['username']}] #{title}" if row['username']
+      title.tweetablize!(@title_length) if @tweetable
+      return title
     end
 
     def update_channel(channel)

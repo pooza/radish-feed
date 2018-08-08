@@ -26,7 +26,7 @@ module RadishFeed
       params.each do |k, v|
         params[k] = escape_string(v) if v.is_a?(String)
       end
-      return ERB.new(@config['query'][name]).result(binding)
+      return ERB.new(@config['query'][name]).result(binding).gsub(/\s+/, ' ')
     end
 
     def execute(name, params = {})

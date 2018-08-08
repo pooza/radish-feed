@@ -61,7 +61,50 @@ module RadishFeed
       assert_equal(atom.actor_type, 'Service')
 
       atom.actor_type = nil
+      assert_equal(atom.actor_type, 'Service')
+
+      atom.actor_type = 'Person'
       assert_equal(atom.actor_type, 'Person')
+    end
+
+    def test_ignore_cw=
+      atom = Atom.new
+      assert_equal(atom.ignore_cw, false)
+
+      atom.ignore_cw = true
+      assert_equal(atom.ignore_cw, true)
+
+      atom.ignore_cw = nil
+      assert_equal(atom.ignore_cw, true)
+
+      atom.ignore_cw = 0
+      assert_equal(atom.ignore_cw, false)
+
+      atom.ignore_cw = 1
+      assert_equal(atom.ignore_cw, true)
+
+      atom.ignore_cw = '0'
+      assert_equal(atom.ignore_cw, false)
+    end
+
+    def test_attachments=
+      atom = Atom.new
+      assert_equal(atom.attachments, false)
+
+      atom.attachments = true
+      assert_equal(atom.attachments, true)
+
+      atom.attachments = nil
+      assert_equal(atom.attachments, true)
+
+      atom.attachments = 0
+      assert_equal(atom.attachments, false)
+
+      atom.attachments = 1
+      assert_equal(atom.attachments, true)
+
+      atom.attachments = '0'
+      assert_equal(atom.attachments, false)
     end
   end
 end

@@ -70,11 +70,6 @@ slack:
 Slackのwebhookと互換性のあるURLを列挙。（省略可）
 拙作[tomato-toot](https://github.com/pooza/tomato-toot)のwebhookも利用可。
 
-#### /ignore_cw
-
-`true` を指定すると、あえてCWを隠さない動作に。 `false` の場合は指定不要。  
-URLからの指定が可能となったので（`?ignore_cw=1` 等）、この設定項目は非推奨。（廃止予定）
-
 ### db.yamlを編集
 
 ```
@@ -264,13 +259,32 @@ https://mstdn.example.com/feed/v1.1/local?hashtag=precure
 
 ### ignore_cw
 
-トゥートがCWである場合に警告文を出力する場合は0。（デフォルト）
+トゥートがCWである場合に警告文を出力する場合は0。（デフォルト）  
 CW指定を無視する場合はそれ以外を指定。
 
 以下のように指定すれば、トゥートがCWであるかに関わらず常に本文を出力する。
 
 ```
 https://mstdn.example.com/feed/v1.1/local?ignore_cw=1
+```
+
+### visibility
+
+投稿のプライバシー「未収載」以上を対象に含める場合は、以下の例のように `unlisted` を指定。  
+「公開」のみ対象とする場合は `public` 等、 `unlisted` 以外を指定。（デフォルト）  
+`private` 等の指定を行っても無効、実際には `public` と同じ扱いになるので注意！
+
+```
+https://mstdn.example.com/feed/v1.1/local?visibility=unlisted
+```
+
+### attachments
+
+添付メディア（画像/動画）の有無に関わらず対象にする場合は0。（デフォルト）  
+添付メディアのあるものだけを対象にする場合は、以下の例のように1を指定。
+
+```
+https://mstdn.example.com/feed/v1.1/local?attachments=1
 ```
 
 ## ■設定ファイルの検索順

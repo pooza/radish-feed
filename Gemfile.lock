@@ -1,7 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (5.2.0)
+    activesupport (5.2.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 0.7, < 2)
       minitest (~> 5.1)
@@ -14,7 +14,7 @@ GEM
     eventmachine (1.2.7)
     httparty (0.16.2)
       multi_xml (>= 0.5.2)
-    i18n (1.0.1)
+    i18n (1.1.0)
       concurrent-ruby (~> 1.0)
     mini_portile2 (2.3.0)
     minitest (5.11.3)
@@ -31,7 +31,7 @@ GEM
     rack-protection (2.0.3)
       rack
     rake (12.3.1)
-    sanitize (4.6.5)
+    sanitize (4.6.6)
       crass (~> 1.0.2)
       nokogiri (>= 1.4.4)
       nokogumbo (~> 1.4)
@@ -68,4 +68,4 @@ DEPENDENCIES
   thin
 
 BUNDLED WITH
-   1.16.2
+   1.16.3

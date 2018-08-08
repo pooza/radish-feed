@@ -20,11 +20,15 @@ account_timeline: >-
   toots.spoiler_text
   FROM statuses AS toots
   INNER JOIN accounts ON toots.account_id=accounts.id
+  LEFT JOIN media_attachments AS attachments ON toots.id=attachments.status_id
   WHERE (accounts.domain IS NULL)
   AND (accounts.locked='f')
   AND (accounts.username='<%= params[:account] %>')
+  <% if params[:visibility] == 'unlisted' %>
+  AND (toots.visibility<=1)
+  <% else %>
   AND (toots.visibility=0)
-  AND (toots.text<>'')
+  <% end %>
   AND (toots.uri IS NOT NULL)
   AND (toots.text !~ '@[_a-zA-Z0-9]+(@[-.a-z0-9]+)?[ \n]')
   <% if params[:actor_type] == 'Service' %>
@@ -35,20 +39,33 @@ account_timeline: >-
   <% if params[:hashtag] %>
   AND (toots.text ~ '#<%= params[:hashtag] %>')
   <% end %>
+  <% if params[:attachments] %>
+  AND (attachments.id IS NOT NULL)
+  <% end %>
+  GROUP BY
+  toots.uri,
+  toots.created_at,
+  toots.text,
+  toots.spoiler_text
   ORDER BY toots.created_at DESC
   LIMIT <%= params[:entries] %> OFFSET 0;
 local_timeline: >-
   SELECT
   toots.uri,
   toots.created_at,
-  '[@' || accounts.username || '] ' || toots.text AS text,
+  accounts.username,
+  toots.text,
   toots.spoiler_text
   FROM statuses AS toots
   INNER JOIN accounts ON toots.account_id=accounts.id
+  LEFT JOIN media_attachments AS attachments ON toots.id=attachments.status_id
   WHERE (accounts.domain IS NULL)
   AND (accounts.locked='f')
+  <% if params[:visibility] == 'unlisted' %>
+  AND (toots.visibility<=1)
+  <% else %>
   AND (toots.visibility=0)
-  AND (toots.text<>'')
+  <% end %>
   AND (toots.uri IS NOT NULL)
   <% if params[:actor_type] == 'Service' %>
   AND (accounts.actor_type='Service')
@@ -58,5 +75,14 @@ local_timeline: >-
   <% if params[:hashtag] %>
   AND (toots.text ~ '#<%= params[:hashtag] %>')
   <% end %>
+  <% if params[:attachments] %>
+  AND (attachments.id IS NOT NULL)
+  <% end %>
+  GROUP BY
+  toots.uri,
+  toots.created_at,
+  accounts.username,
+  toots.text,
+  toots.spoiler_text
   ORDER BY toots.created_at DESC
   LIMIT <%= params[:entries] %> OFFSET 0;
