@@ -70,11 +70,6 @@ slack:
 Slackのwebhookと互換性のあるURLを列挙。（省略可）
 拙作[tomato-toot](https://github.com/pooza/tomato-toot)のwebhookも利用可。
 
-#### /ignore_cw
-
-`true` を指定すると、あえてCWを隠さない動作に。 `false` の場合は指定不要。  
-URLからの指定が可能となったので（`?ignore_cw=1` 等）、この設定項目は非推奨。（廃止予定）
-
 ### db.yamlを編集
 
 ```

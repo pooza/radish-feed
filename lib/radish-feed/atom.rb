@@ -16,6 +16,7 @@ module RadishFeed
     attr_reader :actor_type
     attr_reader :attachments
     attr_reader :visibility
+    attr_reader :ignore_cw
     attr_accessor :hashtag
 
     def initialize
@@ -70,10 +71,6 @@ module RadishFeed
 
     def visibility=(type)
       @visibility = (type || 'public')
-    end
-
-    def ignore_cw
-      return @config['local']['ignore_cw'] || @ignore_cw
     end
 
     def to_s
