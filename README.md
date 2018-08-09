@@ -229,7 +229,7 @@ https://mstdn.example.com/feed/v1.1/account/pooza?tweetable=0
 ### length
 
 上記のtweetableが有効である場合に、本文の長さを指定。  
-デフォルトは114、ツイート本文の末尾に短縮URLがひとつ入る想定の長さ。
+デフォルトは114、ツイート本文の末尾に短縮URLがひとつ入る想定の長さ。  
 また、半角文字はTwitterの仕様に従って0.5文字扱いとなる。
 
 以下の様に指定すれば、本文の長さが100文字に。
@@ -272,7 +272,7 @@ https://mstdn.example.com/feed/v1.1/local?ignore_cw=1
 
 投稿のプライバシー「未収載」以上を対象に含める場合は、以下の例のように `unlisted` を指定。  
 「公開」のみ対象とする場合は `public` 等、 `unlisted` 以外を指定。（デフォルト）  
-`private` 等の指定を行っても無効、実際には `public` と同じ扱いになるので注意！
+`private` 等の指定を行っても、実際には `public` と同じ扱いになるので注意！
 
 ```
 https://mstdn.example.com/feed/v1.1/local?visibility=unlisted

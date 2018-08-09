@@ -67,6 +67,17 @@ module RadishFeed
       assert_equal(atom.actor_type, 'Person')
     end
 
+    def visibility=
+      atom = Atom.new
+      assert_equa.(atom.visibility, 'public')
+
+      atom.visibility = 'unlisted'
+      assert_equa.(atom.visibility, 'unlisted')
+
+      atom.visibility = 'private'
+      assert_equa.(atom.visibility, 'public')
+    end
+
     def test_ignore_cw=
       atom = Atom.new
       assert_equal(atom.ignore_cw, false)
