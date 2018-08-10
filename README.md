@@ -1,6 +1,6 @@
 # radish-feed
 
-MastodonトゥートのAtomフィードを出力。
+MastodonトゥートのAtomフィードを出力。Mastodon→Twitterの同期等に。
 
 ## ■設置の手順
 
@@ -66,8 +66,7 @@ slack:
 
 #### /slack/hooks/*
 
-例外発生時の通知先。  
-Slackのwebhookと互換性のあるURLを列挙。（省略可）
+例外発生時の通知先。Slackのwebhookと互換性のあるURLを列挙。（省略可）  
 拙作[tomato-toot](https://github.com/pooza/tomato-toot)のwebhookも利用可。
 
 ### db.yamlを編集
@@ -147,16 +146,16 @@ https://mstdn.example.com/feed/v1.1/account/pooza
 ```
 
 この例では、local.yamlで設定したエントリー数（未指定時デフォルト）が使用される。  
-もしpoozaが実在しないアカウント（又は鍵アカウント）である場合は、エラーのXML文書（ステータス404）が
-返却される。  
+もしpoozaが実在しないアカウント（又は鍵アカウント）である場合は、エラーの
+XML文書（ステータス404）を返す。  
 また、出力されるフィードは、
 
 - ブースト
-- メンション（@）
-- 投稿のプライバシーが「公開」以外
+- `@` を含む（メンション等）
+- 投稿のプライバシーが指定より低い（デフォルトでは「未収載」以下）
 
 であるトゥートを含まない。  
-tweetable=1&length=114がデフォルト。（後述）
+`tweetable=1&length=114&visibility=public` がデフォルト。（後述）
 
 ### GET /feed/v1.1/local
 
@@ -164,17 +163,13 @@ tweetable=1&length=114がデフォルト。（後述）
 出力されるフィードは、
 
 - ブースト
-- 投稿のプライバシーが「公開」以外
 - 鍵アカウントからのもの
+- 投稿のプライバシーが指定より低い（デフォルトでは「未収載」以下）
 
 であるトゥートを含まない。  
-個人のタイムラインと異なり、メンションも含むことに注意。
+個人のタイムラインと異なり、 `@` を含むトゥート（メンション等）は含むことに注意。
 
-この抽出条件は、本来のローカルタイムラインと異なるかもしれない。  
-ローカルタイムラインと同じものを出力することを優先したいので、予告なく仕様変更する
-可能性がある。あしからず。
-
-tweetable=0がデフォルト。（後述）
+`tweetable=0&visibility=public` がデフォルト。（後述）
 
 ### GET /about
 
@@ -240,9 +235,8 @@ https://mstdn.example.com/feed/v1.1/account/pooza?length=100
 
 ### actor_type
 
-`Person` なら通常アカウント、 `Service` なら「これは BOT アカウントです」がチェックされた
-アカウントのみを対象とする。  
-インスタンスのMastodonのバージョンが2.4.0未満の場合は500エラーを返す。
+`Person` なら通常アカウント、 `Service` なら「これは BOT アカウントです」が
+チェックされたアカウントのみを対象とする。
 
 ```
 https://mstdn.example.com/feed/v1.1/local?actor_type=Service
@@ -262,7 +256,7 @@ https://mstdn.example.com/feed/v1.1/local?hashtag=precure
 トゥートがCWである場合に警告文を出力する場合は0。（デフォルト）  
 CW指定を無視する場合はそれ以外を指定。
 
-以下のように指定すれば、トゥートがCWであるかに関わらず常に本文を出力する。
+例えば以下のように指定すれば、トゥートがCWであるかに関わらず常に本文を出力する。
 
 ```
 https://mstdn.example.com/feed/v1.1/local?ignore_cw=1
@@ -271,12 +265,14 @@ https://mstdn.example.com/feed/v1.1/local?ignore_cw=1
 ### visibility
 
 投稿のプライバシー「未収載」以上を対象に含める場合は、以下の例のように `unlisted` を指定。  
-「公開」のみ対象とする場合は `public` 等、 `unlisted` 以外を指定。（デフォルト）  
-`private` 等の指定を行っても、実際には `public` と同じ扱いになるので注意！
+「公開」のみ対象とする場合は `public` 等、 `unlisted` 以外を指定。（デフォルト）
 
 ```
 https://mstdn.example.com/feed/v1.1/local?visibility=unlisted
 ```
+
+投稿のプライバシーが「未収載」より低いトゥートはそもそも公開すべきではない為、
+`private` 等の指定を行っても無効。実際には `public` と同じ扱いになるので注意！
 
 ### attachments
 
