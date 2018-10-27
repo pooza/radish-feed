@@ -5,6 +5,7 @@ require 'addressable/uri'
 require 'radish-feed/renderer'
 require 'radish-feed/config'
 require 'radish-feed/postgres'
+require 'radish-feed/package'
 require 'radish-feed/tweet_string'
 
 module RadishFeed
@@ -127,6 +128,7 @@ module RadishFeed
       channel.description = Sanitize.clean(site['site_description'])
       channel.author = site['site_contact_username']
       channel.date = Time.now
+      channel.generator = Package.user_agent
     end
 
     def root_url
