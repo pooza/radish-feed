@@ -9,7 +9,7 @@ require 'radish-feed/package'
 require 'radish-feed/tweet_string'
 
 module RadishFeed
-  class Atom < Renderer
+  class AtomRenderer < Renderer
     attr_accessor :query
     attr_reader :params
     attr_reader :tweetable

@@ -2,7 +2,7 @@ require 'rexml/document'
 require 'radish-feed/renderer'
 
 module RadishFeed
-  class XML < Renderer
+  class XMLRenderer < Renderer
     attr_accessor :message
 
     def to_s

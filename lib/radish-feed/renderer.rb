@@ -1,5 +1,6 @@
 require 'radish-feed/config'
 require 'radish-feed/logger'
+require 'radish-feed/error/imprement'
 
 module RadishFeed
   class Renderer
@@ -16,7 +17,7 @@ module RadishFeed
     end
 
     def to_s
-      raise 'to_sが未定義です。'
+      raise ImprementError, "#{__method__}が未定義です。"
     end
   end
 end

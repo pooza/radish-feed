@@ -4,8 +4,8 @@ require 'active_support/core_ext'
 require 'radish-feed/config'
 require 'radish-feed/slack'
 require 'radish-feed/postgres'
-require 'radish-feed/atom'
-require 'radish-feed/xml'
+require 'radish-feed/renderer/atom'
+require 'radish-feed/renderer/xml'
 require 'radish-feed/package'
 require 'radish-feed/logger'
 
@@ -23,13 +23,13 @@ module RadishFeed
 
     before do
       @message = {request: {path: request.path, params: params}, response: {}}
-      @renderer = XML.new
+      @renderer = XMLRenderer.new
     end
 
     after do
       @message[:response][:status] ||= @renderer.status
       if @renderer.status < 400
-        @logger.info(@message.select{ |k, v| [:request, :response, :package].member?(k)})
+        @logger.info(@message)
       else
         @logger.error(@message)
       end
@@ -50,7 +50,7 @@ module RadishFeed
         @renderer.message = @message
         return @renderer.to_s
       end
-      @renderer = Atom.new
+      @renderer = AtomRenderer.new
       @renderer.tweetable = true
       @renderer.tweetable = params[:tweetable]
       @renderer.title_length = params[:length]
@@ -65,7 +65,7 @@ module RadishFeed
     end
 
     get '/feed/v1.1/local' do
-      @renderer = Atom.new
+      @renderer = AtomRenderer.new
       @renderer.tweetable = params[:tweetable]
       @renderer.title_length = params[:length]
       @renderer.actor_type = params[:actor_type]
@@ -79,7 +79,7 @@ module RadishFeed
     end
 
     not_found do
-      @renderer = XML.new
+      @renderer = XMLRenderer.new
       @renderer.status = 404
       @message[:response][:message] = "Resource #{@message[:request][:path]} not found."
       @renderer.message = @message
@@ -87,8 +87,12 @@ module RadishFeed
     end
 
     error do |e|
-      @renderer = XML.new
-      @renderer.status = 500
+      @renderer = XMLRenderer.new
+      begin
+        @renderer.status = e.status
+      rescue ::NoMethodError
+        @renderer.status = 500
+      end
       @message[:response][:message] = "#{e.class}: #{e.message}"
       @message[:backtrace] = e.backtrace[0..5]
       @renderer.message = @message
