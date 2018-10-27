@@ -31,7 +31,7 @@ account_timeline: >-
   AND (toots.visibility = 0)
   <% end %>
   AND (toots.uri IS NOT NULL)
-  AND (toots.text !~ '@[_a-zA-Z0-9]+(@[-.a-z0-9]+)?[ \n]')
+  AND (toots.text !~ '(\s|^)@[_a-zA-Z0-9]+(@[-.a-zA-Z0-9]+)?(\s|$)')
   <% if params[:actor_type] == 'Service' %>
   AND (accounts.actor_type='Service')
   <% elsif params[:actor_type] == 'Person' %>
