@@ -2,6 +2,8 @@
 
 MastodonトゥートのAtomフィードを出力。Mastodon→Twitterの同期等に。
 
+詳細は[Wiki](https://github.com/pooza/radish-feed/wiki)にて。
+
 ## 宣伝
 
 - 中の人は普段、個人インスタンス「[美食丼](https://mstdn.b-shock.org/)」か、
