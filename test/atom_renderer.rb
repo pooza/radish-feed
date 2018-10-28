@@ -1,10 +1,10 @@
-require 'radish-feed/atom'
+require 'radish-feed/renderer/atom'
 require 'radish-feed/config'
 
 module RadishFeed
   class AtomTest < Test::Unit::TestCase
     def test_tweetable=
-      atom = Atom.new
+      atom = AtomRenderer.new
       assert_equal(atom.tweetable, false)
 
       atom.tweetable = true
@@ -24,7 +24,7 @@ module RadishFeed
     end
 
     def test_params=
-      atom = Atom.new
+      atom = AtomRenderer.new
       assert_equal(atom.params, {})
 
       atom.params = {entries: 20}
@@ -40,7 +40,7 @@ module RadishFeed
     end
 
     def test_title_length=
-      atom = Atom.new
+      atom = AtomRenderer.new
       assert_nil(atom.title_length)
 
       atom.title_length = 100
@@ -54,7 +54,7 @@ module RadishFeed
     end
 
     def test_actor_type=
-      atom = Atom.new
+      atom = AtomRenderer.new
       assert_nil(atom.actor_type)
 
       atom.actor_type = 'Service'
@@ -68,7 +68,7 @@ module RadishFeed
     end
 
     def visibility=
-      atom = Atom.new
+      atom = AtomRenderer.new
       assert_equal(atom.visibility, 'public')
 
       atom.visibility = 'unlisted'
@@ -79,7 +79,7 @@ module RadishFeed
     end
 
     def test_ignore_cw=
-      atom = Atom.new
+      atom = AtomRenderer.new
       assert_equal(atom.ignore_cw, false)
 
       atom.ignore_cw = true
@@ -99,7 +99,7 @@ module RadishFeed
     end
 
     def test_attachments=
-      atom = Atom.new
+      atom = AtomRenderer.new
       assert_equal(atom.attachments, false)
 
       atom.attachments = true
