@@ -1,13 +1,4 @@
 require 'sinatra'
-require 'active_support'
-require 'active_support/core_ext'
-require 'radish-feed/config'
-require 'radish-feed/slack'
-require 'radish-feed/postgres'
-require 'radish-feed/renderer/atom'
-require 'radish-feed/renderer/xml'
-require 'radish-feed/package'
-require 'radish-feed/logger'
 
 module RadishFeed
   class Server < Sinatra::Base
@@ -23,7 +14,7 @@ module RadishFeed
 
     before do
       @message = {request: {path: request.path, params: params}, response: {}}
-      @renderer = XMLRenderer.new
+      @renderer = XmlRenderer.new
     end
 
     after do
@@ -45,10 +36,7 @@ module RadishFeed
 
     get '/feed/v1.1/account/:account' do
       unless registered?(params[:account])
-        @renderer.status = 404
-        @message[:response][:message] = "Account #{params[:account]} not found."
-        @renderer.message = @message
-        return @renderer.to_s
+        raise NotFoundError, "Account #{params[:account]} not found."
       end
       @renderer = AtomRenderer.new
       @renderer.tweetable = true
@@ -79,7 +67,7 @@ module RadishFeed
     end
 
     not_found do
-      @renderer = XMLRenderer.new
+      @renderer = XmlRenderer.new
       @renderer.status = 404
       @message[:response][:message] = "Resource #{@message[:request][:path]} not found."
       @renderer.message = @message
@@ -87,10 +75,10 @@ module RadishFeed
     end
 
     error do |e|
-      @renderer = XMLRenderer.new
+      @renderer = XmlRenderer.new
       begin
         @renderer.status = e.status
-      rescue ::NoMethodError
+      rescue NoMethodError
         @renderer.status = 500
       end
       @message[:response][:message] = "#{e.class}: #{e.message}"

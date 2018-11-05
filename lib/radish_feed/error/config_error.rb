@@ -1,5 +1,5 @@
 module RadishFeed
-  class ImprementError < ::StandardError
+  class ConfigError < StandardError
     def status
       return 500
     end

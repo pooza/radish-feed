@@ -1,5 +1,3 @@
-require 'radish-feed/tweet_string'
-
 module RadishFeed
   class TweetStringTest < Test::Unit::TestCase
     def test_length

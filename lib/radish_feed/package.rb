@@ -1,9 +1,7 @@
-require 'radish-feed/config'
-
 module RadishFeed
   module Package
     def self.name
-      return 'radish-feed'
+      return 'radish_feed'
     end
 
     def self.version

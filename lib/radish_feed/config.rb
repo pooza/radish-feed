@@ -1,10 +1,8 @@
 require 'yaml'
 require 'singleton'
-require 'radish-feed/package'
-require 'radish-feed/error/config'
 
 module RadishFeed
-  class Config < ::Hash
+  class Config < Hash
     include Singleton
 
     def initialize

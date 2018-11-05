@@ -4,5 +4,5 @@ ENV['BUNDLE_GEMFILE'] ||= File.join(ROOT_DIR, 'Gemfile')
 ENV['SSL_CERT_FILE'] ||= File.join(ROOT_DIR, 'cert/cacert.pem')
 
 require 'bundler/setup'
-require 'radish-feed/server'
+require 'radish_feed'
 run RadishFeed::Server

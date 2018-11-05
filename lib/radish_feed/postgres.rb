@@ -1,7 +1,6 @@
 require 'pg'
 require 'erb'
 require 'singleton'
-require 'radish-feed/config'
 
 module RadishFeed
   class Postgres

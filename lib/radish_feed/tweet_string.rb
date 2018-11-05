@@ -1,5 +1,4 @@
 require 'zlib'
-require 'radish-feed/config'
 
 module RadishFeed
   class TweetString < String

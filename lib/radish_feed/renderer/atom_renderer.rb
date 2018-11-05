@@ -2,11 +2,6 @@ require 'rss'
 require 'socket'
 require 'sanitize'
 require 'addressable/uri'
-require 'radish-feed/renderer'
-require 'radish-feed/config'
-require 'radish-feed/postgres'
-require 'radish-feed/package'
-require 'radish-feed/tweet_string'
 
 module RadishFeed
   class AtomRenderer < Renderer

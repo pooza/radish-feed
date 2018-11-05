@@ -1,6 +1,5 @@
 require 'json'
 require 'syslog/logger'
-require 'radish-feed/package'
 
 module RadishFeed
   class Logger

@@ -1,8 +1,5 @@
-require 'radish-feed/renderer/atom'
-require 'radish-feed/config'
-
 module RadishFeed
-  class AtomTest < Test::Unit::TestCase
+  class AtomRendererTest < Test::Unit::TestCase
     def test_tweetable=
       atom = AtomRenderer.new
       assert_equal(atom.tweetable, false)

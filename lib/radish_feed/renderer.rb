@@ -1,7 +1,3 @@
-require 'radish-feed/config'
-require 'radish-feed/logger'
-require 'radish-feed/error/imprement'
-
 module RadishFeed
   class Renderer
     attr_accessor :status
