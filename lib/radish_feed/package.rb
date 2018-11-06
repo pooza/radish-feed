@@ -1,7 +1,7 @@
 module RadishFeed
   module Package
     def self.name
-      return 'radish_feed'
+      return 'radish-feed'
     end
 
     def self.version
