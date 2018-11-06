@@ -16,6 +16,7 @@ module RadishFeed
 
   autoload_under 'error' do
     autoload :ConfigError
+    autoload :DatabaseError
     autoload :ExternalServiceError
     autoload :ImprementError
     autoload :NotFoundError

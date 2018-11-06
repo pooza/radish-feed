@@ -9,6 +9,7 @@ module RadishFeed
       @logger.info({
         message: 'starting...',
         server: {port: @config['thin']['port']},
+        version: @config['application']['package']['version'],
       })
     end
 
@@ -29,6 +30,7 @@ module RadishFeed
     end
 
     get '/about' do
+      Server.site
       @message[:response][:message] = Package.full_name
       @renderer.message = @message
       return @renderer.to_s
@@ -86,6 +88,14 @@ module RadishFeed
       @renderer.message = @message
       Slack.broadcast(@message)
       return @renderer.to_s
+    end
+
+    def self.site
+      site = {}
+      Postgres.instance.execute('site').each do |row|
+        site[row['var']] = YAML.safe_load(row['value'])
+      end
+      return site
     end
 
     private
