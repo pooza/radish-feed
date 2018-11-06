@@ -91,7 +91,7 @@ module RadishFeed
         values[:visibility] = @visibility
         db.execute(@query, values).each do |row|
           maker.items.new_item do |item|
-            item.link = row['uri']
+            item.link = create_link(row['uri']).to_s
             item.title = create_title(row)
             item.date = Time.parse("#{row['created_at']} UTC").getlocal(tz)
           end
@@ -109,6 +109,13 @@ module RadishFeed
       title = "[@#{row['username']}] #{title}" if row['username']
       title.tweetablize!(@title_length) if @tweetable
       return title
+    end
+
+    def create_link(url)
+      uri = Addressable::URI.parse(url)
+      return url unless matches = %r{/users/([[:alnum:]]+)/statuses/([[:digit:]]+)}.match(uri.path)
+      uri.path = "/@#{matches[1]}/#{matches[2]}"
+      return uri
     end
 
     def update_channel(channel)
