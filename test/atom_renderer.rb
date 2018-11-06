@@ -114,5 +114,13 @@ module RadishFeed
       atom.attachments = '0'
       assert_equal(atom.attachments, false)
     end
+
+    def test_create_link
+      atom = AtomRenderer.new
+      assert_equal(
+        atom.send(:create_link, 'https://precure.ml/users/skull_Servant/statuses/101023575287826044'),
+        'https://precure.ml/@skull_Servant/101023575287826044',
+      )
+    end
   end
 end

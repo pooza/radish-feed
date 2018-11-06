@@ -111,11 +111,12 @@ module RadishFeed
       return title
     end
 
-    def create_link(url)
-      uri = Addressable::URI.parse(url)
-      return url unless matches = %r{/users/([[:alnum:]]+)/statuses/([[:digit:]]+)}.match(uri.path)
-      uri.path = "/@#{matches[1]}/#{matches[2]}"
-      return uri
+    def create_link(src)
+      dest = Addressable::URI.parse(src)
+      return src unless dest.absolute?
+      return src unless matches = %r{/users/([[:word:]]+)/statuses/([[:digit:]]+)}i.match(dest.path)
+      dest.path = "/@#{matches[1]}/#{matches[2]}"
+      return dest.to_s
     end
 
     def update_channel(channel)
