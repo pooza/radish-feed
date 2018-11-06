@@ -1,9 +1,6 @@
 require 'addressable/uri'
 require 'httparty'
 require 'json'
-require 'radish-feed/config'
-require 'radish-feed/logger'
-require 'radish-feed/package'
 
 module RadishFeed
   class Slack

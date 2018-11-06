@@ -1,6 +1,3 @@
-require 'radish-feed/slack'
-require 'radish-feed/package'
-
 module RadishFeed
   class SlackTest < Test::Unit::TestCase
     def test_all

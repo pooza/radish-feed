@@ -2,11 +2,6 @@ require 'rss'
 require 'socket'
 require 'sanitize'
 require 'addressable/uri'
-require 'radish-feed/renderer'
-require 'radish-feed/config'
-require 'radish-feed/postgres'
-require 'radish-feed/package'
-require 'radish-feed/tweet_string'
 
 module RadishFeed
   class AtomRenderer < Renderer
@@ -118,15 +113,15 @@ module RadishFeed
 
     def update_channel(channel)
       uri = Addressable::URI.parse(root_url)
-      channel.title = site['site_title']
+      channel.title = Server.site['site_title']
       if (@query == 'account_timeline') && @params[:account]
         uri.path = "/@#{@params[:account]}"
         channel.title = "@#{@params[:account]} #{channel.title}"
       end
       channel.id = uri.to_s
       channel.link = uri.to_s
-      channel.description = Sanitize.clean(site['site_description'])
-      channel.author = site['site_contact_username']
+      channel.description = Sanitize.clean(Server.site['site_description'])
+      channel.author = Server.site['site_contact_username']
       channel.date = Time.now
       channel.generator = Package.user_agent
     end
@@ -138,16 +133,6 @@ module RadishFeed
     def tz
       return Time.now.strftime('%:z') unless @config['local']['tz_offset']
       return '%+02d:00' % @config['local']['tz_offset'].to_i
-    end
-
-    def site
-      unless @site
-        @site = {}
-        db.execute('site').each do |row|
-          @site[row['var']] = YAML.safe_load(row['value'])
-        end
-      end
-      return @site
     end
   end
 end

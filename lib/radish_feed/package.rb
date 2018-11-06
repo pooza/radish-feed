@@ -1,5 +1,3 @@
-require 'radish-feed/config'
-
 module RadishFeed
   module Package
     def self.name

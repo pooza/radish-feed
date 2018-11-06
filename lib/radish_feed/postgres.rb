@@ -1,7 +1,6 @@
 require 'pg'
 require 'erb'
 require 'singleton'
-require 'radish-feed/config'
 
 module RadishFeed
   class Postgres
@@ -16,6 +15,8 @@ module RadishFeed
         dbname: @config['db']['dbname'],
         port: @config['db']['port'],
       })
+    rescue => e
+      raise DatabaseError, e.message
     end
 
     def escape_string(value)
@@ -31,6 +32,8 @@ module RadishFeed
 
     def execute(name, params = {})
       return @db.exec(create_sql(name, params)).to_a
+    rescue => e
+      raise DatabaseError, e.message
     end
   end
 end

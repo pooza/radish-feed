@@ -1,5 +1,3 @@
-require 'radish-feed/package'
-
 module RadishFeed
   class PackageTest < Test::Unit::TestCase
     def test_name

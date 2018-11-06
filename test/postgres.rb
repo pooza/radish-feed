@@ -1,5 +1,3 @@
-require 'radish-feed/postgres'
-
 module RadishFeed
   class PostgresTest < Test::Unit::TestCase
     def test_escape_string
