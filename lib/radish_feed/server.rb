@@ -9,7 +9,7 @@ module RadishFeed
       @logger.info({
         message: 'starting...',
         server: {port: @config['thin']['port']},
-        version: @config['application']['package']['version'],
+        version: Package.version,
       })
     end
 
