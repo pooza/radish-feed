@@ -16,12 +16,13 @@ module RadishFeed
     before do
       @message = {request: {path: request.path, params: params}, response: {}}
       @renderer = XmlRenderer.new
+      @headers = request.env.select{ |k, v| k.start_with?('HTTP_')}
     end
 
     after do
       @message[:response][:status] ||= @renderer.status
       if @renderer.status < 400
-        @logger.info(@message)
+        @logger.info(@message.select{ |k, v| [:request, :response].member?(k)})
       else
         @logger.error(@message)
       end
