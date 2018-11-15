@@ -14,26 +14,19 @@ module RadishFeed
     end
 
     before do
-      @message = {request: {path: request.path, params: params}, response: {}}
+      @logger.info({request: {path: request.path, params: params}})
       @renderer = XmlRenderer.new
       @headers = request.env.select{ |k, v| k.start_with?('HTTP_')}
     end
 
     after do
-      @message[:response][:status] ||= @renderer.status
-      if @renderer.status < 400
-        @logger.info(@message.select{ |k, v| [:request, :response].member?(k)})
-      else
-        @logger.error(@message)
-      end
       status @renderer.status
       content_type @renderer.type
     end
 
     get '/about' do
       Server.site
-      @message[:response][:message] = Package.full_name
-      @renderer.message = @message
+      @renderer.message = Package.full_name
       return @renderer.to_s
     end
 
@@ -72,22 +65,17 @@ module RadishFeed
     not_found do
       @renderer = XmlRenderer.new
       @renderer.status = 404
-      @message[:response][:message] = "Resource #{@message[:request][:path]} not found."
-      @renderer.message = @message
+      @renderer.message = "Resource #{request.path} not found."
       return @renderer.to_s
     end
 
     error do |e|
+      e = Error.create(e)
       @renderer = XmlRenderer.new
-      begin
-        @renderer.status = e.status
-      rescue NoMethodError
-        @renderer.status = 500
-      end
-      @message[:response][:message] = "#{e.class}: #{e.message}"
-      @message[:backtrace] = e.backtrace[0..5]
-      @renderer.message = @message
-      Slack.broadcast(@message)
+      @renderer.status = e.status
+      @renderer.message = "#{e.class}: #{e.message}"
+      Slack.broadcast(e.to_h)
+      @logger.error(e.to_h)
       return @renderer.to_s
     end
 

@@ -1,7 +1,4 @@
 module RadishFeed
-  class ConfigError < StandardError
-    def status
-      return 500
-    end
+  class ConfigError < Error
   end
 end

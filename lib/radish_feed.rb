@@ -6,6 +6,7 @@ module RadishFeed
   extend ActiveSupport::Autoload
 
   autoload :Config
+  autoload :Error
   autoload :Logger
   autoload :Package
   autoload :Postgres
