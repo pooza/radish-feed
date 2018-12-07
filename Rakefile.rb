@@ -14,6 +14,17 @@ task :test do
   end
 end
 
+namespace :cert do
+  desc 'update cert'
+  task :update do
+    require 'httparty'
+    File.write(
+      File.join(ROOT_DIR, 'cert/cacert.pem'),
+      HTTParty.get('https://curl.haxx.se/ca/cacert.pem'),
+    )
+  end
+end
+
 [:start, :stop, :restart].each do |action|
   desc "alias of server:#{action}"
   task action => ["server:#{action}"]
