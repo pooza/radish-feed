@@ -41,8 +41,8 @@ GEM
     rack-protection (2.0.4)
       rack
     rainbow (3.0.0)
-    rake (12.3.1)
-    rubocop (0.61.0)
+    rake (12.3.2)
+    rubocop (0.61.1)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
       parser (>= 2.5, != 2.5.1.1)
