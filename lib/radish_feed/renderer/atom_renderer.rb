@@ -4,7 +4,9 @@ require 'sanitize'
 require 'addressable/uri'
 
 module RadishFeed
-  class AtomRenderer < Renderer
+  class ATOMRenderer < Ginseng::Renderer
+    include Package
+
     attr_accessor :query
     attr_reader :params
     attr_reader :tweetable
@@ -31,8 +33,8 @@ module RadishFeed
     def params=(values)
       @params = values
       entries = @params[:entries].to_i
-      entries = @config['local']['entries']['default'].to_i if entries.zero?
-      entries = [entries, @config['local']['entries']['max'].to_i].min
+      entries = @config['/entries/default'] if entries.zero?
+      entries = [entries, @config['/entries/max']].min
       @params[:entries] = entries
     end
 
@@ -135,12 +137,13 @@ module RadishFeed
     end
 
     def root_url
-      return (@config['local']['root_url'] || "https://#{Socket.gethostname}")
+      return (@config['/root_url'] || "https://#{Socket.gethostname}")
     end
 
     def tz
-      return Time.now.strftime('%:z') unless @config['local']['tz_offset']
-      return '%+02d:00' % @config['local']['tz_offset'].to_i
+      return '%+02d:00' % @config['/tz_offset'].to_i
+    rescue Ginseng::ConfigError
+      return Time.now.strftime('%:z')
     end
   end
 end

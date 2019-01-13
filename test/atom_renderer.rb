@@ -1,7 +1,7 @@
 module RadishFeed
-  class AtomRendererTest < Test::Unit::TestCase
+  class ATOMRendererTest < Test::Unit::TestCase
     def test_tweetable=
-      atom = AtomRenderer.new
+      atom = ATOMRenderer.new
       assert_equal(atom.tweetable, false)
 
       atom.tweetable = true
@@ -21,7 +21,7 @@ module RadishFeed
     end
 
     def test_params=
-      atom = AtomRenderer.new
+      atom = ATOMRenderer.new
       assert_equal(atom.params, {})
 
       atom.params = {entries: 20}
@@ -33,11 +33,11 @@ module RadishFeed
 
       atom.params = {account: 'admin', entries: 1000}
       assert_equal(atom.params[:account], 'admin')
-      assert_equal(atom.params[:entries], Config.instance['local']['entries']['max'])
+      assert_equal(atom.params[:entries], Config.instance['/entries/max'])
     end
 
     def test_title_length=
-      atom = AtomRenderer.new
+      atom = ATOMRenderer.new
       assert_nil(atom.title_length)
 
       atom.title_length = 100
@@ -51,7 +51,7 @@ module RadishFeed
     end
 
     def test_actor_type=
-      atom = AtomRenderer.new
+      atom = ATOMRenderer.new
       assert_nil(atom.actor_type)
 
       atom.actor_type = 'Service'
@@ -65,7 +65,7 @@ module RadishFeed
     end
 
     def visibility=
-      atom = AtomRenderer.new
+      atom = ATOMRenderer.new
       assert_equal(atom.visibility, 'public')
 
       atom.visibility = 'unlisted'
@@ -76,7 +76,7 @@ module RadishFeed
     end
 
     def test_ignore_cw=
-      atom = AtomRenderer.new
+      atom = ATOMRenderer.new
       assert_equal(atom.ignore_cw, false)
 
       atom.ignore_cw = true
@@ -96,7 +96,7 @@ module RadishFeed
     end
 
     def test_attachments=
-      atom = AtomRenderer.new
+      atom = ATOMRenderer.new
       assert_equal(atom.attachments, false)
 
       atom.attachments = true
@@ -116,7 +116,7 @@ module RadishFeed
     end
 
     def test_create_link
-      atom = AtomRenderer.new
+      atom = ATOMRenderer.new
       assert_equal(
         atom.send(:create_link, 'https://precure.ml/users/skull_Servant/statuses/101023575287826044'),
         'https://precure.ml/@skull_Servant/101023575287826044',
