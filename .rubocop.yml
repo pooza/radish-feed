@@ -3,9 +3,16 @@ AllCops:
   DisplayCopNames: true
   Exclude:
     - '**/._*'
+  TargetRubyVersion: 2.5
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
 
 Style/DoubleNegation:
   Enabled: false
+
+Style/FormatStringToken:
+  EnforcedStyle: template
 
 Layout/IndentHash:
   EnforcedStyle: consistent

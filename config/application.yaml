@@ -1,3 +1,17 @@
 package:
-  version: 1.2.8
+  version: 1.3.0
   url: https://github.com/pooza/radish-feed
+twitter:
+  length:
+    tweet: 140
+    uri: 24
+entries:
+  max: 200
+  default: 100
+db:
+  host: localhost
+  user: postgres
+  password: nil
+  dbname: mastodon
+  port: 5432
+

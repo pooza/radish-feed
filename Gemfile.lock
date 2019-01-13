@@ -1,71 +1,108 @@
+GIT
+  remote: https://github.com/pooza/ginseng-core.git
+  revision: b71863fa4ec60226f619847956e4b8b2e3b5f127
+  specs:
+    ginseng-core (1.0.10)
+      activesupport
+      addressable
+      bundler (< 2.0)
+      httparty
+      rake
+      rubocop
+      sinatra
+      syslog-logger
+      test-unit
+
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (5.2.1)
+    activesupport (5.2.2)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 0.7, < 2)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
-    concurrent-ruby (1.1.2)
+    ast (2.4.0)
+    concurrent-ruby (1.1.4)
     crass (1.0.4)
-    daemons (1.2.6)
+    daemons (1.3.1)
     eventmachine (1.2.7)
-    httparty (0.16.2)
+    httparty (0.16.3)
+      mime-types (~> 3.0)
       multi_xml (>= 0.5.2)
-    i18n (1.1.1)
+    i18n (1.5.1)
       concurrent-ruby (~> 1.0)
-    mini_portile2 (2.3.0)
+    jaro_winkler (1.5.2)
+    mime-types (3.2.2)
+      mime-types-data (~> 3.2015)
+    mime-types-data (3.2018.0812)
+    mini_portile2 (2.4.0)
     minitest (5.11.3)
     multi_xml (0.6.0)
     mustermann (1.0.3)
-    nokogiri (1.8.5)
-      mini_portile2 (~> 2.3.0)
-    nokogumbo (2.0.0)
+    nokogiri (1.10.1)
+      mini_portile2 (~> 2.4.0)
+    nokogumbo (2.0.1)
       nokogiri (~> 1.8, >= 1.8.4)
-    pg (1.1.3)
+    parallel (1.12.1)
+    parser (2.5.3.0)
+      ast (~> 2.4.0)
+    pg (1.1.4)
     power_assert (1.1.3)
+    powerpack (0.1.2)
     public_suffix (3.0.3)
     rack (2.0.6)
-    rack-protection (2.0.4)
+    rack-protection (2.0.5)
       rack
-    rake (12.3.1)
+    rainbow (3.0.0)
+    rake (12.3.2)
+    rubocop (0.62.0)
+      jaro_winkler (~> 1.5.1)
+      parallel (~> 1.10)
+      parser (>= 2.5, != 2.5.1.1)
+      powerpack (~> 0.1)
+      rainbow (>= 2.2.2, < 4.0)
+      ruby-progressbar (~> 1.7)
+      unicode-display_width (~> 1.4.0)
+    ruby-progressbar (1.10.0)
     sanitize (5.0.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.8.0)
       nokogumbo (~> 2.0)
-    sinatra (2.0.4)
+    sinatra (2.0.5)
       mustermann (~> 1.0)
       rack (~> 2.0)
-      rack-protection (= 2.0.4)
+      rack-protection (= 2.0.5)
       tilt (~> 2.0)
     syslog-logger (1.6.8)
-    test-unit (3.2.8)
+    test-unit (3.2.9)
       power_assert
     thin (1.7.2)
       daemons (~> 1.0, >= 1.0.9)
       eventmachine (~> 1.0, >= 1.0.4)
       rack (>= 1, < 3)
     thread_safe (0.3.6)
-    tilt (2.0.8)
+    tilt (2.0.9)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
+    unicode-display_width (1.4.1)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  activesupport
   addressable
+  ginseng-core!
   httparty
   pg
   rake
+  rubocop
   sanitize
-  sinatra
-  syslog-logger
-  test-unit
   thin
 
+RUBY VERSION
+   ruby 2.5.3p105
+
 BUNDLED WITH
-   1.17.1
+   1.17.3

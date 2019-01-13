@@ -3,7 +3,7 @@ require 'zlib'
 module RadishFeed
   class TweetString < String
     def initialize(value)
-      @config = Config.instance['twitter']
+      @config = Config.instance
       super(value)
     end
 
@@ -18,12 +18,12 @@ module RadishFeed
     end
 
     def tweetablize!(length = nil)
-      length ||= (@config['length']['tweet'] - @config['length']['uri'] - 1.0)
+      length ||= (@config['/twitter/length/tweet'] - @config['/twitter/length/uri'] - 1.0)
       links = {}
       text = clone
       text.scan(%r{https?://[^\s[:cntrl:]]+}).each do |link|
         pos = text.index(link)
-        if (length - @config['length']['uri'] - 0.5) < pos
+        if (length - @config['/twitter/length/uri'] - 0.5) < pos
           text.ellipsize!(pos - 0.5)
           break
         end
@@ -56,7 +56,7 @@ module RadishFeed
     private
 
     def create_tag(key)
-      return '{crc:%0' + (@config['length']['uri'] - 9).to_s + 'd}' % key
+      return '{crc:%0' + (@config['/twitter/length/uri'] - 9).to_s + 'd}' % key
     end
   end
 end

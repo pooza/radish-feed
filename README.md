@@ -1,6 +1,7 @@
 # radish-feed
 
-MastodonトゥートのAtomフィードを出力。Mastodon→Twitterの同期等に。
+MastodonトゥートのAtomフィードを出力。  
+Mastodon→Twitterの同期等に。
 
 詳細は[Wiki](https://github.com/pooza/radish-feed/wiki)にて。
 
