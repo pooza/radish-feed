@@ -1,3 +1,18 @@
+GIT
+  remote: https://github.com/pooza/ginseng-core.git
+  revision: b71863fa4ec60226f619847956e4b8b2e3b5f127
+  specs:
+    ginseng-core (1.0.10)
+      activesupport
+      addressable
+      bundler (< 2.0)
+      httparty
+      rake
+      rubocop
+      sinatra
+      syslog-logger
+      test-unit
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -77,16 +92,13 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activesupport
   addressable
+  ginseng-core!
   httparty
   pg
   rake
   rubocop
   sanitize
-  sinatra
-  syslog-logger
-  test-unit
   thin
 
 RUBY VERSION
