@@ -19,7 +19,7 @@ module RadishFeed
         host: config['/db/host'],
         dbname: config['/db/dbname'],
       }
-      retry
+      return Ginseng::Postgres::DSN.parse(config['/postgres/dsn'])
     end
   end
 end
