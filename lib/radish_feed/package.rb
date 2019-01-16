@@ -16,6 +16,10 @@ module RadishFeed
       return 'RadishFeed::Logger'
     end
 
+    def database_class
+      return 'RadishFeed::Postgres'
+    end
+
     def self.name
       return 'radish-feed'
     end
