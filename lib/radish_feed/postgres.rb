@@ -1,39 +1,25 @@
-require 'pg'
-require 'erb'
-require 'singleton'
-
 module RadishFeed
-  class Postgres
+  class Postgres < Ginseng::Postgres::Database
     include Singleton
+    include Package
 
-    def initialize
-      @config = Config.instance
-      @db = PG.connect({
-        host: @config['/db/host'],
-        user: @config['/db/user'],
-        password: @config['/db/password'],
-        dbname: @config['/db/dbname'],
-        port: @config['/db/port'],
-      })
-    rescue => e
-      raise Ginseng::DatabaseError, e.message
+    def default_dbname
+      return 'mastodon'
     end
 
-    def escape_string(value)
-      return @db.escape_string(value)
-    end
-
-    def create_sql(name, params = {})
-      params.each do |k, v|
-        params[k] = escape_string(v) if v.is_a?(String)
-      end
-      return ERB.new(@config["/query/#{name}"]).result(binding).gsub(/\s+/, ' ')
-    end
-
-    def execute(name, params = {})
-      return @db.exec(create_sql(name, params)).to_a
-    rescue => e
-      raise Ginseng::DatabaseError, e.message
+    def self.dsn
+      config = Config.instance
+      return Ginseng::Postgres::DSN.parse(config['/postgres/dsn'])
+    rescue
+      path = File.join(Environment.dir, 'config/db.yaml')
+      config.update(YAML.load_file(path).map{ |k, v| ["/db/#{k}", v]}.to_h) if File.exist?(path)
+      config['/postgres/dsn'] = 'postgres://%{user}:%{password}@%{host}/%{dbname}' % {
+        user: config['/db/user'],
+        password: config['/db/password'],
+        host: config['/db/host'],
+        dbname: config['/db/dbname'],
+      }
+      retry
     end
   end
 end
