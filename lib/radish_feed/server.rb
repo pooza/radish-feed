@@ -58,7 +58,7 @@ module RadishFeed
       @renderer = Ginseng::XMLRenderer.new
       @renderer.status = e.status
       @renderer.message = "#{e.class}: #{e.message}"
-      Slack.broadcast(e.to_h)
+      Slack.broadcast(e.to_h) unless e.status == 404
       @logger.error(e.to_h)
       return @renderer.to_s
     end

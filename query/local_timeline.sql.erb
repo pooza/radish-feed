@@ -8,8 +8,9 @@ FROM statuses AS toots
   INNER JOIN accounts ON toots.account_id=accounts.id
   INNER JOIN users ON accounts.id=users.account_id
   LEFT JOIN media_attachments AS attachments ON toots.id=attachments.status_id
-WHERE (accounts.domain IS NULL)
+WHERE (toots.local='t')
   AND (toots.reblog_of_id IS NULL)
+  AND (accounts.domain IS NULL)
   AND (accounts.locked='f')
   AND (accounts.silenced='f')
   AND (accounts.suspended='f')
@@ -32,10 +33,8 @@ WHERE (accounts.domain IS NULL)
     AND (attachments.id IS NOT NULL)
   <% end %>
 GROUP BY
-  toots.uri,
-  toots.created_at,
-  accounts.username,
-  toots.text,
-  toots.spoiler_text
-ORDER BY toots.created_at DESC
+  toots.id,
+  accounts.id
+ORDER BY
+  toots.created_at DESC
 LIMIT <%= params[:entries] %> OFFSET 0
