@@ -20,6 +20,10 @@ module RadishFeed
   autoload :Slack
   autoload :TweetString
 
+  autoload_under 'daemon' do
+    autoload :ThinDaemon
+  end
+
   autoload_under 'renderer' do
     autoload :ATOMRenderer
   end

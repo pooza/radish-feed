@@ -1,0 +1,9 @@
+SELECT
+  accounts.id,
+  accounts.username
+FROM accounts
+  INNER JOIN users ON accounts.id=users.account_id
+WHERE (accounts.domain IS NULL)
+  AND (accounts.silenced='f')
+  AND (accounts.suspended='f')
+  AND (users.disabled='f')
