@@ -1,6 +1,5 @@
 module RadishFeed
   class Postgres < Ginseng::Postgres::Database
-    include Singleton
     include Package
 
     def default_dbname

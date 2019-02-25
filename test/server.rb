@@ -33,7 +33,7 @@ module RadishFeed
     end
 
     def test_account_feed
-      Postgres.instance.execute('accounts').each do |row|
+      Postgres.instance.execute('accounts', {limit: @config['/test/server/accounts/limit']}).each do |row|
         header 'User-Agent', Package.user_agent
         get "/feed/v1.1/account/#{row['username']}"
         assert(last_response.ok?)
