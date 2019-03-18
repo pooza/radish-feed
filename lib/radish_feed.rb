@@ -16,8 +16,10 @@ module RadishFeed
   autoload :Logger
   autoload :Package
   autoload :Postgres
+  autoload :QueryTemplate
   autoload :Server
   autoload :Slack
+  autoload :Template
   autoload :TweetString
 
   autoload_under 'daemon' do

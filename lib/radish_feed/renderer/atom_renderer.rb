@@ -102,13 +102,10 @@ module RadishFeed
     end
 
     def create_title(row)
-      if row['spoiler_text'].present? && !ignore_cw
-        title = TweetString.new('[閲覧注意]' + row['spoiler_text'])
-      else
-        title = TweetString.new(row['text'])
-        title = TweetString.new('(空欄)') unless title.present?
-      end
-      title = "[@#{row['username']}] #{title}" if row['username']
+      template = Template.new('timeline_entry')
+      template[:row] = row
+      template[:ignore_cw] = ignore_cw
+      title = TweetString.new(template.to_s.chomp)
       title.tweetablize!(@title_length) if @tweetable
       return title
     end

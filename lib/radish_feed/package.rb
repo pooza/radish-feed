@@ -20,6 +20,10 @@ module RadishFeed
       return 'RadishFeed::Postgres'
     end
 
+    def query_template_class
+      return 'RadishFeed::QueryTemplate'
+    end
+
     def self.name
       return 'radish-feed'
     end
