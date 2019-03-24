@@ -42,10 +42,6 @@ module RadishFeed
       return site
     end
 
-    def default_renderer_class
-      return 'Ginseng::XMLRenderer'
-    end
-
     not_found do
       @renderer = Ginseng::XMLRenderer.new
       @renderer.status = 404
@@ -55,6 +51,7 @@ module RadishFeed
 
     error do |e|
       e = Ginseng::Error.create(e)
+      e.package = Package.full_name
       @renderer = Ginseng::XMLRenderer.new
       @renderer.status = e.status
       @renderer.message = "#{e.class}: #{e.message}"
@@ -64,6 +61,10 @@ module RadishFeed
     end
 
     private
+
+    def default_renderer_class
+      return 'Ginseng::XMLRenderer'
+    end
 
     def registered?(account)
       return !Postgres.instance.execute('registered', {account: account}).empty?
