@@ -6,7 +6,7 @@ namespace :radish do
         task action do
           sh "#{File.join(RadishFeed::Environment.dir, 'bin', "#{ns}_daemon.rb")} #{action}"
         rescue => e
-          STDERR.puts "#{e.class} #{ns}:#{action} #{e.message}"
+          warn "#{e.class} #{ns}:#{action} #{e.message}"
         end
       end
 
