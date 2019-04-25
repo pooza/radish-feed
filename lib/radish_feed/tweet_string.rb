@@ -39,20 +39,6 @@ module RadishFeed
       return self
     end
 
-    def ellipsize!(length)
-      i = 0
-      str = ''
-      each_char do |c|
-        i += (c.bytesize == 1 ? 0.5 : 1.0)
-        if length < i
-          replace(str + '…')
-          break
-        end
-        str += c
-      end
-      return self
-    end
-
     private
 
     def create_tag(key)
