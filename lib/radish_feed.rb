@@ -14,6 +14,7 @@ module RadishFeed
   autoload :Config
   autoload :Environment
   autoload :Logger
+  autoload :HTTP
   autoload :Package
   autoload :Postgres
   autoload :QueryTemplate
