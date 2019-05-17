@@ -8,7 +8,7 @@ jobs:
       - checkout
       - run:
           name: install bundler
-          command: gem install bundler -v '<2'
+          command: gem install bundler
       - run:
           name: install dependencies
           command: bundle install
