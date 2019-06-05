@@ -38,7 +38,7 @@ module RadishFeed
     end
 
     def test_404_account_feed
-      get "/feed/v1.1/account/notfound_user_xxxx"
+      get '/feed/v1.1/account/notfound_user_xxxx'
       assert_false(last_response.ok?)
       assert_equal(last_response.status, 404)
     end
