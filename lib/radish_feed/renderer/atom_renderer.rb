@@ -4,7 +4,7 @@ require 'sanitize'
 require 'addressable/uri'
 
 module RadishFeed
-  class ATOMRenderer < Ginseng::Renderer
+  class ATOMRenderer < Ginseng::Web::Renderer
     include Package
 
     attr_accessor :query

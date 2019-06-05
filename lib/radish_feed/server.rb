@@ -1,5 +1,5 @@
 module RadishFeed
-  class Server < Ginseng::Sinatra
+  class Server < Ginseng::Web::Sinatra
     include Package
 
     get '/feed/v1.1/account/:account' do
@@ -43,7 +43,7 @@ module RadishFeed
     end
 
     not_found do
-      @renderer = Ginseng::XMLRenderer.new
+      @renderer = Ginseng::Web::XMLRenderer.new
       @renderer.status = 404
       @renderer.message = "Resource #{request.path} not found."
       return @renderer.to_s
@@ -52,7 +52,7 @@ module RadishFeed
     error do |e|
       e = Ginseng::Error.create(e)
       e.package = Package.full_name
-      @renderer = Ginseng::XMLRenderer.new
+      @renderer = Ginseng::Web::XMLRenderer.new
       @renderer.status = e.status
       @renderer.message = "#{e.class}: #{e.message}"
       Slack.broadcast(e) unless e.status == 404
@@ -63,7 +63,7 @@ module RadishFeed
     private
 
     def default_renderer_class
-      return 'Ginseng::XMLRenderer'
+      return 'Ginseng::Web::XMLRenderer'.constantize
     end
 
     def registered?(account)
