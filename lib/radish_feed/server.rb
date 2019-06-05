@@ -4,7 +4,9 @@ module RadishFeed
 
     get '/feed/v1.1/account/:account' do
       unless registered?(params[:account])
-        raise Ginseng::NotFoundError, "Account #{params[:account]} not found."
+        @renderer.status = 404
+        @renderer.message = "Resource #{request.path} not found."
+        return @renderer.to_s
       end
       @renderer = ATOMRenderer.new
       @renderer.tweetable = true
@@ -40,24 +42,6 @@ module RadishFeed
         site[row['var']] = YAML.safe_load(row['value'])
       end
       return site
-    end
-
-    not_found do
-      @renderer = Ginseng::Web::XMLRenderer.new
-      @renderer.status = 404
-      @renderer.message = "Resource #{request.path} not found."
-      return @renderer.to_s
-    end
-
-    error do |e|
-      e = Ginseng::Error.create(e)
-      e.package = Package.full_name
-      @renderer = Ginseng::Web::XMLRenderer.new
-      @renderer.status = e.status
-      @renderer.message = "#{e.class}: #{e.message}"
-      Slack.broadcast(e) unless e.status == 404
-      @logger.error(e)
-      return @renderer.to_s
     end
 
     private
