@@ -10,8 +10,8 @@ WHERE (accounts.domain IS NULL)
   AND (toots.local='t')
   AND (toots.reblog_of_id IS NULL)
   AND (accounts.locked='f')
-  AND (accounts.silenced='f')
-  AND (accounts.suspended='f')
+  AND (accounts.silenced_at IS NULL)
+  AND (accounts.suspended_at IS NULL)
   AND (users.disabled='f')
 GROUP BY
   accounts.id

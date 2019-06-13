@@ -3,6 +3,7 @@ require 'active_support/core_ext'
 require 'active_support/dependencies/autoload'
 require 'ginseng'
 require 'ginseng/postgres'
+require 'ginseng/web'
 
 ActiveSupport::Inflector.inflections do |inflect|
   inflect.acronym 'ATOM'
