@@ -13,6 +13,7 @@ module RadishFeed
     end
 
     def test_about
+      return unless ENV['CI'].present?
       get '/about'
       assert(last_response.ok?)
     end
