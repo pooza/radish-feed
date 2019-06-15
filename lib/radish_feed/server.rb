@@ -3,22 +3,22 @@ module RadishFeed
     include Package
 
     get '/feed/v1.1/account/:account' do
-      unless registered?(params[:account])
+      if registered?(params[:account])
+        @renderer = ATOMRenderer.new
+        @renderer.tweetable = true
+        @renderer.tweetable = params[:tweetable]
+        @renderer.title_length = params[:length]
+        @renderer.actor_type = params[:actor_type]
+        @renderer.hashtag = params[:hashtag]
+        @renderer.ignore_cw = params[:ignore_cw]
+        @renderer.attachments = params[:attachments]
+        @renderer.visibility = params[:visibility]
+        @renderer.query = 'account_timeline'
+        @renderer.params = {account: params[:account], entries: params[:entries]}
+      else
         @renderer.status = 404
         @renderer.message = "Resource #{request.path} not found."
-        return @renderer.to_s
       end
-      @renderer = ATOMRenderer.new
-      @renderer.tweetable = true
-      @renderer.tweetable = params[:tweetable]
-      @renderer.title_length = params[:length]
-      @renderer.actor_type = params[:actor_type]
-      @renderer.hashtag = params[:hashtag]
-      @renderer.ignore_cw = params[:ignore_cw]
-      @renderer.attachments = params[:attachments]
-      @renderer.visibility = params[:visibility]
-      @renderer.query = 'account_timeline'
-      @renderer.params = {account: params[:account], entries: params[:entries]}
       return @renderer.to_s
     end
 
@@ -37,11 +37,9 @@ module RadishFeed
     end
 
     def self.site
-      site = {}
-      Postgres.instance.execute('site').each do |row|
-        site[row['var']] = YAML.safe_load(row['value'])
-      end
-      return site
+      return Postgres.instance.execute('site').map do |row|
+        [row['var'], YAML.safe_load(row['value'])]
+      end.to_h
     end
 
     private
