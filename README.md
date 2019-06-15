@@ -9,7 +9,4 @@ Mastodon→Twitterの同期等に。
 
 - 中の人は普段、個人インスタンス「[美食丼](https://mstdn.b-shock.org/)」か、
 プリキュア専用インスタンス「[キュアスタ！](https://precure.ml/)」に居ます。
-プリキュアに興味ある人は、是非キュアスタ！を覗いてね！
-
-- このradish-feed、以下の拙作Twitter BOTのパーツとしても使われています。
-  - [ぷーざの佳那子さんネタボット](https://twitter.com/pooza_kanakobot)
+プリキュアに興味ある人は、是非キュアスタ！へ。
