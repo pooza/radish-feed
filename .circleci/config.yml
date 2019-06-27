@@ -3,7 +3,7 @@ jobs:
   build:
     docker:
       - image: circleci/ruby:2.6.3
-      - image: circleci/postgres:9.6.2-alpine
+      - image: circleci/postgres:9.6.12
         environment:
           POSTGRES_USER: postgres
           POSTGRES_DB: mastodon
@@ -26,5 +26,5 @@ jobs:
           name: check repository
           command: bundle exec rake repos:check
       - run:
-          name: run text
+          name: run test
           command: CI=1 bundle exec rake test
