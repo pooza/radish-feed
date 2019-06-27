@@ -1,7 +1,6 @@
 require 'rss'
 require 'socket'
 require 'sanitize'
-require 'addressable/uri'
 
 module RadishFeed
   class ATOMRenderer < Ginseng::Web::Renderer
@@ -111,7 +110,7 @@ module RadishFeed
     end
 
     def create_link(src)
-      dest = Addressable::URI.parse(src)
+      dest = Ginseng::URI.parse(src)
       return src unless dest.absolute?
       return src unless matches = %r{/users/([[:word:]]+)/statuses/([[:digit:]]+)}i.match(dest.path)
       dest.path = "/@#{matches[1]}/#{matches[2]}"
@@ -119,7 +118,7 @@ module RadishFeed
     end
 
     def update_channel(channel)
-      uri = Addressable::URI.parse(root_url)
+      uri = Ginseng::URI.parse(root_url)
       channel.title = Server.site['site_title']
       if (@query == 'account_timeline') && @params[:account]
         uri.path = "/@#{@params[:account]}"
