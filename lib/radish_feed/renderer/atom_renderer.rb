@@ -94,7 +94,7 @@ module RadishFeed
           maker.items.new_item do |item|
             item.link = create_link(row['uri']).to_s
             item.title = create_title(row)
-            item.date = Time.parse("#{row['created_at']} UTC").getlocal(tz)
+            item.date = Time.parse("#{row['created_at']} UTC").getlocal(Environment.tz)
           end
         end
       end
@@ -134,12 +134,6 @@ module RadishFeed
 
     def root_url
       return (@config['/root_url'] || "https://#{Socket.gethostname}")
-    end
-
-    def tz
-      return '%+02d:00' % @config['/tz_offset'].to_i
-    rescue Ginseng::ConfigError
-      return Time.now.strftime('%:z')
     end
   end
 end
