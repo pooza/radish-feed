@@ -1,5 +1,4 @@
 require 'rss'
-require 'socket'
 require 'sanitize'
 
 module RadishFeed
@@ -133,7 +132,7 @@ module RadishFeed
     end
 
     def root_url
-      return (@config['/root_url'] || "https://#{Socket.gethostname}")
+      return (@config['/root_url'] || "https://#{Environment.hostname}")
     end
   end
 end
