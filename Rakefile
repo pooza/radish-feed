@@ -5,9 +5,6 @@ ENV['BUNDLE_GEMFILE'] ||= File.join(dir, 'Gemfile')
 require 'bundler/setup'
 require 'radish_feed'
 
-desc 'test all'
-task test: ['radish:test']
-
 [:start, :stop, :restart].each do |action|
   desc "#{action} all"
   task action => "radish:thin:#{action}"

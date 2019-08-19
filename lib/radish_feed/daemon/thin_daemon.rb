@@ -1,5 +1,3 @@
-require 'addressable/uri'
-
 module RadishFeed
   class ThinDaemon < Ginseng::Daemon
     include Package
@@ -26,7 +24,7 @@ module RadishFeed
 
     def root_uri
       unless @uri
-        @uri = Addressable::URI.new
+        @uri = Ginseng::URI.new
         @uri.host = Environment.hostname
         @uri.scheme = 'http'
         @uri.port = @config['/thin/port']

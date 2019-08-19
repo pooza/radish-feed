@@ -1,7 +1,5 @@
 require 'rss'
-require 'socket'
 require 'sanitize'
-require 'addressable/uri'
 
 module RadishFeed
   class ATOMRenderer < Ginseng::Web::Renderer
@@ -95,7 +93,7 @@ module RadishFeed
           maker.items.new_item do |item|
             item.link = create_link(row['uri']).to_s
             item.title = create_title(row)
-            item.date = Time.parse("#{row['created_at']} UTC").getlocal(tz)
+            item.date = Time.parse("#{row['created_at']} UTC").getlocal(Environment.tz)
           end
         end
       end
@@ -111,7 +109,7 @@ module RadishFeed
     end
 
     def create_link(src)
-      dest = Addressable::URI.parse(src)
+      dest = Ginseng::URI.parse(src)
       return src unless dest.absolute?
       return src unless matches = %r{/users/([[:word:]]+)/statuses/([[:digit:]]+)}i.match(dest.path)
       dest.path = "/@#{matches[1]}/#{matches[2]}"
@@ -119,7 +117,7 @@ module RadishFeed
     end
 
     def update_channel(channel)
-      uri = Addressable::URI.parse(root_url)
+      uri = Ginseng::URI.parse(root_url)
       channel.title = Server.site['site_title']
       if (@query == 'account_timeline') && @params[:account]
         uri.path = "/@#{@params[:account]}"
@@ -134,13 +132,7 @@ module RadishFeed
     end
 
     def root_url
-      return (@config['/root_url'] || "https://#{Socket.gethostname}")
-    end
-
-    def tz
-      return '%+02d:00' % @config['/tz_offset'].to_i
-    rescue Ginseng::ConfigError
-      return Time.now.strftime('%:z')
+      return (@config['/root_url'] || "https://#{Environment.hostname}")
     end
   end
 end
