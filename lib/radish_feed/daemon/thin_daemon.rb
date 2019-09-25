@@ -6,13 +6,9 @@ module RadishFeed
       return [
         'thin',
         '--config',
-        ThinDaemon.config_path,
+        File.join(Environment.dir, 'config/thin.yaml'),
         'start',
       ]
-    end
-
-    def child_pid
-      return `pgrep -f #{ThinDaemon.config_path}`.to_i
     end
 
     def motd
@@ -30,10 +26,6 @@ module RadishFeed
         @uri.port = @config['/thin/port']
       end
       return @uri
-    end
-
-    def self.config_path
-      return File.join(Environment.dir, 'config/thin.yaml')
     end
   end
 end
