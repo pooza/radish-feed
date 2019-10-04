@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
-ruby '2.6.4'
+ruby '2.6.5'
+gem 'bootsnap'
 gem 'ginseng-core', git: 'https://github.com/pooza/ginseng-core.git'
 gem 'ginseng-postgres', git: 'https://github.com/pooza/ginseng-postgres.git'
 gem 'ginseng-web', git: 'https://github.com/pooza/ginseng-web.git'
