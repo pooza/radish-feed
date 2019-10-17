@@ -7,5 +7,7 @@ package:
     - tkoishi@b-shock.co.jp
 entries:
   max: 100
+tag:
+  cacheable: []
 postgres:
   dsn: postgres://postgres@localhost:5432/mastodon

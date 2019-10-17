@@ -10,6 +10,11 @@ require 'radish_feed'
   task action => "radish:thin:#{action}"
 end
 
+[:build].each do |action|
+  desc "alias of radish:builder:#{action}"
+  task action => "radish:builder:#{action}"
+end
+
 Dir.glob(File.join(RadishFeed::Environment.dir, 'lib/task/*.rb')).each do |f|
   require f
 end
