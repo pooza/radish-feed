@@ -31,20 +31,11 @@ module RadishFeed
       assert_equal(last_response.headers['Content-Type'], 'application/atom+xml; charset=UTF-8')
     end
 
-    def test_account_feed
+    def test_tag_feed
       return if Environment.ci?
-      Postgres.instance.execute('accounts', {limit: @config['/test/server/accounts/limit']}).each do |row|
-        get "/feed/v1.1/account/#{row['username']}"
-        assert(last_response.ok?)
-        assert_equal(last_response.headers['Content-Type'], 'application/atom+xml; charset=UTF-8')
-      end
-    end
-
-    def test_404_account_feed
-      return if Environment.ci?
-      get '/feed/v1.1/account/notfound_user_xxxx'
-      assert_false(last_response.ok?)
-      assert_equal(last_response.status, 404)
+      get '/feed/v1.1/tag/nowplaying'
+      assert(last_response.ok?)
+      assert_equal(last_response.headers['Content-Type'], 'application/atom+xml; charset=UTF-8')
     end
   end
 end
