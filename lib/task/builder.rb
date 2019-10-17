@@ -5,8 +5,8 @@ namespace :radish do
       sh File.join(RadishFeed::Environment.dir, 'bin/build.rb')
     end
 
-    desc 'clear caches'
-    task :clear do
+    desc 'clean caches'
+    task :clean do
       Dir.glob(File.join(RadishFeed::Environment.dir, 'tmp/feed/*')).each do |f|
         File.unlink(f)
       end

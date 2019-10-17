@@ -9,4 +9,4 @@ ENV['BUNDLE_GEMFILE'] ||= File.join(dir, 'Gemfile')
 require 'bundler/setup'
 require 'radish_feed'
 
-RadishFeed::ATOMRenderer.build_cache
+RadishFeed::ATOMRenderer.build

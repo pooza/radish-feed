@@ -6,11 +6,11 @@ require 'bundler/setup'
 require 'radish_feed'
 
 [:start, :stop, :restart].each do |action|
-  desc "#{action} all"
+  desc "alias of radish:thin:#{action}"
   task action => "radish:thin:#{action}"
 end
 
-[:build].each do |action|
+[:build, :clean].each do |action|
   desc "alias of radish:builder:#{action}"
   task action => "radish:builder:#{action}"
 end

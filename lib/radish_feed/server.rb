@@ -9,17 +9,11 @@ module RadishFeed
       return @renderer.to_s
     end
 
-    get '/feed/v1.1/tag/:tag' do
+    get '/feed/v1.0/tag/:tag' do
       @renderer = ATOMRenderer.new
       @renderer.query = 'tag_timeline'
       @renderer.params = {tag: params[:tag], entries: @config['/entries/max']}
       return @renderer.to_s
-    end
-
-    def self.site
-      return Postgres.instance.execute('site').map do |row|
-        [row['var'], YAML.safe_load(row['value'])]
-      end.to_h
     end
 
     def default_renderer_class

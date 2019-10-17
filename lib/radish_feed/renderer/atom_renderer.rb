@@ -7,7 +7,7 @@ module RadishFeed
     include Package
 
     attr_accessor :query
-    attr_reader :params
+    attr_accessor :params
 
     def initialize
       super
@@ -18,10 +18,9 @@ module RadishFeed
       return 'application/atom+xml; charset=UTF-8'
     end
 
-    attr_writer :params
-
     def to_s
       cache unless File.exist?(path)
+      cache if File.mtime(path) < @config['/feed/minutes'].minutes.ago
       return File.read(path)
     end
 
@@ -38,12 +37,8 @@ module RadishFeed
       )
     end
 
-    def self.build_cache
+    def self.build
       config = Config.instance
-      renderer = ATOMRenderer.new
-      renderer.query = 'local_timeline'
-      renderer.params = {entries: config['/entries/max']}
-      renderer.cache
       config['/tag/cacheable'].each do |tag|
         renderer = ATOMRenderer.new
         renderer.query = 'tag_timeline'
@@ -54,17 +49,12 @@ module RadishFeed
 
     private
 
-    def db
-      return Postgres.instance
-    end
-
     def feed
-      raise 'クエリー名が未定義です。' unless @query
       return RSS::Maker.make('atom') do |maker|
         update_channel(maker.channel)
         maker.items.do_sort = true
         values = @params.clone
-        db.execute(@query, values).each do |row|
+        Postgres.instance.execute(@query, values).each do |row|
           maker.items.new_item do |item|
             item.link = create_link(row['uri']).to_s
             item.title = create_title(row)
@@ -90,17 +80,20 @@ module RadishFeed
 
     def update_channel(channel)
       uri = Ginseng::URI.parse(root_url)
-      channel.title = Server.site['site_title']
-      if (@query == 'account_timeline') && @params[:account]
-        uri.path = "/@#{@params[:account]}"
-        channel.title = "@#{@params[:account]} #{channel.title}"
-      end
+      channel.title = site['site_title']
       channel.id = uri.to_s
       channel.link = uri.to_s
-      channel.description = Sanitize.clean(Server.site['site_description'])
-      channel.author = Server.site['site_contact_username']
+      channel.description = Sanitize.clean(site['site_description'])
+      channel.author = site['site_contact_username']
       channel.date = Time.now
       channel.generator = Package.user_agent
+    end
+
+    def site
+      @site ||= Postgres.instance.execute('site').map do |row|
+        [row['var'], YAML.safe_load(row['value'])]
+      end.to_h
+      return @site
     end
 
     def root_url
