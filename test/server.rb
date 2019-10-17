@@ -30,5 +30,12 @@ module RadishFeed
       assert(last_response.ok?)
       assert_equal(last_response.headers['Content-Type'], 'application/atom+xml; charset=UTF-8')
     end
+
+    def test_tag_feed
+      return if Environment.ci?
+      get '/feed/v1.1/tag/nowplaying'
+      assert(last_response.ok?)
+      assert_equal(last_response.headers['Content-Type'], 'application/atom+xml; charset=UTF-8')
+    end
   end
 end
