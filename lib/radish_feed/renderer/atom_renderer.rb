@@ -1,95 +1,60 @@
 require 'rss'
 require 'sanitize'
+require 'digest/sha1'
 
 module RadishFeed
   class ATOMRenderer < Ginseng::Web::Renderer
     include Package
 
     attr_accessor :query
-    attr_reader :params
-    attr_reader :tweetable
-    attr_reader :title_length
-    attr_reader :actor_type
-    attr_reader :attachments
-    attr_reader :visibility
-    attr_reader :ignore_cw
-    attr_accessor :hashtag
+    attr_accessor :params
 
     def initialize
       super
       @params = {}
-      @tweetable = false
-      @ignore_cw = false
-      @attachments = false
-      @visibility = 'public'
     end
 
     def type
       return 'application/atom+xml; charset=UTF-8'
     end
 
-    def params=(values)
-      @params = values
-      entries = @params[:entries].to_i
-      entries = @config['/entries/default'] if entries.zero?
-      entries = [entries, @config['/entries/max']].min
-      @params[:entries] = entries
-    end
-
-    def tweetable=(flag)
-      return if flag.nil?
-      @tweetable = !flag.to_i.zero?
-    rescue
-      @tweetable = !!flag
-    end
-
-    def ignore_cw=(flag)
-      return if flag.nil?
-      @ignore_cw = !flag.to_i.zero?
-    rescue
-      @ignore_cw = !!flag
-    end
-
-    def attachments=(flag)
-      return if flag.nil?
-      @attachments = !flag.to_i.zero?
-    rescue
-      @attachments = !!flag
-    end
-
-    def title_length=(length)
-      @title_length = length.to_i unless length.nil?
-    end
-
-    def actor_type=(type)
-      @actor_type = type if type.present?
-    end
-
-    def visibility=(type)
-      @visibility = (type || 'public')
-    end
-
     def to_s
-      return feed.to_s
+      cache unless File.exist?(path)
+      cache if File.mtime(path) < @config['/feed/minutes'].minutes.ago
+      return File.read(path)
+    end
+
+    def cache
+      File.write(path, feed.to_s)
+      @logger.info(action: 'cached', query: @query, params: @params)
+    end
+
+    def path
+      return File.join(
+        Environment.dir,
+        'tmp/feed/',
+        Digest::SHA1.hexdigest({query: @query, params: @params}.to_json),
+      )
+    end
+
+    def self.build
+      config = Config.instance
+      config['/tag/cacheable'].each do |tag|
+        renderer = ATOMRenderer.new
+        renderer.query = 'tag_timeline'
+        renderer.params = {tag: tag, entries: config['/entries/max']}
+        renderer.cache
+      end
     end
 
     private
 
-    def db
-      return Postgres.instance
-    end
-
     def feed
-      raise 'クエリー名が未定義です。' unless @query
       return RSS::Maker.make('atom') do |maker|
         update_channel(maker.channel)
         maker.items.do_sort = true
         values = @params.clone
-        values[:actor_type] = @actor_type
-        values[:hashtag] = @hashtag
-        values[:attachments] = @attachments
-        values[:visibility] = @visibility
-        db.execute(@query, values).each do |row|
+        Postgres.instance.execute(@query, values).each do |row|
           maker.items.new_item do |item|
             item.link = create_link(row['uri']).to_s
             item.title = create_title(row)
@@ -115,17 +80,20 @@ module RadishFeed
 
     def update_channel(channel)
       uri = Ginseng::URI.parse(root_url)
-      channel.title = Server.site['site_title']
-      if (@query == 'account_timeline') && @params[:account]
-        uri.path = "/@#{@params[:account]}"
-        channel.title = "@#{@params[:account]} #{channel.title}"
-      end
+      channel.title = site['site_title']
       channel.id = uri.to_s
       channel.link = uri.to_s
-      channel.description = Sanitize.clean(Server.site['site_description'])
-      channel.author = Server.site['site_contact_username']
+      channel.description = Sanitize.clean(site['site_description'])
+      channel.author = site['site_contact_username']
       channel.date = Time.now
       channel.generator = Package.user_agent
+    end
+
+    def site
+      @site ||= Postgres.instance.execute('site').map do |row|
+        [row['var'], YAML.safe_load(row['value'])]
+      end.to_h
+      return @site
     end
 
     def root_url

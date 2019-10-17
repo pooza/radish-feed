@@ -1,6 +1,6 @@
 # radish-feed
 
-MastodonトゥートのAtomフィードを出力。  
+MastodonトゥートのAtomフィードを出力。Twitter関連機能は廃止しました。  
 詳細は[Wiki](https://github.com/pooza/radish-feed/wiki)にて。
 
 ## 宣伝
