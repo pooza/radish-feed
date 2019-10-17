@@ -9,10 +9,10 @@ module RadishFeed
       return @renderer.to_s
     end
 
-    get '/feed/v1.1/tag/:name' do
+    get '/feed/v1.1/tag/:tag' do
       @renderer = ATOMRenderer.new
-      @renderer.query = 'tag_timeeline'
-      @renderer.params = {name: params[:name], entries: @config['/entries/max']}
+      @renderer.query = 'tag_timeline'
+      @renderer.params = {tag: params[:tag], entries: @config['/entries/max']}
       return @renderer.to_s
     end
 
@@ -21,8 +21,6 @@ module RadishFeed
         [row['var'], YAML.safe_load(row['value'])]
       end.to_h
     end
-
-    private
 
     def default_renderer_class
       return 'Ginseng::Web::XMLRenderer'.constantize
