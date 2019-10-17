@@ -32,7 +32,6 @@ module RadishFeed
   autoload :Server
   autoload :Slack
   autoload :Template
-  autoload :TweetString
 
   autoload_under 'daemon' do
     autoload :ThinDaemon

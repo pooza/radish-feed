@@ -102,10 +102,7 @@ module RadishFeed
     def create_title(row)
       template = Template.new('timeline_entry')
       template[:row] = row
-      template[:ignore_cw] = ignore_cw
-      title = TweetString.new(template.to_s.chomp)
-      title.tweetablize!(@title_length) if @tweetable
-      return title
+      return template.to_s.chomp
     end
 
     def create_link(src)
