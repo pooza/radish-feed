@@ -21,11 +21,13 @@ module RadishFeed
     attr_writer :params
 
     def to_s
-      return feed.to_s
+      cache unless File.exist?(path)
+      return File.read(path)
     end
 
     def cache
-      pp path
+      File.write(path, feed.to_s)
+      @logger.info(action: 'cached', query: @query, params: @params)
     end
 
     def path
