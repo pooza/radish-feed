@@ -2,7 +2,7 @@ namespace :radish do
   namespace :builder do
     desc 'build caches'
     task :build do
-      sh File.join(RadishFeed::Environment.dir, 'bin/build.rb')
+      system(File.join(RadishFeed::Environment.dir, 'bin/build.rb'))
     end
 
     desc 'clean caches'
