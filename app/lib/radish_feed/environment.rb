@@ -5,7 +5,7 @@ module RadishFeed
     end
 
     def self.dir
-      return File.expand_path('../..', __dir__)
+      return RadishFeed.dir
     end
   end
 end
