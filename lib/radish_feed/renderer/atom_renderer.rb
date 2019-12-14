@@ -46,7 +46,7 @@ module RadishFeed
         renderer.params = {tag: tag, entries: config['/entries/max']}
         renderer.cache
       rescue => e
-        @logger.error(e)
+        logger.error(Ginseng::Error.create(e).to_h.merge(tag: @tag))
       end
     end
 
