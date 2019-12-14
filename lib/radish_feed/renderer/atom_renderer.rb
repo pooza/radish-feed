@@ -39,11 +39,14 @@ module RadishFeed
 
     def self.build
       config = Config.instance
+      logger = Logger.new
       config['/tag/cacheable'].each do |tag|
         renderer = ATOMRenderer.new
         renderer.query = 'tag_timeline'
         renderer.params = {tag: tag, entries: config['/entries/max']}
         renderer.cache
+      rescue => e
+        @logger.error(e)
       end
     end
 
@@ -56,12 +59,15 @@ module RadishFeed
         values = @params.clone
         Postgres.instance.execute(@query, values).each do |row|
           maker.items.new_item do |item|
-            item.link = create_link(row['uri']).to_s
+            item.link = create_link(row[:uri]).to_s
             item.title = create_title(row)
-            item.date = Time.parse("#{row['created_at']} UTC").getlocal(Environment.tz)
+            item.date = Time.parse("#{row[:created_at]} UTC").getlocal(Environment.tz)
           end
         end
       end
+    rescue => e
+      Logger.new.error(e)
+      Slack.broadcast(e)
     end
 
     def create_title(row)
@@ -91,7 +97,7 @@ module RadishFeed
 
     def site
       @site ||= Postgres.instance.execute('site').map do |row|
-        [row['var'], YAML.safe_load(row['value'])]
+        [row[:var], YAML.safe_load(row[:value])]
       end.to_h
       return @site
     end
