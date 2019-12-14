@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/pooza/ginseng-core.git
-  revision: 3581c138930ea396ec1457f4e323de2603909ffd
+  revision: e969ddf1e3a1bc93459ee9adce4a29461c759f1a
   specs:
-    ginseng-core (1.4.11)
+    ginseng-core (1.5.1)
       activesupport
       addressable
       bundler
@@ -19,10 +19,11 @@ GIT
 
 GIT
   remote: https://github.com/pooza/ginseng-postgres.git
-  revision: cbdf9f848ce957e48bd93109b34c4d4665d17a06
+  revision: 471a5e578844ce23c0893a5aa4f42024fca65cee
   specs:
-    ginseng-postgres (1.1.6)
+    ginseng-postgres (1.2.0)
       pg
+      sequel
 
 GIT
   remote: https://github.com/pooza/ginseng-web.git
@@ -37,7 +38,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (6.0.1)
+    activesupport (6.0.2)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 0.7, < 2)
       minitest (~> 5.1)
@@ -56,7 +57,7 @@ GEM
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     eventmachine (1.2.7)
-    ffi (1.11.1)
+    ffi (1.11.3)
     http-accept (1.7.0)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
@@ -75,11 +76,11 @@ GEM
     multi_xml (0.6.0)
     mustermann (1.0.3)
     netrc (0.11.0)
-    nokogiri (1.10.5)
+    nokogiri (1.10.7)
       mini_portile2 (~> 2.4.0)
-    nokogumbo (2.0.1)
+    nokogumbo (2.0.2)
       nokogiri (~> 1.8, >= 1.8.4)
-    parallel (1.18.0)
+    parallel (1.19.1)
     parser (2.6.5.0)
       ast (~> 2.4.0)
     pg (1.1.4)
@@ -91,7 +92,7 @@ GEM
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rainbow (3.0.0)
-    rake (13.0.0)
+    rake (13.0.1)
     rb-fsevent (0.10.3)
     rb-inotify (0.10.0)
       ffi (~> 1.0)
@@ -100,7 +101,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    rubocop (0.76.0)
+    rubocop (0.77.0)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
       parser (>= 2.6)
@@ -117,6 +118,7 @@ GEM
     sass-listen (4.0.0)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
+    sequel (5.27.0)
     sinatra (2.0.7)
       mustermann (~> 1.0)
       rack (~> 2.0)
@@ -139,7 +141,7 @@ GEM
     unicode (0.4.4.4)
     unicode-display_width (1.6.0)
     yajl-ruby (1.4.1)
-    zeitwerk (2.2.1)
+    zeitwerk (2.2.2)
 
 PLATFORMS
   ruby
