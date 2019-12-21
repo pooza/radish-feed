@@ -27,9 +27,9 @@ GIT
 
 GIT
   remote: https://github.com/pooza/ginseng-web.git
-  revision: c51c66e908e61262e48414dae8f980427e46472b
+  revision: 6445990a30e0c3f2dcd0dcfc943816f7f3be7203
   specs:
-    ginseng-web (1.0.5)
+    ginseng-web (1.0.6)
       rack-test
       sass
       sinatra
@@ -101,7 +101,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    rubocop (0.77.0)
+    rubocop (0.78.0)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
       parser (>= 2.6)
@@ -151,11 +151,11 @@ DEPENDENCIES
   ginseng-core!
   ginseng-postgres!
   ginseng-web!
-  rubocop (= 0.77.0)
+  rubocop
   sanitize
 
 RUBY VERSION
    ruby 2.6.5p114
 
 BUNDLED WITH
-   2.0.2
+   2.1.2
