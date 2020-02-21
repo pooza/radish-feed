@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/pooza/ginseng-core.git
-  revision: 1b18bdae9b93781153969e1dbc92e2c5b7691455
+  revision: 22bb0407269e10ee90ce6cd2946c8c6286c096a5
   specs:
-    ginseng-core (1.5.4)
+    ginseng-core (1.6.2)
       activesupport
       addressable
       bundler
@@ -11,24 +11,27 @@ GIT
       httparty
       rake
       rest-client
+      rubocop
+      rubocop-performance
       syslog-logger
       test-unit
       unicode
       yajl-ruby
+      zeitwerk
 
 GIT
   remote: https://github.com/pooza/ginseng-postgres.git
-  revision: 471a5e578844ce23c0893a5aa4f42024fca65cee
+  revision: 33f6dfebd499165b2a2fcdc09b0867997cf16d35
   specs:
-    ginseng-postgres (1.2.0)
+    ginseng-postgres (1.2.4)
       pg
       sequel
 
 GIT
   remote: https://github.com/pooza/ginseng-web.git
-  revision: 6445990a30e0c3f2dcd0dcfc943816f7f3be7203
+  revision: 4d014476dadac085f041fd58cd71db5324c788c6
   specs:
-    ginseng-web (1.0.6)
+    ginseng-web (1.1.2)
       rack-test
       sass
       sinatra
@@ -48,7 +51,7 @@ GEM
     ast (2.4.0)
     bootsnap (1.4.5)
       msgpack (~> 1.0)
-    concurrent-ruby (1.1.5)
+    concurrent-ruby (1.1.6)
     crass (1.0.6)
     csv (3.1.2)
     daemon-spawn (0.4.2)
@@ -56,11 +59,11 @@ GEM
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     eventmachine (1.2.7)
-    ffi (1.11.3)
+    ffi (1.12.2)
     http-accept (1.7.0)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
-    httparty (0.17.3)
+    httparty (0.18.0)
       mime-types (~> 3.0)
       multi_xml (>= 0.5.2)
     i18n (1.8.2)
@@ -71,12 +74,12 @@ GEM
     mime-types-data (3.2019.1009)
     mini_portile2 (2.4.0)
     minitest (5.14.0)
-    msgpack (1.3.1)
+    msgpack (1.3.3)
     multi_xml (0.6.0)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
     netrc (0.11.0)
-    nokogiri (1.10.7)
+    nokogiri (1.10.8)
       mini_portile2 (~> 2.4.0)
     nokogumbo (2.0.2)
       nokogiri (~> 1.8, >= 1.8.4)
@@ -86,7 +89,7 @@ GEM
     pg (1.2.2)
     power_assert (1.1.5)
     public_suffix (4.0.3)
-    rack (2.1.1)
+    rack (2.2.2)
     rack-protection (2.0.8.1)
       rack
     rack-test (1.1.0)
@@ -101,11 +104,13 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    rubocop (0.79.0)
+    rexml (3.2.4)
+    rubocop (0.80.0)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
       parser (>= 2.7.0.1)
       rainbow (>= 2.2.2, < 4.0)
+      rexml
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 1.7)
     rubocop-performance (1.5.2)
@@ -121,7 +126,7 @@ GEM
     sass-listen (4.0.0)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
-    sequel (5.28.0)
+    sequel (5.29.0)
     sinatra (2.0.8.1)
       mustermann (~> 1.0)
       rack (~> 2.0)
@@ -142,7 +147,7 @@ GEM
       unf_ext
     unf_ext (0.0.7.6)
     unicode (0.4.4.4)
-    unicode-display_width (1.6.0)
+    unicode-display_width (1.6.1)
     yajl-ruby (1.4.1)
     zeitwerk (2.2.2)
 
@@ -154,12 +159,10 @@ DEPENDENCIES
   ginseng-core!
   ginseng-postgres!
   ginseng-web!
-  rubocop
-  rubocop-performance
   sanitize
 
 RUBY VERSION
-   ruby 2.6.5p114
+   ruby 2.7.0p0
 
 BUNDLED WITH
    2.1.4
