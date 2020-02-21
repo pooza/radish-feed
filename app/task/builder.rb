@@ -13,3 +13,8 @@ namespace :radish do
     end
   end
 end
+
+[:build, :clean].each do |action|
+  desc "alias of radish:builder:#{action}"
+  task action => "radish:builder:#{action}"
+end

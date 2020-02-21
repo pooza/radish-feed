@@ -15,3 +15,8 @@ namespace :radish do
     end
   end
 end
+
+[:start, :stop, :restart].each do |action|
+  desc "alias of radish:thin:#{action}"
+  task action => "radish:thin:#{action}"
+end

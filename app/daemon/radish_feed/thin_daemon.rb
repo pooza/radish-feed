@@ -2,13 +2,8 @@ module RadishFeed
   class ThinDaemon < Ginseng::Daemon
     include Package
 
-    def cmd
-      return [
-        'thin',
-        '--config',
-        File.join(Environment.dir, 'config/thin.yaml'),
-        'start',
-      ]
+    def command
+      return Ginseng::CommandLine.new(['thin', '--config', config_cache_path, 'start'])
     end
 
     def motd

@@ -29,9 +29,9 @@ module RadishFeed
     config['dirs'].each do |d|
       loader.push_dir(File.join(dir, 'app', d))
     end
-    loader.setup
+    return loader
   end
 end
 
 RadishFeed.bootsnap
-RadishFeed.loader
+RadishFeed.loader.setup

@@ -33,7 +33,7 @@ module RadishFeed
       return File.join(
         Environment.dir,
         'tmp/feed/',
-        Digest::SHA1.hexdigest({query: @query, params: @params}.to_json),
+        "#{Digest::SHA1.hexdigest({query: @query, params: @params}.to_json)}.atom",
       )
     end
 

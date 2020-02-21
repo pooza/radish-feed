@@ -5,7 +5,7 @@ AllCops:
   DisplayCopNames: true
   Exclude:
     - '**/._*'
-  TargetRubyVersion: 2.6
+  TargetRubyVersion: 2.7
 
 Style/FrozenStringLiteralComment:
   Enabled: false
@@ -23,7 +23,7 @@ Layout/FirstHashElementIndentation:
   EnforcedStyle: consistent
 
 Layout/SpaceBeforeBlockBraces:
-  EnforcedStyle: no_space
+  EnforcedStyle: space
 
 Layout/SpaceInsideBlockBraces:
   EnforcedStyle: no_space
@@ -50,19 +50,6 @@ Metrics/ClassLength:
   Max: 200
   Exclude:
     - test/*
-
-Naming/FileName:
-  Exclude:
-    - Rakefile.rb
-    - '**/Rakefile*.rb'
-
-Metrics/BlockLength:
-  Exclude:
-    - Rakefile.rb
-    - '**/Rakefile*.rb'
-
-Style/BracesAroundHashParameters:
-  Enabled: false
 
 Style/Documentation:
   Enabled: false
@@ -128,8 +115,20 @@ Style/RescueModifier:
 Style/StringLiterals:
   EnforcedStyle: single_quotes
 
+Style/HashTransformValues:
+  Enabled: true
+
+Style/HashEachMethods:
+  Enabled: true
+
+Style/HashTransformKeys:
+  Enabled: true
+
 Metrics/CyclomaticComplexity:
   Max: 10
 
 Metrics/PerceivedComplexity:
   Max: 10
+
+Naming/RescuedExceptionsVariableName:
+  PreferredName: e
