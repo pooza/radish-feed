@@ -7,4 +7,4 @@ ENV['BUNDLE_GEMFILE'] ||= File.join(dir, 'Gemfile')
 require 'bundler/setup'
 require 'radish_feed'
 
-RadishFeed::ThinDaemon.spawn!
+RadishFeed::PumaDaemon.spawn!

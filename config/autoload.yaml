@@ -1,6 +1,3 @@
 inflections:
   atom_renderer: ATOMRenderer
   http: HTTP
-dirs:
-  - daemon
-  - renderer

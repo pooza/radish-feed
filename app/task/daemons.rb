@@ -1,5 +1,5 @@
 namespace :radish do
-  [:thin].each do |ns|
+  [:puma].each do |ns|
     namespace ns do
       [:start, :stop].each do |action|
         desc "#{action} #{ns}"
@@ -17,6 +17,6 @@ namespace :radish do
 end
 
 [:start, :stop, :restart].each do |action|
-  desc "alias of radish:thin:#{action}"
-  task action => "radish:thin:#{action}"
+  desc "alias of radish:puma:#{action}"
+  task action => "radish:puma:#{action}"
 end

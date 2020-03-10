@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/pooza/ginseng-core.git
-  revision: 22bb0407269e10ee90ce6cd2946c8c6286c096a5
+  revision: b95cebe5e70c8e16867b482f7d857464d5c81ced
   specs:
-    ginseng-core (1.6.2)
+    ginseng-core (1.6.3)
       activesupport
       addressable
       bundler
@@ -29,13 +29,14 @@ GIT
 
 GIT
   remote: https://github.com/pooza/ginseng-web.git
-  revision: 4d014476dadac085f041fd58cd71db5324c788c6
+  revision: a47d102be2dc746763f3150a4376e82842474800
   specs:
-    ginseng-web (1.1.2)
+    ginseng-web (1.2.0)
+      puma
       rack-test
       sass
       sinatra
-      thin
+      slim
 
 GEM
   remote: https://rubygems.org/
@@ -49,16 +50,14 @@ GEM
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
     ast (2.4.0)
-    bootsnap (1.4.5)
+    bootsnap (1.4.6)
       msgpack (~> 1.0)
     concurrent-ruby (1.1.6)
     crass (1.0.6)
     csv (3.1.2)
     daemon-spawn (0.4.2)
-    daemons (1.3.1)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
-    eventmachine (1.2.7)
     ffi (1.12.2)
     http-accept (1.7.0)
     http-cookie (1.0.3)
@@ -79,16 +78,19 @@ GEM
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
     netrc (0.11.0)
-    nokogiri (1.10.8)
+    nio4r (2.5.2)
+    nokogiri (1.10.9)
       mini_portile2 (~> 2.4.0)
     nokogumbo (2.0.2)
       nokogiri (~> 1.8, >= 1.8.4)
     parallel (1.19.1)
-    parser (2.7.0.2)
+    parser (2.7.0.4)
       ast (~> 2.4.0)
     pg (1.2.2)
-    power_assert (1.1.5)
+    power_assert (1.1.6)
     public_suffix (4.0.3)
+    puma (4.3.3)
+      nio4r (~> 2.0)
     rack (2.2.2)
     rack-protection (2.0.8.1)
       rack
@@ -105,7 +107,7 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     rexml (3.2.4)
-    rubocop (0.80.0)
+    rubocop (0.80.1)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
       parser (>= 2.7.0.1)
@@ -126,19 +128,19 @@ GEM
     sass-listen (4.0.0)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
-    sequel (5.29.0)
+    sequel (5.30.0)
     sinatra (2.0.8.1)
       mustermann (~> 1.0)
       rack (~> 2.0)
       rack-protection (= 2.0.8.1)
       tilt (~> 2.0)
+    slim (4.0.1)
+      temple (>= 0.7.6, < 0.9)
+      tilt (>= 2.0.6, < 2.1)
     syslog-logger (1.6.8)
+    temple (0.8.2)
     test-unit (3.3.5)
       power_assert
-    thin (1.7.2)
-      daemons (~> 1.0, >= 1.0.9)
-      eventmachine (~> 1.0, >= 1.0.4)
-      rack (>= 1, < 3)
     thread_safe (0.3.6)
     tilt (2.0.10)
     tzinfo (1.2.6)
@@ -149,7 +151,7 @@ GEM
     unicode (0.4.4.4)
     unicode-display_width (1.6.1)
     yajl-ruby (1.4.1)
-    zeitwerk (2.2.2)
+    zeitwerk (2.3.0)
 
 PLATFORMS
   ruby

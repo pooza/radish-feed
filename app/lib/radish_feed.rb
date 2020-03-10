@@ -1,7 +1,4 @@
 require 'bootsnap'
-require 'active_support'
-require 'active_support/core_ext'
-require 'zeitwerk'
 require 'ginseng'
 require 'ginseng/postgres'
 require 'ginseng/web'
@@ -26,9 +23,7 @@ module RadishFeed
     loader = Zeitwerk::Loader.new
     loader.inflector.inflect(config['inflections'])
     loader.push_dir(File.join(dir, 'app/lib'))
-    config['dirs'].each do |d|
-      loader.push_dir(File.join(dir, 'app', d))
-    end
+    loader.collapse('app/lib/radish_feed/*')
     return loader
   end
 end

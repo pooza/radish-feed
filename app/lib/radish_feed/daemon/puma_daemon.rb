@@ -1,14 +1,18 @@
 module RadishFeed
-  class ThinDaemon < Ginseng::Daemon
+  class PumaDaemon < Ginseng::Daemon
     include Package
 
     def command
-      return Ginseng::CommandLine.new(['thin', '--config', config_cache_path, 'start'])
+      return Ginseng::CommandLine.new(['puma', '--config', initializer_path])
+    end
+
+    def initializer_path
+      return File.join(Environment.dir, 'app/initializer/puma.rb')
     end
 
     def motd
       return [
-        `thin -v`.chomp,
+        `puma -V`.chomp,
         "Root URL: #{root_uri}",
       ].join("\n")
     end
@@ -18,7 +22,7 @@ module RadishFeed
         @uri = Ginseng::URI.new
         @uri.host = Environment.hostname
         @uri.scheme = 'http'
-        @uri.port = @config['/thin/port']
+        @uri.port = @config['/puma/port']
       end
       return @uri
     end
