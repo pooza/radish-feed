@@ -1,5 +1,5 @@
 package:
-  version: 2.0.5
+  version: 2.0.6
   url: https://github.com/pooza/radish-feed
   authors:
     - Tatsuya Koishi
@@ -13,8 +13,7 @@ tag:
   cacheable: []
 postgres:
   dsn: postgres://postgres@localhost:5432/mastodon
-thin:
-  timeout: 30
+puma:
   port: 3001
-  environment: production
+  pidfile: tmp/pids/puma.pid
   rackup: app/initializer/config.ru
