@@ -25,6 +25,9 @@ Layout/ParameterAlignment:
 Layout/FirstHashElementIndentation:
   EnforcedStyle: consistent
 
+Layout/FirstArrayElementIndentation:
+  EnforcedStyle: consistent
+
 Layout/SpaceBeforeBlockBraces:
   EnforcedStyle: space
 
@@ -149,5 +152,11 @@ Layout/SpaceAroundMethodCallOperator:
   Enabled: true
 
 Style/ExponentialNotation:
+  Enabled: true
+
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: true
+
+Style/SlicingWithRange:
   Enabled: true
 

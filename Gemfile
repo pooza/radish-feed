@@ -9,4 +9,5 @@ gem 'sanitize'
 group :development do
   gem 'rubocop'
   gem 'rubocop-performance'
+  gem 'test-unit'
 end
