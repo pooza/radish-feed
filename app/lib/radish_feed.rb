@@ -1,7 +1,5 @@
 require 'bootsnap'
 require 'ginseng'
-require 'ginseng/postgres'
-require 'ginseng/web'
 
 module RadishFeed
   def self.dir
@@ -30,3 +28,4 @@ end
 
 RadishFeed.bootsnap
 RadishFeed.loader.setup
+Bundler.require
