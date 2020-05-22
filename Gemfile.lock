@@ -88,6 +88,8 @@ GEM
     rack (2.2.2)
     rack-protection (2.0.8.1)
       rack
+    rack-test (1.1.0)
+      rack (>= 1.0, < 3)
     rainbow (3.0.0)
     rake (13.0.1)
     rb-fsevent (0.10.4)
@@ -155,9 +157,9 @@ DEPENDENCIES
   ginseng-core!
   ginseng-postgres!
   ginseng-web!
+  rack-test
   rubocop
   rubocop-performance
-  sanitize
   test-unit
 
 RUBY VERSION
