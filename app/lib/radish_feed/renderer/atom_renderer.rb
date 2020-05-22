@@ -1,5 +1,4 @@
 require 'rss'
-require 'sanitize'
 require 'digest/sha1'
 
 module RadishFeed
@@ -89,7 +88,7 @@ module RadishFeed
       channel.title = site['site_title']
       channel.id = uri.to_s
       channel.link = uri.to_s
-      channel.description = Sanitize.clean(site['site_description'])
+      channel.description = site['site_description'].sanitize
       channel.author = site['site_contact_username']
       channel.date = Time.now
       channel.generator = Package.user_agent
