@@ -5,8 +5,7 @@ module RadishFeed
   class ATOMRenderer < Ginseng::Web::Renderer
     include Package
 
-    attr_accessor :query
-    attr_accessor :params
+    attr_accessor :query, :params
 
     def initialize
       super
