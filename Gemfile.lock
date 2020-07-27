@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/pooza/ginseng-core.git
-  revision: b954266c4daeb853a2b23d986fedcd38356c3df5
+  revision: 2e4ffe074483faaf2716e34a01286f61def78f44
   specs:
-    ginseng-core (1.7.5)
+    ginseng-core (1.7.6)
       activesupport
       addressable
       daemon-spawn
@@ -60,7 +60,7 @@ GEM
     httparty (0.18.1)
       mime-types (~> 3.0)
       multi_xml (>= 0.5.2)
-    i18n (1.8.4)
+    i18n (1.8.5)
       concurrent-ruby (~> 1.0)
     mime-types (3.3.1)
       mime-types-data (~> 3.2015)
